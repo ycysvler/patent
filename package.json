@@ -3,18 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "babel-plugin-import": "^1.1.1",
-    "react-scripts": "0.8.5",
     "antd": "^2.6.1",
+    "babel-plugin-import": "^1.1.1",
+    "css-loader": "^0.26.4",
+    "jquery": "^3.1.0",
+    "less-loader": "^3.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-router": "^3.0.1",
-    "jquery": "^3.1.0",
-    "reflux": "^5.0.4"
+    "react-scripts": "0.8.5",
+    "reflux": "^5.0.4",
+    "style-loader": "^0.13.2"
   },
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
