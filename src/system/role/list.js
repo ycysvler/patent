@@ -6,7 +6,7 @@ import {Layout, Menu, Breadcrumb, Icon, Button} from 'antd';
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 
-class UserList extends React.Component {
+class RoleList extends React.Component {
     render() {
         return (
             <Layout >
@@ -14,7 +14,7 @@ class UserList extends React.Component {
                     <Breadcrumb style={{margin: '11px 0'}}>
                         <Breadcrumb.Item>首页</Breadcrumb.Item>
                         <Breadcrumb.Item>系统管理</Breadcrumb.Item>
-                        <Breadcrumb.Item>用户管理</Breadcrumb.Item>
+                        <Breadcrumb.Item>角色管理</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
                 <Layout className="content">
@@ -135,4 +135,4 @@ class UserList extends React.Component {
     }
 }
 
-export default UserList;
+export default RoleList;

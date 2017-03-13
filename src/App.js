@@ -16,7 +16,6 @@ class App extends React.Component {
                             <Content>
                                 <Menu
                                     mode="horizontal"
-                                    defaultSelectedKeys={['7']}
                                     style={{lineHeight: '64px'}}
                                 >
                                     <Menu.Item key="1">专利检索</Menu.Item>
@@ -40,8 +39,6 @@ class App extends React.Component {
                         <Menu
                             theme="dark"
                             mode="inline"
-                            defaultSelectedKeys={['1']}
-                            defaultOpenKeys={['sub1']}
                             style={{height: '100%'}}
                         >
                             <SubMenu key="sub1" title={<span><Icon type="user"/>subnav 1</span>}>
