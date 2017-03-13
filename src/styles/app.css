@@ -51,3 +51,9 @@
     background: white;
     border-radius: 2px;
 }
+.ant-menu-horizontal > .ant-menu-item-selected{
+    /*height:64px;*/
+}
+.ant-menu-horizontal > .ant-menu-item-active{
+    /*height:64px;*/
+}

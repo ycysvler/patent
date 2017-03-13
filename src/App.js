@@ -14,22 +14,23 @@ class App extends React.Component {
                     <div style={{float: 'right'}}>
                         <Layout>
                             <Content>
-                        <Menu
-                            mode="horizontal"
-                            defaultSelectedKeys={['7']}
-                            style={{lineHeight: '64px'}}
-                        >
-                            <Menu.Item key="1">专利检索</Menu.Item>
-                            <Menu.Item key="2">其他检索</Menu.Item>
-                            <Menu.Item key="3">辅助工具</Menu.Item>
-                            <Menu.Item key="4">统计分析</Menu.Item>
-                            <Menu.Item key="5">系统监控</Menu.Item>
-                            <Menu.Item key="6">数据管理</Menu.Item>
-                            <Menu.Item key="7">系统管理</Menu.Item>
-                        </Menu></Content>
-                            <Sider width={160} className="box" style={{background: '#fff',height:'64px', justifyContent: 'flex-end'}}>
-                        <Button icon="question-circle-o" size="small" className="header-help">帮助</Button>
-                            <div className="icon"></div>
+                                <Menu
+                                    mode="horizontal"
+                                    defaultSelectedKeys={['7']}
+                                    style={{lineHeight: '64px'}}
+                                >
+                                    <Menu.Item key="1">专利检索</Menu.Item>
+                                    <Menu.Item key="2">其他检索</Menu.Item>
+                                    <Menu.Item key="3">辅助工具</Menu.Item>
+                                    <Menu.Item key="4">统计分析</Menu.Item>
+                                    <Menu.Item key="5">系统监控</Menu.Item>
+                                    <Menu.Item key="6">数据管理</Menu.Item>
+                                    <Menu.Item key="7">系统管理</Menu.Item>
+                                </Menu></Content>
+                            <Sider width={160} className="box"
+                                   style={{background: '#fff', height: '64px', justifyContent: 'flex-end'}}>
+                                <Button icon="question-circle-o" size="small" className="header-help">帮助</Button>
+                                <div className="icon"></div>
                             </Sider>
                         </Layout>
                     </div>
@@ -65,7 +66,7 @@ class App extends React.Component {
                     </Sider>
                     <Layout >
 
-                            {this.props.children}
+                        {this.props.children}
 
                     </Layout>
                 </Layout>
