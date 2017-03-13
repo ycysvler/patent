@@ -19,6 +19,12 @@ import AttachedSeniorList from './attached/senior/list.js';
 import AttachedSeniorCreate from './attached/senior/create.js';
 import AttachedSeniorDetails from './attached/senior/details.js';
 
+import AttachedPartList from './attached/part/list.js';
+import AttachedPartCreate from './attached/part/create.js';
+import AttachedPartDetails from './attached/part/details.js';
+
+import AttachedPatentDetails from './attached/patent/details.js';
+
 import 'antd/dist/antd.css';
 import './styles/base.less';
 import './styles/index.css';
@@ -40,20 +46,29 @@ const routes = (
             <Route path="/system/logs" component={LogList}/>
 
             {/*附图.快速检索.历史查询*/}
-            <Route path="/attached/fast" component={AttachedFastList}/>
+            <Route path="/attached/fast/list" component={AttachedFastList}/>
             {/*新建快速查询*/}
-            <Route path="/attached/create" component={AttachedFastCreate}/>
+            <Route path="/attached/fast/create" component={AttachedFastCreate}/>
             {/*快速检索结果*/}
-            <Route path="/attached/details" component={AttachedFastDetails}/>
+            <Route path="/attached/fast/details" component={AttachedFastDetails}/>
 
             {/*附图.高级检索.历史查询*/}
-            <Route path="/senior/fast" component={AttachedSeniorList}/>
-            {/*新建快速查询*/}
-            <Route path="/senior/create" component={AttachedSeniorCreate}/>
-            {/*快速检索结果*/}
-            <Route path="/senior/details" component={AttachedSeniorDetails}/>
+            <Route path="/attached/senior/list" component={AttachedSeniorList}/>
+            {/*新建高级查询*/}
+            <Route path="/attached/senior/create" component={AttachedSeniorCreate}/>
+            {/*高级检索结果*/}
+            <Route path="/attached/senior/details" component={AttachedSeniorDetails}/>
 
-            AttachedFastDetails
+            {/*附图.局部检索.历史查询*/}
+            <Route path="/attached/part/fast" component={AttachedPartList}/>
+            {/*新建局部查询*/}
+            <Route path="/attached/part/create" component={AttachedPartCreate}/>
+            {/*局部检索结果*/}
+            <Route path="/attached/part/details:/id" component={AttachedPartDetails}/>
+            {/*专利信息详情*/}
+            <Route path="/attached/patent/details/:id" component={AttachedPatentDetails}/>
+
+
         </Route>
         {/*无此页面，转到登录*/}
         <Route path="*" component={Login}/>
