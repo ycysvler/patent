@@ -1,28 +1,73 @@
 import React from 'react';
-import {Layout, Menu, Breadcrumb, Icon, Button} from 'antd';
+import {Input, Row, Col, Layout, Menu, Breadcrumb, Icon, Button} from 'antd';
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
-
+import './styles/login.css';
 
 class Login extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {'logined': false};
+    }
+
     render() {
+        let selectshowstyle = this.state.logined ? {display: 'block'} : {display: 'none'};
+        let loginput = !this.state.logined ? {display: 'block'} : {display: 'none'};
+
         return (
-            <Layout className="app-root">
-                <Header style={{background: '#fff'}}>
-                    <div className="logo"/>
-                    <div style={{float: 'right'}}>
-                        <Layout>
-                            <Content>
-                            </Content>
-                        </Layout>
+            <div className="login_root">
+
+                <header id="header" className="clearfix">
+                    <div className="ant-row">
+                        <div className="ant-col-xs-24 ant-col-sm-24 ant-col-md-12 ant-col-lg-8">
+                            <a href="#/">
+                                <div className='logo'/>
+                                <span className="title">专利检索系统</span></a>
+                        </div>
                     </div>
-                </Header>
-                <Layout>
-                    <Layout >
-                        Login
-                    </Layout>
-                </Layout>
-            </Layout>
+                </header>
+                <div className="login">
+                    <div className="content-main">
+                        <section className="login login-frame">
+                            <div className="login-form" style={{height: '480px', width: '450px'}}>
+                                <div className="login-form">
+                                    <div className="login-main">
+                                        <div className="login-title">
+                                            <div className="logo-con">
+                                                <span className="logo-img"/>
+                                            </div>
+                                            <span>欢迎使用专利检索系统</span>
+                                        </div>
+                                        <div className="form-item">
+                                            <div style={loginput}>
+                                                <Input size="large" name="account" placeholder="账户（邮箱或手机号）"/>
+                                                <Input size="large" type="password" name="account" placeholder="密码"/>
+                                                <Button type="primary" className="login-button" onClick={this.login}>登
+                                                    录</Button>
+                                            </div>
+                                            <Row gutter={16} className="form-in" style={selectshowstyle}>
+                                                <Col span={12}><a href="#/figure/feature"><Button
+                                                    type="primary">登录（专利附图）</Button></a></Col>
+                                                <Col span={12}><a href="#/appearance/feature"><Button type="primary">登录（专利外观）</Button></a></Col>
+                                            </Row>
+                                            <div className="ui-form-explain"></div>
+                                        </div>
+                                        <div className="link-con">
+                                            <a className="link-item link-item-last" title="系统建设中，后期开放...."
+                                               target="_parent">免费注册</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <footer id="footer">
+                    <div style={{padding: '10px'}}>
+                        版权所有 © 2015 北京邦焜威讯网络技术有限公司
+                    </div>
+                </footer>
+            </div>
         );
     }
 }
