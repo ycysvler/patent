@@ -12,7 +12,7 @@ const IndexStore = Reflux.createStore({
     listenables:[IndexActions],
 
     onGetIndexes: function(userid) {
-        let url = server_address + "/systems/menus.ashx?";
+        let url = window.server_address + "/systems/menus.ashx?";
         let param = {};
         let self = this;
         param.userid = userid;
