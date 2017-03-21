@@ -19,14 +19,14 @@ const IndexStore = Reflux.createStore({
         $.ajax({
             url: url,
             type: 'GET',
-            contentType: "application/json",
             dataType: "json",
             data: param,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Content-Type", "application/json;charset=utf8");
+
             },
             success: function (data, status) {
-                self.trigger(data);
+                let action = 'getIndexes';
+                self.trigger(action, data);
             },
             error: function (reson) {
                 console.log(reson);
