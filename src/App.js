@@ -16,12 +16,12 @@ const App = React.createClass({
     componentDidMount: function () {
         IndexActions.getIndexes(1132);
     },
-    onStatusChange: function (action, data) {
+    onStatusChange: function (action, result) {
         // 判断一下action,当同一个Store多个不同的方法发出trigger时好区分是谁发的
-        if (acton === 'getIndexes') {
-            console.log(data);
-            this.setState({indexList: data.data});
-            this.setState({leftIndex: data.data[0].children});
+        if (action === 'getIndexes') {
+            console.log(result);
+            this.setState({indexList: result.data});
+            this.setState({leftIndex: result.data[0].children});
         }
     },
     onClickHandler: function (e) {
