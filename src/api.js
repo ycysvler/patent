@@ -37,7 +37,7 @@ const IndexStore = Reflux.createStore({
 
     onLogin: function(username,password) {
         let self = this;
-        let url = "http://114.247.108.199/systems/login.ashx";
+        let url = window.server_address  + "/systems/login.ashx";
         let param = {
             username: username,
             password: password
@@ -45,12 +45,7 @@ const IndexStore = Reflux.createStore({
         $.ajax({
             url: url,
             type: 'POST',
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify(param),
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Content-Type", "application/json;charset=utf8");
-            },
+            data: param,
             success: function (data, status) {
                 self.trigger(data);
             },
