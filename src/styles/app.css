@@ -58,5 +58,6 @@
     /*height:64px;*/
 }
 .content {
-    padding: 0;
+    padding: 20px;
+    background: #ffffff !important;
 }

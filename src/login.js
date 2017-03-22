@@ -1,14 +1,32 @@
 import React from 'react';
 import {Input, Row, Col, Layout, Menu, Breadcrumb, Icon, Button} from 'antd';
+import {IndexActions, IndexStore} from './api.js';
+import Reflux from 'reflux';
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 import './styles/login.css';
 
-class Login extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {'logined': false};
-    }
+const Login = React.createClass({
+    mixins:[Reflux.listenTo(IndexStore,'onStatusChange')],
+    getInitialState: function () {
+        return {"logined": false};
+    },
+    onStatusChange: function(data) {
+        console.log(data);
+    },
+    login() {
+        let account = this.refs.account.refs.input.value;
+        let password = this.refs.password.refs.input.value;
+        if(account && account == "") {
+            alert("账号不能为空");
+            return;
+        }
+        if(password && password == "") {
+            alert("密码不能为空");
+            return;
+        }
+        IndexActions.login(account,password);
+    },
 
     render() {
         let selectshowstyle = this.state.logined ? {display: 'block'} : {display: 'none'};
@@ -40,8 +58,8 @@ class Login extends React.Component {
                                         </div>
                                         <div className="form-item">
                                             <div style={loginput}>
-                                                <Input size="large" name="account" placeholder="账户（邮箱或手机号）"/>
-                                                <Input size="large" type="password" name="account" placeholder="密码"/>
+                                                <Input size="large" ref="account" name="account" placeholder="账户（邮箱或手机号）"/>
+                                                <Input size="large" ref="password" type="password" name="account" placeholder="密码"/>
                                                 <Button type="primary" className="login-button" onClick={this.login}>登
                                                     录</Button>
                                             </div>
@@ -70,6 +88,6 @@ class Login extends React.Component {
             </div>
         );
     }
-}
+})
 
 export default Login;

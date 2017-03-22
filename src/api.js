@@ -5,7 +5,8 @@ import Reflux from 'reflux';
 import $ from 'jquery'
 
 const IndexActions = Reflux.createActions([
-    "getIndexes"
+    "getIndexes",
+    "login"
 ]);
 
 const IndexStore = Reflux.createStore({
@@ -22,6 +23,31 @@ const IndexStore = Reflux.createStore({
             contentType: "application/json",
             dataType: "json",
             data: param,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json;charset=utf8");
+            },
+            success: function (data, status) {
+                self.trigger(data);
+            },
+            error: function (reson) {
+                console.log(reson);
+            }
+        });
+    },
+
+    onLogin: function(username,password) {
+        let self = this;
+        let url = "http://114.247.108.199/systems/login.ashx";
+        let param = {
+            username: username,
+            password: password
+        };
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(param),
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Content-Type", "application/json;charset=utf8");
             },
