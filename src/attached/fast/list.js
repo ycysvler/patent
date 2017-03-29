@@ -14,6 +14,12 @@ class AttachedFastList extends React.Component {
             selectNum:0
         }
     }
+    static contextTypes = {
+        router: React.PropTypes.object.isRequired,
+    };
+    goToCreateNewSearch() {
+        this.context.router.push("/attached/fast/create");
+    }
     columns = [{
         title:'描述',
         dataIndex:'describe',
@@ -84,7 +90,7 @@ class AttachedFastList extends React.Component {
                     <Content >
                         <div>
                             <Button className="fast-delete-btn" >删除</Button>
-                            <Button className="fast-new-search-btn" >新建查询</Button>
+                            <Button className="fast-new-search-btn" onClick={this.goToCreateNewSearch.bind(this)} >新建查询</Button>
                             <span className="fast-check-num"><Icon style={{"marginRight":"6px","color":"blue"}} type="info-circle" />已选择{this.state.selectNum}项数据</span>
                             <Button className="fast-search-btn" >搜索</Button>
                             <Input style={{"width":"20%","position":"relative","float":"right","marginRight":"5px"}}  placeholder="请输入描述关键词" />

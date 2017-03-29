@@ -13,6 +13,11 @@ const Login = React.createClass({
     },
     onStatusChange: function(data) {
         console.log(data);
+        this.context.router.push("/attached/fast/list");
+    },
+    contextTypes: {
+        // 这个是为了使用js代码跳转页面使用的
+        router: React.PropTypes.object
     },
     login() {
         let account = this.refs.account.refs.input.value;
