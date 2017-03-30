@@ -4,13 +4,36 @@
 import React from 'react';
 import {Layout, Menu, Breadcrumb, Icon, Button,Col,Input,TreeSelect} from 'antd';
 import $ from 'jquery';
+import {FastActions,FastStore} from './fastApi.js';
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 
 class AttachedFastCreate extends React.Component {
+    constructor(props) {
+        super(props);
+        this.unsubscribe = FastStore.listen(this.onStateChange.bind(this));
+        this.state = {
+            uploadImageList:[],
+            discribeState:false,
+            typeState:false,
+            imageState:false,
+        };
+    }
     static contextTypes = {
         router: React.PropTypes.object.isRequired,
     };
+    componentDidMount() {
+        this.refs.inputfile.onchange = this.inputChange.bind(this);
+    }
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+    onStateChange(type,data) {
+        if(type == "uploadImage") {
+            this.state.imageState = true;
+            this.setState({uploadImageList:data.images});
+        }
+    }
     goToHistorySearch() {
         this.context.router.push("/attached/fast/list");
     }
@@ -48,21 +71,39 @@ class AttachedFastCreate extends React.Component {
     inputChange() {
         let self = this;
         let data = new FormData();
-        $.each(this.refs.inputfile.files, function (i, file) {
+        $.each(self.refs.inputfile.files, function (i, file) {
             data.append('upload_file' + i, file);
         });
         let file = {name:'aaa.jpg'};
-        self.uploadImage();
-    }
-    uploadImage() {
-
+        FastActions.uploadImage(window.server_address + "/uploadimages.ashx?username=admin",data,file);
     }
     checkImage() {
         this.refs.inputfile.click();
     }
     show_parent = TreeSelect.SHOW_PARENT;
+    getRandomKeys() {
+        let k = Math.random()*1000000;
+        return k;
+    }
+    setDiscribeState(e) {
+        if(e.target.value == "") {
+            this.setState({discribeState:false});
+        } else {
+            this.setState({discribeState:true});
+        }
+    }
+    setTypeState(value,label) {
+        if(label.length > 0) {
+            this.setState({typeState:true});
+        } else {
+            this.setState({typeState:false});
+        }
+    }
     render() {
 
+        let self = this;
+        let canSearch = self.state.discribeState && self.state.typeState && self.state.imageState;
+        console.log(canSearch);
         return (
             <Layout >
                 <div className="breadcrumb">
@@ -79,7 +120,7 @@ class AttachedFastCreate extends React.Component {
                                 <span>描述：</span>
                             </Col>
                             <Col span="8">
-                                <Input placeholder="设置账号后，不可修改" onBlur={self.testConsole}/>
+                                <Input placeholder="Q2017.03.23_032" onBlur={self.setDiscribeState.bind(self)} />
                             </Col>
                         </div><br/>
                         <div style={{marginTop:"24px"}}>
@@ -91,6 +132,7 @@ class AttachedFastCreate extends React.Component {
                                             treeCheckable
                                             treeData={this.treeData}
                                             showCheckedStrategy={this.show_parent}
+                                            onChange={this.setTypeState.bind(this)}
                                             style={{width:"100%"}}
                                 ></TreeSelect>
                             </Col>
@@ -100,6 +142,11 @@ class AttachedFastCreate extends React.Component {
                                 <span>选择图像：</span>
                             </Col>
                             <Col span="8">
+                                {
+                                    self.state.uploadImageList.map(function(image) {
+                                        return <img key={self.getRandomKeys} style={{width:"50px",height:"50px"}} src={window.server_address+"/"+image} />
+                                    })
+                                }
                                 <Icon onClick={this.checkImage.bind(this)} style={{width:"50px",height:"50px",fontSize:"55px",cursor:"pointer"}} type="plus-square-o" />
                                 <input multiple="multiple" ref="inputfile" type="file" accept="" style={{display:"none"}}/>
                             </Col>
@@ -109,7 +156,7 @@ class AttachedFastCreate extends React.Component {
                                 <span></span>
                             </Col>
                             <Col span="8">
-                                <Button>查询</Button><Button>取消</Button>
+                                <Button type="primary" className="create_search_btn" disabled={!canSearch}>查询</Button><Button style={{marginLeft:"10px"}} >取消</Button>
                             </Col>
                         </div><br/>
                     </Content>
