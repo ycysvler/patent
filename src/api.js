@@ -12,7 +12,7 @@ const IndexActions = Reflux.createActions([
 const IndexStore = Reflux.createStore({
     listenables:[IndexActions],
 
-    onGetIndexes: function(userid) {
+    onGetIndexes: function(userid,token) {
         let url = window.server_address + "/systems/menus.ashx?";
         let param = {};
         let self = this;
@@ -23,7 +23,7 @@ const IndexStore = Reflux.createStore({
             dataType: "json",
             data: param,
             beforeSend: function (xhr) {
-
+                xhr.setRequestHeader("Authorization",token);
             },
             success: function (data, status) {
                 let action = 'getIndexes';
@@ -47,7 +47,9 @@ const IndexStore = Reflux.createStore({
             type: 'POST',
             data: param,
             success: function (data, status) {
-                self.trigger(data);
+                if(JSON.parse(data).code === 200) {
+                    self.trigger(JSON.parse(data).data);
+                }
             },
             error: function (reson) {
                 console.log(reson);

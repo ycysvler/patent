@@ -14,15 +14,50 @@ const App = React.createClass({
         return {"indexList": [], "leftIndex": []};
     },
     componentDidMount: function () {
-        IndexActions.getIndexes(1132);
+        IndexActions.getIndexes(this.getCookie("user_id"),this.getCookie("token"));
     },
     onStatusChange: function (action, result) {
         // 判断一下action,当同一个Store多个不同的方法发出trigger时好区分是谁发的
         if (action === 'getIndexes') {
-            console.log(result);
             this.setState({indexList: result.data});
             this.setState({leftIndex: result.data[0].children});
         }
+    },
+    getCookie(name) {
+        if(window.document.cookie == "") {
+            this.context.router.push("/");
+            return;
+        }
+        let cookies = window.document.cookie.split(";");
+        if(name == "token") {
+            let token = cookies[0].substring(6);
+            if(!token || token == "") {
+                this.context.router.push("/");
+                return;
+            } else {
+                return token;
+            }
+        } else if(name == "user_id") {
+            let user_id = cookies[1].substring(9);
+            if(!user_id || user_id == "") {
+                this.context.router.push("/");
+                return;
+            } else {
+                return user_id;
+            }
+        } else {
+            let user_name = cookies[2].substring(11);
+            if(!user_name || user_name == "") {
+                this.context.router.push("/");
+                return;
+            } else {
+                return user_name;
+            }
+        }
+    },
+    contextTypes: {
+        // 这个是为了使用js代码跳转页面使用的
+        router: React.PropTypes.object
     },
     onClickHandler: function (e) {
         for (let i = 0; i < this.state.indexList.length; i++) {
@@ -35,7 +70,6 @@ const App = React.createClass({
     render() {
         let lIndexs = this.state.leftIndex;
         let index_list = this.state.indexList;
-        console.log(lIndexs, index_list);
         return (
             <Layout className="app-root">
                 <Header style={{background: '#3f3f3f'}}>

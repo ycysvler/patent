@@ -12,7 +12,9 @@ const Login = React.createClass({
         return {"logined": false};
     },
     onStatusChange: function(data) {
-        console.log(data);
+        window.document.cookie = "token="+data.token+";path=/";
+        window.document.cookie = "user_id="+data.userid+";path=/";
+        window.document.cookie = "user_name="+data.username+";path=/";
         this.context.router.push("/attached/fast/list");
     },
     contextTypes: {

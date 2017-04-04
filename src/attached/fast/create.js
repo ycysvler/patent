@@ -11,31 +11,73 @@ const {Header, Content, Sider} = Layout;
 class AttachedFastCreate extends React.Component {
     constructor(props) {
         super(props);
-        this.unsubscribe = FastStore.listen(this.onStateChange.bind(this));
+        this.unsubscribe = FastStore.listen(this.onStatusChange.bind(this));
         this.state = {
             uploadImageList:[],
-            discribeState:false,
+            description:"",
+            typeIds:[],
+            typeNames:[],
+            describeState:false,
             typeState:false,
             imageState:false,
+            typeList:[]
         };
     }
     static contextTypes = {
         router: React.PropTypes.object.isRequired,
     };
     componentDidMount() {
+        FastActions.getAllType(this.getCookie("token"));
         this.refs.inputfile.onchange = this.inputChange.bind(this);
     }
     componentWillUnmount() {
         this.unsubscribe();
     }
-    onStateChange(type,data) {
+    onStatusChange(type,data) {
         if(type == "uploadImage") {
             this.state.imageState = true;
             this.setState({uploadImageList:data.images});
+        } else if(type == "getAllType") {
+            this.treeData = data;
+            this.setState({typeList:data});
+        } else if(type == "create") {
+            console.log(data);
         }
     }
     goToHistorySearch() {
         this.context.router.push("/attached/fast/list");
+    }
+    getCookie(name) {
+        if(window.document.cookie == "") {
+            this.context.router.push("/");
+            return;
+        }
+        let cookies = window.document.cookie.split(";");
+        if(name == "token") {
+            let token = cookies[0].substring(6);
+            if(!token || token == "") {
+                this.context.router.push("/");
+                return;
+            } else {
+                return token;
+            }
+        } else if(name == "user_id") {
+            let user_id = cookies[1].substring(9);
+            if(!user_id || user_id == "") {
+                this.context.router.push("/");
+                return;
+            } else {
+                return user_id;
+            }
+        } else {
+            let user_name = cookies[2].substring(11);
+            if(!user_name || user_name == "") {
+                this.context.router.push("/");
+                return;
+            } else {
+                return user_name;
+            }
+        }
     }
     treeData = [{
         label:'HB0',
@@ -75,7 +117,7 @@ class AttachedFastCreate extends React.Component {
             data.append('upload_file' + i, file);
         });
         let file = {name:'aaa.jpg'};
-        FastActions.uploadImage(window.server_address + "/uploadimages.ashx?username=admin",data,file);
+        FastActions.uploadImage(window.server_address + "/uploadimages.ashx?username="+this.getCookie("user_name"),data,file,this.getCookie("token"));
     }
     checkImage() {
         this.refs.inputfile.click();
@@ -85,25 +127,29 @@ class AttachedFastCreate extends React.Component {
         let k = Math.random()*1000000;
         return k;
     }
-    setDiscribeState(e) {
+    setDescribeState(e) {
         if(e.target.value == "") {
-            this.setState({discribeState:false});
+            this.setState({describeState:false});
         } else {
-            this.setState({discribeState:true});
+            this.state.description = e.target.value;
+            this.setState({describeState:true});
         }
     }
     setTypeState(value,label) {
         if(label.length > 0) {
+            this.state.typeIds = label;
+            this.state.typeNames = label;
             this.setState({typeState:true});
         } else {
             this.setState({typeState:false});
         }
     }
+    createNewJob() {
+        FastActions.create(this.getCookie("user_id"),this.state.description,this.state.typeIds,this.state.typeNames,this.state.images,this.getCookie("token"));
+    }
     render() {
-
         let self = this;
-        let canSearch = self.state.discribeState && self.state.typeState && self.state.imageState;
-        console.log(canSearch);
+        let canSearch = self.state.describeState && self.state.typeState && self.state.imageState;
         return (
             <Layout >
                 <div className="breadcrumb">
@@ -120,7 +166,7 @@ class AttachedFastCreate extends React.Component {
                                 <span>描述：</span>
                             </Col>
                             <Col span="8">
-                                <Input placeholder="Q2017.03.23_032" onBlur={self.setDiscribeState.bind(self)} />
+                                <Input placeholder="Q2017.03.23_032" onBlur={self.setDescribeState.bind(self)} />
                             </Col>
                         </div><br/>
                         <div style={{marginTop:"24px"}}>
@@ -137,7 +183,7 @@ class AttachedFastCreate extends React.Component {
                                 ></TreeSelect>
                             </Col>
                         </div><br/>
-                        <div style={{marginTop:"100px"}}>
+                        <div style={{marginTop:"230px"}}>
                             <Col span="4" style={{"textAlign":"right","paddingTop":"5px"}}>
                                 <span>选择图像：</span>
                             </Col>
@@ -151,12 +197,12 @@ class AttachedFastCreate extends React.Component {
                                 <input multiple="multiple" ref="inputfile" type="file" accept="" style={{display:"none"}}/>
                             </Col>
                         </div><br/>
-                        <div style={{marginTop:"100px"}}>
+                        <div style={{position:"relative",marginTop:"100px"}}>
                             <Col span="4" >
                                 <span></span>
                             </Col>
                             <Col span="8">
-                                <Button type="primary" className="create_search_btn" disabled={!canSearch}>查询</Button><Button style={{marginLeft:"10px"}} >取消</Button>
+                                <span><Button type="primary" className="create_search_btn" onClick={self.createNewJob.bind(self)} disabled={!canSearch}>查询</Button><Button style={{marginLeft:"10px"}} >取消</Button></span>
                             </Col>
                         </div><br/>
                     </Content>
