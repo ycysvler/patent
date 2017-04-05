@@ -47,3 +47,6 @@
     color: #666666 !important;
     border-color: #f3f3f3 !important;
 }
+.content :first-child {
+    background: transparent;
+}

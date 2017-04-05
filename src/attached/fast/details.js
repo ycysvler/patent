@@ -6,6 +6,8 @@ import {Layout, Menu, Breadcrumb, Icon, Button,Table,Col,Tabs} from 'antd';
 import './fast.css'
 import ImageList from './imageList';
 import {FastActions,FastStore} from './fastApi.js';
+import ResultCard from './resultCard.js';
+import DetailModal from './detailModal.js';
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 const TabPane = Tabs.TabPane;
@@ -15,7 +17,10 @@ class AttachedFastDetails extends React.Component {
         super(props);
         this.unsubscribe = FastStore.listen(this.onStatusChange.bind(this));
         this.state = {
-            searchData:this.props.location.state.searchData
+            searchData:this.props.location.state.searchData,
+            cards:[1,2,3,4,5,6],
+            showDetailDialog:false,
+            detailData:{}
         }
     }
     componentDidMount() {
@@ -27,7 +32,15 @@ class AttachedFastDetails extends React.Component {
     onStatusChange(type,data) {
         if(type == "getResult") {
             console.log(data);
+        } else if(type == "getDetail") {
+            this.setState({showDetailDialog:true});
         }
+    }
+    hideDetailDialog() {
+        this.setState({showDetailDialog:false});
+    }
+    toGetDetail(code) {
+        FastActions.getDetail(code,this.getCookie("token"));
     }
     static contextTypes = {
         router: React.PropTypes.object.isRequired,
@@ -106,9 +119,14 @@ class AttachedFastDetails extends React.Component {
     data = []
     render() {
         let self = this;
+        self.data = [];
         self.data.push(self.state.searchData);
         return (
             <Layout >
+                <DetailModal visible={self.state.showDetailDialog}
+                             detailData={self.state.detailData}
+                             hide={self.hideDetailDialog.bind(self)}
+                ></DetailModal>
                 <div className="breadcrumb">
                     <Breadcrumb style={{margin: '11px 0'}}>
                         <Breadcrumb.Item>快速检索</Breadcrumb.Item>
@@ -126,14 +144,29 @@ class AttachedFastDetails extends React.Component {
                                 <Table columns={self.columns} dataSource={self.data} bordered pagination={false}/>
                             </Col>
                         </div><br/>
-                        <div style={{marginTop:"20%"}} >
+                        <div style={{width:"94%",height:"1px",background:"#cccccc",marginTop:"170px",marginLeft:"3%"}}></div><br/>
+                        <div style={{marginTop:"24px"}} >
                             <Col span="4" style={{"textAlign":"right","paddingTop":"5px"}}>
                                 <span>查询结果：</span>
                             </Col>
                             <Col span="19">
-                                <Tabs defaultActiveKey="1" type="card">
-                                    <TabPane tab="HB0132" key="1">Content of Tab Pane 1</TabPane>
-                                    <TabPane tab="HB0133" key="2">Content of Tab Pane 1</TabPane>
+                                <Tabs defaultActiveKey="1" type="line">
+                                    <TabPane tab="HB0132" key="1">
+                                        {
+                                            self.state.cards.map(function(id) {
+                                                return <ResultCard key={id}
+                                                                    getDetail={self.toGetDetail.bind(self)}
+                                                ></ResultCard>
+                                            })
+                                        }
+                                    </TabPane>
+                                    <TabPane tab="HB0133" key="2">
+                                        {
+                                            self.state.cards.map(function() {
+                                                return <ResultCard></ResultCard>
+                                            })
+                                        }
+                                    </TabPane>
                                 </Tabs>
                             </Col>
                         </div>

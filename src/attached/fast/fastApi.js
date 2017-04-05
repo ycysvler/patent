@@ -9,7 +9,8 @@ const FastActions = Reflux.createActions([
     'getJobs',
     'getAllType',
     'create',
-    'getResult'
+    'getResult',
+    'getDetail'
 ]);
 
 const FastStore = Reflux.createStore({
@@ -124,6 +125,30 @@ const FastStore = Reflux.createStore({
             success: function (data, status) {
                 if(data.code === 200) {
                     self.trigger('getResult', data.data);
+                }
+            },
+            error: function (reason) {
+                console.log(reason);
+            }
+        });
+    },
+    onGetDetail: function(code,token) {
+        let url = window.server_address + "/attached/patent.ashx?";
+        let self = this;
+        let param = {
+            code:code
+        };
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: "json",
+            data: param,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization",token);
+            },
+            success: function (data, status) {
+                if(data.code === 200) {
+                    self.trigger('getDetail', data.data);
                 }
             },
             error: function (reason) {
