@@ -33,7 +33,7 @@ class AttachedFastDetails extends React.Component {
         if(type == "getResult") {
             console.log(data);
         } else if(type == "getDetail") {
-            this.setState({showDetailDialog:true});
+            this.setState({showDetailDialog:true,detailData:data});
         }
     }
     hideDetailDialog() {
@@ -83,18 +83,21 @@ class AttachedFastDetails extends React.Component {
     columns = [{
         title:'描述',
         dataIndex:'description',
+        key:'description',
         render(text,record) {
             return <span><a href="javascritp:void(0);">{record.description}</a></span>
         }
     }, {
         title:'图像',
         dataIndex:'images',
+        key:'images',
         render(text,record) {
             return <ImageList key={record.jobid} imageUrls={record.images}></ImageList>
         }
     }, {
         title:'类型',
         dataIndex:'typenames',
+        key:'typenames',
         render(text,record) {
             let type_name = "";
             for(let i=0;i<record.typenames.length;i++) {
@@ -108,25 +111,35 @@ class AttachedFastDetails extends React.Component {
         }
     }, {
         title:'进度',
-        dataIndex:'schedule'
+        dataIndex:'schedule',
+        key:'schedule',
     }, {
         title:'创建日期',
-        dataIndex:'create_time'
+        dataIndex:'create_time',
+        key:'create_time',
     }, {
         title:'完成时间',
-        dataIndex:'end_time'
+        dataIndex:'end_time',
+        key:'end_time',
     }]
     data = []
+    renderDetailModal() {
+        if(this.state.showDetailDialog) {
+            return <DetailModal visible={this.state.showDetailDialog}
+                                detailData={this.state.detailData}
+                                hide={this.hideDetailDialog.bind(this)}
+            ></DetailModal>
+        }
+    }
     render() {
         let self = this;
         self.data = [];
         self.data.push(self.state.searchData);
         return (
             <Layout >
-                <DetailModal visible={self.state.showDetailDialog}
-                             detailData={self.state.detailData}
-                             hide={self.hideDetailDialog.bind(self)}
-                ></DetailModal>
+                {
+                    self.renderDetailModal()
+                }
                 <div className="breadcrumb">
                     <Breadcrumb style={{margin: '11px 0'}}>
                         <Breadcrumb.Item>快速检索</Breadcrumb.Item>
@@ -162,8 +175,9 @@ class AttachedFastDetails extends React.Component {
                                     </TabPane>
                                     <TabPane tab="HB0133" key="2">
                                         {
-                                            self.state.cards.map(function() {
-                                                return <ResultCard></ResultCard>
+                                            self.state.cards.map(function(id) {
+                                                return <ResultCard key={id}
+                                                ></ResultCard>
                                             })
                                         }
                                     </TabPane>

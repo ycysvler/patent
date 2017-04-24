@@ -16,7 +16,7 @@ class ResultCard extends React.Component {
     }
     render() {
         return (
-            <Card title="微型耕整机" extra={<span>99%</span>} style={{ width: 500,marginBottom:20,marginLeft:2 }}>
+            <Card title="微型耕整机" extra={<span>99%</span>} style={{ width: 500,marginBottom:20,marginLeft:2,overflow:"left" }}>
                 <dv>
                     <Col span="8" style={{marginTop:-20}}>
                         <Popover content={this.renderOneImage("http://114.247.108.199/upload/admin/2f6628a612da4f8aa183a5b5629af81e.jpg")}>

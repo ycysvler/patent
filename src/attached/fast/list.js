@@ -132,6 +132,7 @@ class AttachedFastList extends React.Component {
     }
     rowClick(record,index) {
         console.log(record,index);
+        record.key = record.jobid;
         this.context.router.push({pathname:'/attached/fast/details',state:{searchData:record}});
     }
     render() {

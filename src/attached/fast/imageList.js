@@ -23,7 +23,7 @@ class ImageList extends React.Component {
             <div style={{width:"0",height:"auto"}}>
                 {
                     self.state.imageUrls.map(function(url) {
-                        return <Popover content={self.renderOneImage(url)}>
+                        return <Popover key={url} content={self.renderOneImage(url)}>
                             <img style={{width:"50px",height:"50px"}} src={window.server_address+"/"+url} />
                         </Popover>
                     })
