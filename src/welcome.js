@@ -2,17 +2,12 @@
  * Created by VLER on 2017/3/13.
  */
 import React from 'react';
-import {Layout, Menu, Breadcrumb, Icon, Button} from 'antd';
+import {Layout,  Button} from 'antd';
 import Jquery from 'jquery';
-
-const {SubMenu} = Menu;
-const {Header, Content, Sider} = Layout;
-
 
 
 class Welcome extends React.Component {
     onTest=function(){
-        console.log('aaaa');
         var data = {
             userid: "4dd3562851d641b09f78e074d672a221",
             jobname: "aaasdaw",
@@ -33,7 +28,7 @@ class Welcome extends React.Component {
 
         var promise = Jquery.post("http://114.247.108.199/attached/fast/create.ashx",JSON.stringify(data));
         promise.done(function(data, status){
-            let o = JSON.parse(data);
+            //let o = JSON.parse(data);
         });
     }
     render() {
