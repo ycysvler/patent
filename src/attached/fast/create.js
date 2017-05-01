@@ -2,11 +2,11 @@
  * Created by VLER on 2017/3/10.
  */
 import React from 'react';
-import {Layout, Menu, Breadcrumb, Icon, Button,Col,Input,TreeSelect} from 'antd';
+import {Layout,  Breadcrumb, Icon, Button,Col,Input,TreeSelect} from 'antd';
 import $ from 'jquery';
 import {FastActions,FastStore} from './fastApi.js';
-const {SubMenu} = Menu;
-const {Header, Content, Sider} = Layout;
+
+const { Content } = Layout;
 
 class AttachedFastCreate extends React.Component {
     constructor(props) {
