@@ -2,12 +2,12 @@
  * Created by VLER on 2017/3/10.
  */
 import React from 'react';
-import {Layout, Menu, Breadcrumb, Icon, Button,Input,Table } from 'antd';
+import {Layout,  Breadcrumb, Icon, Button,Input,Table } from 'antd';
 import {FastActions,FastStore} from './fastApi.js';
 import ImageList from './imageList';
 import './fast.css'
-const {SubMenu} = Menu;
-const {Header, Content, Sider} = Layout;
+
+const { Content } = Layout;
 
 class AttachedFastList extends React.Component {
     constructor(props) {
@@ -25,7 +25,7 @@ class AttachedFastList extends React.Component {
         this.unsubscribe();
     }
     onStatusChange(type,data) {
-        if(type == "getJobs") {
+        if(type === "getJobs") {
             console.log(data);
             this.formatJobData(data);
             this.setState({jobsData:data});
@@ -49,22 +49,22 @@ class AttachedFastList extends React.Component {
     }
     getCookie(name) {
         console.log(window.document.cookie);
-        if(window.document.cookie == "") {
+        if(window.document.cookie === "") {
             this.context.router.push("/");
             return;
         }
         let cookies = window.document.cookie.split(";");
-        if(name == "token") {
+        if(name === "token") {
             let token = cookies[0].substring(6);
-            if(!token || token == "") {
+            if(!token || token === "") {
                 this.context.router.push("/");
                 return;
             } else {
                 return token;
             }
-        } else if(name == "user_id") {
+        } else if(name === "user_id") {
             let user_id = cookies[1].substring(9);
-            if(!user_id || user_id == "") {
+            if(!user_id || user_id === "") {
                 this.context.router.push("/");
                 return;
             } else {
@@ -72,7 +72,7 @@ class AttachedFastList extends React.Component {
             }
         } else {
             let user_name = cookies[2].substring(11);
-            if(!user_name || user_name == "") {
+            if(!user_name || user_name === "") {
                 this.context.router.push("/");
                 return;
             } else {

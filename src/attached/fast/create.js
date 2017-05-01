@@ -34,15 +34,14 @@ class AttachedFastCreate extends React.Component {
         this.unsubscribe();
     }
     onStatusChange(type,data) {
-        if(type == "uploadImage") {
-            this.state.imageState = true;
-            this.setState({uploadImageList:data.images});
+        if(type === "uploadImage") {
+            this.setState({uploadImageList:data.images, imageState:true});
 
             console.log(data.images);
-        } else if(type == "getAllType") {
+        } else if(type === "getAllType") {
             this.treeData = data;
             this.setState({typeList:data});
-        } else if(type == "create") {
+        } else if(type === "create") {
             console.log(data);
         }
     }
@@ -50,22 +49,22 @@ class AttachedFastCreate extends React.Component {
         this.context.router.push("/attached/fast/list");
     }
     getCookie(name) {
-        if(window.document.cookie == "") {
+        if(window.document.cookie === "") {
             this.context.router.push("/");
             return;
         }
         let cookies = window.document.cookie.split(";");
-        if(name == "token") {
+        if(name === "token") {
             let token = cookies[0].substring(6);
-            if(!token || token == "") {
+            if(!token || token === "") {
                 this.context.router.push("/");
                 return;
             } else {
                 return token;
             }
-        } else if(name == "user_id") {
+        } else if(name === "user_id") {
             let user_id = cookies[1].substring(9);
-            if(!user_id || user_id == "") {
+            if(!user_id || user_id === "") {
                 this.context.router.push("/");
                 return;
             } else {
@@ -73,7 +72,7 @@ class AttachedFastCreate extends React.Component {
             }
         } else {
             let user_name = cookies[2].substring(11);
-            if(!user_name || user_name == "") {
+            if(!user_name || user_name === "") {
                 this.context.router.push("/");
                 return;
             } else {
@@ -130,7 +129,7 @@ class AttachedFastCreate extends React.Component {
         return k;
     }
     setDescribeState(e) {
-        if(e.target.value == "") {
+        if(e.target.value === "") {
             this.setState({describeState:false});
         } else {
             this.state.description = e.target.value;
