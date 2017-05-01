@@ -29,9 +29,9 @@ class AttachedFastDetails extends React.Component {
         this.unsubscribe();
     }
     onStatusChange(type,data) {
-        if(type == "getResult") {
+        if(type === "getResult") {
             console.log(data);
-        } else if(type == "getDetail") {
+        } else if(type === "getDetail") {
             this.setState({showDetailDialog:true,detailData:data});
         }
     }
@@ -48,22 +48,22 @@ class AttachedFastDetails extends React.Component {
         this.context.router.push("/attached/fast/list");
     }
     getCookie(name) {
-        if(window.document.cookie == "") {
+        if(window.document.cookie === "") {
             this.context.router.push("/");
             return;
         }
         let cookies = window.document.cookie.split(";");
-        if(name == "token") {
+        if(name === "token") {
             let token = cookies[0].substring(6);
-            if(!token || token == "") {
+            if(!token || token === "") {
                 this.context.router.push("/");
                 return;
             } else {
                 return token;
             }
-        } else if(name == "user_id") {
+        } else if(name === "user_id") {
             let user_id = cookies[1].substring(9);
-            if(!user_id || user_id == "") {
+            if(!user_id || user_id === "") {
                 this.context.router.push("/");
                 return;
             } else {
@@ -71,7 +71,7 @@ class AttachedFastDetails extends React.Component {
             }
         } else {
             let user_name = cookies[2].substring(11);
-            if(!user_name || user_name == "") {
+            if(!user_name || user_name === "") {
                 this.context.router.push("/");
                 return;
             } else {
@@ -121,7 +121,7 @@ class AttachedFastDetails extends React.Component {
         dataIndex:'end_time',
         key:'end_time',
     }]
-    data = []
+    data = [];
     renderDetailModal() {
         if(this.state.showDetailDialog) {
             return <DetailModal visible={this.state.showDetailDialog}

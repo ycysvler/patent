@@ -2,69 +2,74 @@
  * Created by VLER on 2017/3/10.
  */
 import React from 'react';
-import {Layout,  Breadcrumb, Icon, Button,Col,Input,TreeSelect} from 'antd';
+import {Layout, Breadcrumb, Button, Row, Col, Input, TreeSelect} from 'antd';
 import $ from 'jquery';
-import {FastActions,FastStore} from './fastApi.js';
+import {FastActions, FastStore} from './fastApi.js';
 
-const { Content } = Layout;
+const {Content} = Layout;
 
 class AttachedFastCreate extends React.Component {
     constructor(props) {
         super(props);
         this.unsubscribe = FastStore.listen(this.onStatusChange.bind(this));
         this.state = {
-            uploadImageList:[],
-            description:"",
-            typeIds:[],
-            typeNames:[],
-            describeState:false,
-            typeState:false,
-            imageState:false,
-            typeList:[]
+            uploadImageList: [],
+            description: "",
+            typeIds: [],
+            typeNames: [],
+            describeState: false,
+            typeState: false,
+            imageState: false,
+            typeList: []
         };
     }
+
     static contextTypes = {
         router: React.PropTypes.object.isRequired,
     };
+
     componentDidMount() {
         FastActions.getAllType(this.getCookie("token"));
         this.refs.inputfile.onchange = this.inputChange.bind(this);
     }
+
     componentWillUnmount() {
         this.unsubscribe();
     }
-    onStatusChange(type,data) {
-        if(type === "uploadImage") {
-            this.setState({uploadImageList:data.images, imageState:true});
 
-            console.log(data.images);
-        } else if(type === "getAllType") {
+    onStatusChange(type, data) {
+        if (type === "uploadImage") {
+            var uploadImageList = this.state.uploadImageList;
+            this.setState({uploadImageList:uploadImageList.concat( data.data), imageState: true});
+        } else if (type === "getAllType") {
             this.treeData = data;
-            this.setState({typeList:data});
-        } else if(type === "create") {
+            this.setState({typeList: data});
+        } else if (type === "create") {
             console.log(data);
         }
     }
+
     goToHistorySearch() {
         this.context.router.push("/attached/fast/list");
     }
+
     getCookie(name) {
-        if(window.document.cookie === "") {
+        if (window.document.cookie === "") {
             this.context.router.push("/");
             return;
         }
         let cookies = window.document.cookie.split(";");
-        if(name === "token") {
+        if (name === "token") {
             let token = cookies[0].substring(6);
-            if(!token || token === "") {
+            if (!token || token === "") {
                 this.context.router.push("/");
                 return;
             } else {
                 return token;
             }
-        } else if(name === "user_id") {
+        } else if (name === "user_id") {
             let user_id = cookies[1].substring(9);
-            if(!user_id || user_id === "") {
+            if (!user_id || user_id === "") {
                 this.context.router.push("/");
                 return;
             } else {
@@ -72,7 +77,7 @@ class AttachedFastCreate extends React.Component {
             }
         } else {
             let user_name = cookies[2].substring(11);
-            if(!user_name || user_name === "") {
+            if (!user_name || user_name === "") {
                 this.context.router.push("/");
                 return;
             } else {
@@ -80,74 +85,51 @@ class AttachedFastCreate extends React.Component {
             }
         }
     }
-    treeData = [{
-        label:'HB0',
-        value:'0-0',
-        key:'0-0',
-        children:[{
-            label:'HB01031',
-            value:'0-0-0',
-            key:'0-0-0',
-            children:[{
-                label:'HB0103120',
-                value:'0-0-0-0',
-                key:'0-0-0-0'
-            }, {
-                label:'HB0103121',
-                value:'0-0-0-1',
-                key:'0-0-0-1'
-            }, {
-                label:'HB0103122',
-                value:'0-0-0-2',
-                key:'0-0-0-2'
-            }, {
-                label:'HB0103123',
-                value:'0-0-0-3',
-                key:'0-0-0-3'
-            }]
-        }]
-    }, {
-        label:'HB1',
-        value:'0-1',
-        key:'0-1'
-    }]
+
     inputChange() {
         let self = this;
         let data = new FormData();
+
+        var filenames = [];
         $.each(self.refs.inputfile.files, function (i, file) {
             data.append('upload_file' + i, file);
+            filenames.push(file.name);
         });
-        let file = {name:'aaa.jpg'};
-        FastActions.uploadImage(window.server_address + "/uploadimages.ashx?username="+this.getCookie("user_name"),data,file,this.getCookie("token"));
+
+        FastActions.uploadImage(window.server_address + "/uploadimages.ashx?username=" + this.getCookie("user_name"), data, filenames, this.getCookie("token"));
     }
+
     checkImage() {
         this.refs.inputfile.click();
     }
+
     show_parent = TreeSelect.SHOW_PARENT;
+
     getRandomKeys() {
-        let k = Math.random()*1000000;
+        let k = Math.random() * 1000000;
         return k;
     }
+
     setDescribeState(e) {
-        if(e.target.value === "") {
-            this.setState({describeState:false});
+        if (e.target.value === "") {
+            this.setState({describeState: false});
         } else {
-            this.state.description = e.target.value;
-            this.setState({describeState:true});
+            this.setState({describeState: true, description: e.target.value});
         }
     }
-    setTypeState(value,label) {
-        if(label.length > 0) {
-            this.state.typeIds = label;
-            this.state.typeNames = label;
-            this.setState({typeState:true});
+
+    setTypeState(value, label) {
+        if (label.length > 0) {
+            this.setState({typeState: true, typeIds: label, typeNames: label});
         } else {
-            this.setState({typeState:false});
+            this.setState({typeState: false});
         }
     }
+
     createNewJob() {
-        FastActions.create(this.getCookie("user_id"),this.state.description,this.state.typeIds,this.state.typeNames,this.state.uploadImageList,this.getCookie("token"));
+        FastActions.create(this.getCookie("user_id"), this.state.description, this.state.typeIds, this.state.typeNames, this.state.uploadImageList, this.getCookie("token"));
     }
+
     render() {
         let self = this;
         let canSearch = self.state.describeState && self.state.typeState && self.state.imageState;
@@ -156,56 +138,72 @@ class AttachedFastCreate extends React.Component {
                 <div className="breadcrumb">
                     <Breadcrumb style={{margin: '11px 0'}}>
                         <Breadcrumb.Item>快速检索</Breadcrumb.Item>
-                        <Breadcrumb.Item style={{cursor:"pointer"}} onClick={this.goToHistorySearch.bind(this)}>历史查询</Breadcrumb.Item>
+                        <Breadcrumb.Item style={{cursor: "pointer"}}
+                                         onClick={this.goToHistorySearch.bind(this)}>历史查询</Breadcrumb.Item>
                         <Breadcrumb.Item>新建查询</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
-                <Layout className="content">
-                    <Content style={{border:"1px solid #cccccc"}}>
-                        <div style={{marginTop:"24px"}}>
-                            <Col span="4" style={{"textAlign":"right","paddingTop":"5px"}}>
+                <Layout >
+                    <Content style={{background: "#fff"}}>
+                        <div style={{marginTop: "24px"}}>
+                            <Col span="4" style={{"textAlign": "right", "paddingTop": "5px"}}>
                                 <span>描述：</span>
                             </Col>
                             <Col span="8">
-                                <Input placeholder="Q2017.03.23_032" onBlur={self.setDescribeState.bind(self)} />
+                                <Input placeholder="Q2017.03.23_032" onBlur={self.setDescribeState.bind(self)}/>
                             </Col>
-                        </div><br/>
-                        <div style={{marginTop:"24px"}}>
-                            <Col span="4" style={{"textAlign":"right","paddingTop":"5px"}}>
-                                <span>选择分类：</span>
-                            </Col>
-                            <Col span="8">
-                                <TreeSelect multiple
-                                            treeCheckable
-                                            treeData={this.treeData}
-                                            showCheckedStrategy={this.show_parent}
-                                            onChange={this.setTypeState.bind(this)}
-                                            style={{width:"100%"}}
-                                ></TreeSelect>
-                            </Col>
-                        </div><br/>
-                        <div style={{marginTop:"230px"}}>
-                            <Col span="4" style={{"textAlign":"right","paddingTop":"5px"}}>
-                                <span>选择图像：</span>
-                            </Col>
-                            <Col span="8">
-                                {
-                                    self.state.uploadImageList.map(function(image) {
-                                        return <img key={self.getRandomKeys} style={{width:"50px",height:"50px"}} src={window.server_address+"/"+image} />
-                                    })
-                                }
-                                <Icon onClick={this.checkImage.bind(this)} style={{width:"50px",height:"50px",fontSize:"55px",cursor:"pointer"}} type="plus-square-o" />
-                                <input multiple="multiple" ref="inputfile" type="file" accept="" style={{display:"none"}}/>
-                            </Col>
-                        </div><br/>
-                        <div style={{position:"relative",marginTop:"100px"}}>
-                            <Col span="4" >
+                        </div>
+                        <br/>
+                        <div style={{marginTop: "24px"}}>
+                            <Row>
+                                <Col span="4" style={{"textAlign": "right", "paddingTop": "5px"}}>
+                                    <span>选择分类：</span>
+                                </Col>
+                                <Col span="8">
+                                    <TreeSelect multiple
+                                                treeCheckable
+                                                treeData={this.treeData}
+                                                showCheckedStrategy={this.show_parent}
+                                                onChange={this.setTypeState.bind(this)}
+                                                style={{width: "100%"}}
+                                    ></TreeSelect>
+                                </Col>
+                            </Row>
+                        </div>
+                        <div style={{marginTop: "12px"}}>
+                            <Row>
+                                <Col span="4" style={{"textAlign": "right", "paddingTop": "5px"}}>
+                                    <span>选择图像：</span>
+                                </Col>
+                                <Col span="18">
+
+                                    {
+                                        self.state.uploadImageList.map(function (image) {
+                                            return <div key={image}  style={{ height: 50, width:50 ,marginRight:8,  float:'left'}}><img alt="" style={{width: "90%", height: "90%"}}
+                                                        src={window.server_address + "/" + image}/></div>
+                                        })
+                                    }
+                                    <Button icon="plus" onClick={this.checkImage.bind(this)} style={{
+                                        height: 50, width:50 , fontSize:18,
+                                        cursor: "pointer"
+                                    }}>
+                                    </Button>
+                                </Col>
+                            </Row>
+                            <input multiple="multiple" ref="inputfile" type="file" accept=""
+                                   style={{display: "none"}}/>
+                        </div>
+                        <div style={{position: "relative", marginTop: 24}}>
+                            <Col span="4">
                                 <span></span>
                             </Col>
                             <Col span="8">
-                                <span><Button type="primary" className="create_search_btn" onClick={self.createNewJob.bind(self)} disabled={!canSearch}>查询</Button><Button style={{marginLeft:"10px"}} >取消</Button></span>
+                                <Button type="primary" onClick={self.createNewJob.bind(self)}
+                                        disabled={!canSearch}>查询</Button>
+                                <Button style={{marginLeft: 8}}>取消</Button>
                             </Col>
-                        </div><br/>
+                        </div>
+                        <br/>
                     </Content>
                 </Layout>
             </Layout>

@@ -8,7 +8,7 @@ class ResultCard extends React.Component {
 
     renderOneImage(url) {
         return <div>
-            <img src={url} />
+            <img alt="" src={url} />
         </div>
     }
     getDetail() {
@@ -20,7 +20,7 @@ class ResultCard extends React.Component {
                 <dv>
                     <Col span="8" style={{marginTop:-20}}>
                         <Popover content={this.renderOneImage("http://114.247.108.199/upload/admin/2f6628a612da4f8aa183a5b5629af81e.jpg")}>
-                            <img style={{width:"150px",height:"150px"}} src="http://114.247.108.199/upload/admin/2f6628a612da4f8aa183a5b5629af81e.jpg" />
+                            <img alt="" style={{width:"150px",height:"150px"}} src="http://114.247.108.199/upload/admin/2f6628a612da4f8aa183a5b5629af81e.jpg" />
                         </Popover>
                     </Col>
                     <Col span="4" style={{textAlign:"right"}}>

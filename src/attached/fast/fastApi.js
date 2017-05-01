@@ -29,8 +29,7 @@ const FastStore = Reflux.createStore({
                 //xhr.setRequestHeader("Authorization",token);
             },
             success: function (result) {
-                console.log("上传成功:" + file.name);
-                self.trigger("uploadImage",eval('(' + result + ')'));
+                self.trigger("uploadImage", JSON.parse(result));
             },
             error: function (msg) {
                 console.log("上传失败！");

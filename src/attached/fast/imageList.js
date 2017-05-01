@@ -14,7 +14,7 @@ class ImageList extends React.Component {
     }
     renderOneImage(url) {
         return <div>
-            <img src={window.server_address+"/"+url} />
+            <img alt="" src={window.server_address+"/"+url} />
         </div>
     }
     render() {
@@ -24,7 +24,7 @@ class ImageList extends React.Component {
                 {
                     self.state.imageUrls.map(function(url) {
                         return <Popover key={url} content={self.renderOneImage(url)}>
-                            <img style={{width:"50px",height:"50px"}} src={window.server_address+"/"+url} />
+                            <img alt="" style={{width:"50px",height:"50px"}} src={window.server_address+"/"+url} />
                         </Popover>
                     })
                 }
