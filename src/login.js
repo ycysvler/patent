@@ -1,9 +1,8 @@
 import React from 'react';
-import {Input, Row, Col, Layout, Menu, Breadcrumb, Icon, Button} from 'antd';
+import {Input, Row, Col,  Button} from 'antd';
 import {IndexActions, IndexStore} from './api.js';
 import Reflux from 'reflux';
-const {SubMenu} = Menu;
-const {Header, Content, Sider} = Layout;
+
 import './styles/login.css';
 
 const Login = React.createClass({
@@ -24,11 +23,11 @@ const Login = React.createClass({
     login() {
         let account = this.refs.account.refs.input.value;
         let password = this.refs.password.refs.input.value;
-        if(account && account == "") {
+        if(account && account === "") {
             alert("账号不能为空");
             return;
         }
-        if(password && password == "") {
+        if(password && password === "") {
             alert("密码不能为空");
             return;
         }
