@@ -26,7 +26,7 @@ const FastStore = Reflux.createStore({
             contentType: false,        //不可缺参数
             processData: false,        //不可缺参数
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization",token);
+                //xhr.setRequestHeader("Authorization",token);
             },
             success: function (result) {
                 console.log("上传成功:" + file.name);
@@ -48,7 +48,7 @@ const FastStore = Reflux.createStore({
             dataType: "json",
             data: param,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization",token);
+                //xhr.setRequestHeader("Authorization",token);
             },
             success: function (data, status) {
                 if(data.code === 200) {
@@ -68,7 +68,7 @@ const FastStore = Reflux.createStore({
             type: 'GET',
             dataType: "json",
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization",token);
+                //xhr.setRequestHeader("Authorization",token);
             },
             success: function (data, status) {
                 if(data.code === 200) {
@@ -90,14 +90,17 @@ const FastStore = Reflux.createStore({
             typenames:type_names,
             images:images
         };
+
         $.ajax({
             url: url,
             type: 'POST',
             data: JSON.stringify(param),
-            contentType:"application/json",
+            cache: false,
+            contentType: false,        //不可缺参数
+            processData: false,        //不可缺参数
             dataType:"json",
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization",token);
+                //xhr.setRequestHeader("Authorization",token);
             },
             success: function (data,status) {
                 self.trigger("create",data.data)
@@ -120,7 +123,7 @@ const FastStore = Reflux.createStore({
             dataType: "json",
             data: param,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization",token);
+                //xhr.setRequestHeader("Authorization",token);
             },
             success: function (data, status) {
                 if(data.code === 200) {
@@ -144,7 +147,7 @@ const FastStore = Reflux.createStore({
             dataType: "json",
             data: param,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization",token);
+                //xhr.setRequestHeader("Authorization",token);
             },
             success: function (data, status) {
                 if(data.code === 200) {
