@@ -9,28 +9,34 @@ class ImageList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            imageUrls:this.props.imageUrls
+            imageUrls: this.props.imageUrls
         }
     }
+
     renderOneImage(url) {
         return <div>
-            <img alt="" src={window.server_address+"/"+url} />
+            <img alt="" style={{maxWidth:500, maxHeight:500}} src={window.server_address + "/" + url}/>
         </div>
     }
+
     render() {
         let self = this;
         return (
-            <div style={{width:"0",height:"auto"}}>
+            <div style={{height: "auto"}}>
                 {
-                    self.state.imageUrls.map(function(url) {
+                    self.state.imageUrls.map(function (url) {
                         return <Popover key={url} content={self.renderOneImage(url)}>
-                            <img alt="" style={{width:"50px",height:"50px"}} src={window.server_address+"/"+url} />
+                            <div style={{width: "50px", height: "50px", float:'left', marginRight:8, border:'1px solid #dddddd', padding:3}}>
+                            <img alt=""
+                                 style={{width:'95%',height:'95%'}}
+                                 src={window.server_address + "/" + url}/>
+                            </div>
                         </Popover>
                     })
                 }
             </div>
+
         )
     }
 }
-
 export default ImageList;

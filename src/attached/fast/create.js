@@ -2,7 +2,7 @@
  * Created by VLER on 2017/3/10.
  */
 import React from 'react';
-import {Layout, Breadcrumb, Button, Row, Col, Input, TreeSelect} from 'antd';
+import {Layout,Popover, Breadcrumb, Button, Row, Col, Input, TreeSelect} from 'antd';
 import $ from 'jquery';
 import {FastActions, FastStore} from './fastApi.js';
 
@@ -45,7 +45,7 @@ class AttachedFastCreate extends React.Component {
             this.treeData = data;
             this.setState({typeList: data});
         } else if (type === "create") {
-            console.log(data);
+            this.context.router.push("/attached/fast/list");
         }
     }
 
@@ -130,6 +130,12 @@ class AttachedFastCreate extends React.Component {
         FastActions.create(this.getCookie("user_id"), this.state.description, this.state.typeIds, this.state.typeNames, this.state.uploadImageList, this.getCookie("token"));
     }
 
+    renderOneImage(url) {
+        return <div>
+            <img alt="" style={{maxWidth:500, maxHeight:500}} src={window.server_address + "/" + url}/>
+        </div>
+    }
+
     render() {
         let self = this;
         let canSearch = self.state.describeState && self.state.typeState && self.state.imageState;
@@ -150,7 +156,7 @@ class AttachedFastCreate extends React.Component {
                                 <span>描述：</span>
                             </Col>
                             <Col span="8">
-                                <Input placeholder="Q2017.03.23_032" onBlur={self.setDescribeState.bind(self)}/>
+                                <Input placeholder="查询任务描述信息" onBlur={self.setDescribeState.bind(self)}/>
                             </Col>
                         </div>
                         <br/>
@@ -179,8 +185,10 @@ class AttachedFastCreate extends React.Component {
 
                                     {
                                         self.state.uploadImageList.map(function (image) {
-                                            return <div key={image}  style={{ height: 50, width:50 ,marginRight:8,  float:'left'}}><img alt="" style={{width: "90%", height: "90%"}}
-                                                        src={window.server_address + "/" + image}/></div>
+                                            return <div key={image}  style={{ height: 50, width:50 ,marginRight:8,  float:'left'}}>
+                                                <Popover  content={self.renderOneImage(image)}>
+                                                <img alt="" style={{width: "90%", height: "90%"}}
+                                                        src={window.server_address + "/" + image}/></Popover></div>
                                         })
                                     }
                                     <Button icon="plus" onClick={this.checkImage.bind(this)} style={{

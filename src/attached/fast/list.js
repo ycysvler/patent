@@ -24,11 +24,17 @@ class AttachedFastList extends React.Component {
     componentWillUnmount() {
         this.unsubscribe();
     }
-    onStatusChange(type,data) {
-        if(type === "getJobs") {
-            console.log(data);
-            this.formatJobData(data);
+
+    /*
+    * store 触发的事件
+    * */
+    onStatusChange(action,data) {
+        if(action === "getJobs") {
             this.setState({jobsData:data});
+        }
+        if(action === "remove"){
+            FastActions.getJobs(this.getCookie("user_id"),this.getCookie("token"));
+            this.setState({selectNum:0});
         }
     }
     formatJobData(jobData) {
@@ -88,10 +94,7 @@ class AttachedFastList extends React.Component {
     }
     columns = [{
         title:'描述',
-        dataIndex:'description',
-        render(text,record) {
-            return <span><a href="javascritp:void(0);">{record.description}</a></span>
-        }
+        dataIndex:"jobname"
     }, {
         title:'图像',
         dataIndex:'images',
@@ -99,7 +102,7 @@ class AttachedFastList extends React.Component {
             return <ImageList key={record.jobid} imageUrls={record.images}></ImageList>
         }
     }, {
-        title:'类型',
+        title:'类型',width:100,
         dataIndex:'typenames',
         render(text,record) {
             let type_name = "";
@@ -113,21 +116,23 @@ class AttachedFastList extends React.Component {
             return <span>{type_name}</span>
         }
     }, {
-        title:'进度',
-        dataIndex:'schedule'
+        title:'进度',width:60,
+        dataIndex:'progress',
+        render(text,record) {
+            return <span>{text + '%'}</span>
+        }
     }, {
-        title:'创建日期',
+        title:'创建日期',width:180,
         dataIndex:'create_time'
     }, {
-        title:'完成时间',
+        title:'完成时间',width:180,
         dataIndex:'end_time'
     }]
-
-    data = []
 
     rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             this.setState({selectNum:selectedRowKeys.length});
+            this.setState({"selectedRowKeys":selectedRowKeys});
         }
     }
     rowClick(record,index) {
@@ -135,7 +140,26 @@ class AttachedFastList extends React.Component {
         record.key = record.jobid;
         this.context.router.push({pathname:'/attached/fast/details',state:{searchData:record}});
     }
+
+    /*
+    * 删除查询任务
+    * */
+    remove(){
+        var keys = this.state.selectedRowKeys;
+        FastActions.remove(keys);
+    }
     render() {
+        var state = {
+            rowKey:"jobid",
+            bordered: true,
+            loading: false,
+            pagination: false,
+            rowSelection: this.rowSelection,
+            columns:this.columns,
+            dataSource:this.state.jobsData,
+            onRowClick:this.rowClick.bind(this)
+        };
+
         return (
             <Layout >
                 <div className="breadcrumb">
@@ -147,13 +171,14 @@ class AttachedFastList extends React.Component {
                 <Layout className="content">
                     <Content >
                         <div>
-                            <Button className="fast-delete-btn" >删除</Button>
+                            <Button className="fast-delete-btn" onClick={this.remove.bind(this)} >删除</Button>
                             <Button className="fast-new-search-btn" onClick={this.goToCreateNewSearch.bind(this)} >新建查询</Button>
                             <span className="fast-check-num"><Icon style={{"marginRight":"6px","color":"blue"}} type="info-circle" />已选择{this.state.selectNum}项数据</span>
                             <Button className="fast-search-btn" >搜索</Button>
                             <Input style={{"width":"20%","position":"relative","float":"right","marginRight":"5px"}}  placeholder="请输入描述关键词" />
                         </div>
-                        <Table style={{marginTop:"20px"}} onRowClick={this.rowClick.bind(this)} rowSelection={this.rowSelection} columns={this.columns} dataSource={this.data} bordered />
+
+                        <Table {...state} style={{marginTop:"20px"}}   />
                     </Content>
                 </Layout>
             </Layout>

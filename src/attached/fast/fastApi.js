@@ -10,7 +10,8 @@ const FastActions = Reflux.createActions([
     'getAllType',
     'create',
     'getResult',
-    'getDetail'
+    'getDetail',
+    'remove'
 ]);
 
 const FastStore = Reflux.createStore({
@@ -21,7 +22,7 @@ const FastStore = Reflux.createStore({
         $.ajax({
             url: url,
             type: 'POST',
-            data: data,
+            data: data,dataType: "json",
             cache: false,
             contentType: false,        //不可缺参数
             processData: false,        //不可缺参数
@@ -29,10 +30,34 @@ const FastStore = Reflux.createStore({
                 //xhr.setRequestHeader("Authorization",token);
             },
             success: function (result) {
-                self.trigger("uploadImage", JSON.parse(result));
+                self.trigger("uploadImage", result);
             },
             error: function (msg) {
                 console.log("上传失败！");
+            }
+        });
+    },
+
+    onRemove:function(data,token) {
+        let url = window.server_address + "/attached/fast/remove.ashx?";
+
+        let self = this;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            dataType: "json",
+            cache: false,
+            contentType: false,        //不可缺参数
+            processData: false,        //不可缺参数
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader("Authorization",token);
+            },
+            success: function (result) {
+                self.trigger("remove", result);
+            },
+            error: function (msg) {
+                console.log("删除失败！");
             }
         });
     },
