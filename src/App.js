@@ -1,8 +1,8 @@
 import React from 'react';
-import {Layout, Menu, Breadcrumb, Icon, Button} from 'antd';
+import {Layout, Menu, Button} from 'antd';
 import Reflux from 'reflux';
 import {IndexActions, IndexStore} from './api.js';
-import {Link} from 'react-router';
+
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 
@@ -24,22 +24,22 @@ const App = React.createClass({
         }
     },
     getCookie(name) {
-        if(window.document.cookie == "") {
+        if(window.document.cookie === "") {
             this.context.router.push("/");
             return;
         }
         let cookies = window.document.cookie.split(";");
-        if(name == "token") {
+        if(name === "token") {
             let token = cookies[0].substring(6);
-            if(!token || token == "") {
+            if(!token || token === "") {
                 this.context.router.push("/");
                 return;
             } else {
                 return token;
             }
-        } else if(name == "user_id") {
+        } else if(name === "user_id") {
             let user_id = cookies[1].substring(9);
-            if(!user_id || user_id == "") {
+            if(!user_id || user_id === "") {
                 this.context.router.push("/");
                 return;
             } else {
@@ -47,7 +47,7 @@ const App = React.createClass({
             }
         } else {
             let user_name = cookies[2].substring(11);
-            if(!user_name || user_name == "") {
+            if(!user_name || user_name === "") {
                 this.context.router.push("/");
                 return;
             } else {
@@ -61,7 +61,7 @@ const App = React.createClass({
     },
     onClickHandler: function (e) {
         for (let i = 0; i < this.state.indexList.length; i++) {
-            if (this.state.indexList[i].rid == e.key) {
+            if (this.state.indexList[i].rid === e.key) {
                 this.setState({leftIndex: this.state.indexList[i].children});
                 return;
             }

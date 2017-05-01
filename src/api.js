@@ -23,7 +23,7 @@ const IndexStore = Reflux.createStore({
             dataType: "json",
             data: param,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization",token);
+               // xhr.setRequestHeader("Authorization",token);
             },
             success: function (data, status) {
                 let action = 'getIndexes';
