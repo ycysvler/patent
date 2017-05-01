@@ -37,6 +37,8 @@ class AttachedFastCreate extends React.Component {
         if(type == "uploadImage") {
             this.state.imageState = true;
             this.setState({uploadImageList:data.images});
+
+            console.log(data.images);
         } else if(type == "getAllType") {
             this.treeData = data;
             this.setState({typeList:data});
@@ -145,7 +147,7 @@ class AttachedFastCreate extends React.Component {
         }
     }
     createNewJob() {
-        FastActions.create(this.getCookie("user_id"),this.state.description,this.state.typeIds,this.state.typeNames,this.state.images,this.getCookie("token"));
+        FastActions.create(this.getCookie("user_id"),this.state.description,this.state.typeIds,this.state.typeNames,this.state.uploadImageList,this.getCookie("token"));
     }
     render() {
         let self = this;
