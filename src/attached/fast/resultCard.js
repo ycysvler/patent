@@ -2,45 +2,150 @@
  * Created by xiao on 2017/4/4.
  */
 import React from 'react';
-import {Card,Col,Popover } from 'antd';
+import {Card, Row, Col, Popover} from 'antd';
+import {FastActions, FastStore} from './fastApi.js';
 
-class ResultCard extends React.Component {
+class ResultCards extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.unsubscribe = FastStore.listen(this.onStatusChange.bind(this));
+        this.state = {
+            jobid: this.props.jobid,
+            typeid: this.props.typeid,
+            data: []
+        }
+    }
+
+    componentWillReceiveProps(n, o){
+        this.setState({jobid:n.jobid, typeid:n.typeid});
+        FastActions.getResult(n.jobid, n.typeid, this.getCookie("token"));
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
+    componentDidMount() {
+        FastActions.getResult(this.state.jobid, this.state.typeid, this.getCookie("token"));
+    }
+
+    onStatusChange(action,typeid, data) {
+        if (action === "getResult" && typeid === this.state.typeid) {
+            this.setState({"data": data});
+        } else if (action === "getDetail") {
+            this.setState({showDetailDialog: true, detailData: data});
+        }
+    }
 
     renderOneImage(url) {
+        url = window.server_address + '/' + url;
         return <div>
-            <img alt="" src={url} />
+            <img alt="" style={{maxWidth:300, maxHeight:300}} src={url}/>
         </div>
     }
+
     getDetail() {
         this.props.getDetail("00100247");
     }
+
+    getTitle(title){
+        return(
+            <div
+                title={title}
+            style={{width:280,
+                fontWeight:'bold',
+                whiteSpace:'nowrap',
+                wordBreak:'keep-all',
+                overflow:'hidden',
+                textOverflow:'ellipsis'}}
+            >{title}</div>
+        );
+    }
+
     render() {
-        return (
-            <Card title="微型耕整机" extra={<span>99%</span>} style={{ width: 500,marginBottom:20,marginLeft:2,overflow:"left" }}>
-                <dv>
-                    <Col span="8" style={{marginTop:-20}}>
-                        <Popover content={this.renderOneImage("http://114.247.108.199/upload/admin/2f6628a612da4f8aa183a5b5629af81e.jpg")}>
-                            <img alt="" style={{width:"150px",height:"150px"}} src="http://114.247.108.199/upload/admin/2f6628a612da4f8aa183a5b5629af81e.jpg" />
-                        </Popover>
-                    </Col>
-                    <Col span="4" style={{textAlign:"right"}}>
-                        <span>专利号：</span><br/>
-                        <span>申请人：</span><br/>
-                        <span>申请日：</span><br/>
-                        <span>主分类号：</span><br/>
-                        <span>分类号：</span>
-                    </Col>
-                    <Col span="8">
-                        <a onClick={this.getDetail.bind(this)}>CN200920080260.9</a><br/>
-                        <span>白建林</span><br/>
-                        <span>2009-04-17</span><br/>
-                        <span>2015-09-09</span><br/>
-                        <span>A01B15/14 ; A01B33/12 ; A01B33/14</span>
-                    </Col>
-                </dv>
-            </Card>
+        var self = this;
+        return (<div>
+                {this.state.data.map(function (item) {
+                    return (<Card key={item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
+                                  style={{
+                                      width: 420,
+                                      marginBottom: 20,
+                                      marginLeft: 6,
+                                      overflow: "left",
+                                      float: 'left'
+                                  }}>
+                        <div>
+                            <Row>
+                                <Col span="10" style={{marginTop: -10}}>
+                                    <Popover
+                                        content={self.renderOneImage(item.image)}>
+                                        <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
+                                             src={ window.server_address + '/' + item.image}/>
+                                    </Popover>
+                                </Col>
+                                <Col span="5" style={{textAlign: "right"}}>
+                                    <div>专利号：</div>
+                                    <div>申请人：</div>
+                                    <div>申请日：</div>
+                                    <div>主分类号：</div>
+                                    <div>分类号：</div>
+                                </Col>
+                                <Col span="8">
+                                    <a onClick={self.getDetail.bind(self)}>{item.code}</a>
+                                    <div title={item.patent.pa_name} style={{width:140,
+                                        whiteSpace:'nowrap',
+                                        wordBreak:'keep-all',
+                                        overflow:'hidden',
+                                        textOverflow:'ellipsis'}}>{item.patent.pa_name}</div>
+                                    <div>{item.patent.ap_date}</div>
+                                    <div>{item.patent.main_class}</div>
+                                    <div title={item.patent.sub_class} style={{width:140,
+                                        whiteSpace:'nowrap',
+                                        wordBreak:'keep-all',
+                                        overflow:'hidden',
+                                        textOverflow:'ellipsis'}}>{item.patent.sub_class}</div>
+                                </Col>
+                            </Row>
+                        </div>
+                    </Card>)
+                })}
+            </div>
         )
+    }
+
+    getCookie(name) {
+        if (window.document.cookie === "") {
+            this.context.router.push("/");
+            return;
+        }
+        let cookies = window.document.cookie.split(";");
+        if (name === "token") {
+            let token = cookies[0].substring(6);
+            if (!token || token === "") {
+                this.context.router.push("/");
+                return;
+            } else {
+                return token;
+            }
+        } else if (name === "user_id") {
+            let user_id = cookies[1].substring(9);
+            if (!user_id || user_id === "") {
+                this.context.router.push("/");
+                return;
+            } else {
+                return user_id;
+            }
+        } else {
+            let user_name = cookies[2].substring(11);
+            if (!user_name || user_name === "") {
+                this.context.router.push("/");
+                return;
+            } else {
+                return user_name;
+            }
+        }
     }
 }
 
-export default ResultCard;
+export default ResultCards;

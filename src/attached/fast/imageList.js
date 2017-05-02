@@ -15,7 +15,7 @@ class ImageList extends React.Component {
 
     renderOneImage(url) {
         return <div>
-            <img alt="" style={{maxWidth:500, maxHeight:500}} src={window.server_address + "/" + url}/>
+            <img alt="" style={{maxWidth:400, maxHeight:400}} src={window.server_address + "/" + url}/>
         </div>
     }
 

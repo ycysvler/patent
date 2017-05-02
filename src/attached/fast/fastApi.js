@@ -61,6 +61,7 @@ const FastStore = Reflux.createStore({
             }
         });
     },
+
     onGetJobs: function(user_id,token) {
         let url = window.server_address + "/attached/fast/jobs.ashx?";
         let param = {};
@@ -151,7 +152,7 @@ const FastStore = Reflux.createStore({
             },
             success: function (data, status) {
                 if(data.code === 200) {
-                    self.trigger('getResult', data.data);
+                    self.trigger('getResult', typeid, data.data);
                 }
             },
             error: function (reason) {
