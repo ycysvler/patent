@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {Layout, Breadcrumb, Table, Tabs} from 'antd';
-import ImageList from './imageList';
+import ImageList from '../common/imagelist';
 import {FastActions, FastStore} from './fastApi.js';
 import ResultCards from './resultCard.js';
 import DetailModal from './detailModal.js';

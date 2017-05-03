@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import {Popover} from 'antd';
-import './fast.css'
 
 class ImageList extends React.Component {
     constructor(props) {
@@ -27,9 +26,9 @@ class ImageList extends React.Component {
                     self.state.imageUrls.map(function (url) {
                         return <Popover key={url} content={self.renderOneImage(url)}>
                             <div style={{width: "50px", height: "50px", float:'left', marginRight:8, border:'1px solid #dddddd', padding:3}}>
-                            <img alt=""
-                                 style={{width:'95%',height:'95%'}}
-                                 src={window.server_address + "/" + url}/>
+                                <img alt=""
+                                     style={{width:'95%',height:'95%'}}
+                                     src={window.server_address + "/" + url}/>
                             </div>
                         </Popover>
                     })

@@ -2,11 +2,25 @@
  * Created by VLER on 2017/3/10.
  */
 import React from 'react';
-import {Layout,  Breadcrumb} from 'antd';
+import {Layout, Breadcrumb} from 'antd';
+import JobList from '../common/joblist';
+import '../common/css.css';
 
-const { Content} = Layout;
+const {Content} = Layout;
 
 class AttachedSeniorList extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    static contextTypes = {
+        router: React.PropTypes.object.isRequired,
+    };
+
+    goToCreateNewSearch() {
+        this.context.router.push("/attached/fast/create");
+    }
+
     render() {
         return (
             <Layout >
@@ -16,119 +30,12 @@ class AttachedSeniorList extends React.Component {
                         <Breadcrumb.Item>历史查询</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
-                <Layout className="content">
-                    <Content >
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                    </Content>
-                </Layout>
+                <JobList jobtype="1" />
             </Layout>
         );
     }
 }
+
+
 
 export default AttachedSeniorList;
