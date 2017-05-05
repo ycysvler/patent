@@ -4,7 +4,7 @@
 import Reflux from 'reflux';
 import $ from 'jquery'
 
-const AttachedActions = Reflux.createActions([
+const LocarnoActions = Reflux.createActions([
     'uploadImage',
     'getJobs',
     'getAllType',
@@ -14,8 +14,8 @@ const AttachedActions = Reflux.createActions([
     'remove'
 ]);
 
-const AttachedStore = Reflux.createStore({
-    listenables:[AttachedActions],
+const LocarnoStore = Reflux.createStore({
+    listenables:[LocarnoActions],
 
     onUploadImage:function(url,data,file,token) {
         let self = this;
@@ -63,7 +63,7 @@ const AttachedStore = Reflux.createStore({
     },
 
     onGetJobs: function(user_id,jobtype,keyword,token) {
-        let url = window.server_address + "/attached/fast/jobs.ashx?";
+        let url = window.server_address + "/locarno/jobs.ashx?";
         let param = {'userid':user_id,'jobtype':jobtype,'keyword':keyword};
         let self = this;
         $.ajax({
@@ -85,7 +85,7 @@ const AttachedStore = Reflux.createStore({
         });
     },
     onGetAllType: function(token) {
-        let url = window.server_address + "/attached/type/nodes.ashx?parentid=0";
+        let url = window.server_address + "/locarno/type/nodes.ashx?parentid=0";
         let self = this;
         $.ajax({
             url: url,
@@ -105,7 +105,7 @@ const AttachedStore = Reflux.createStore({
         });
     },
     onCreate: function(user_id,job_name,type_ids,type_names,images,jobtype,token) {
-        let url = window.server_address + "/attached/fast/create.ashx?jobtype=" + jobtype;
+        let url = window.server_address + "/locarno/create.ashx?jobtype=" + jobtype;
         let self = this;
         let param = {
             userid:user_id,
@@ -186,5 +186,5 @@ const AttachedStore = Reflux.createStore({
     }
 });
 
-exports.AttachedActions = AttachedActions;
-exports.AttachedStore = AttachedStore;
+exports.LocarnoActions = LocarnoActions;
+exports.LocarnoStore = LocarnoStore;

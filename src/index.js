@@ -21,9 +21,13 @@ import AttachedSeniorDetails from './attached/senior/details.js';
 
 import AttachedZoneList from './attached/zone/list.js';
 import AttachedZoneCreate from './attached/zone/create.js';
-import AttachedPartDetails from './attached/part/details.js';
+import AttachedZoneDetails from './attached/zone/details.js';
 
 import AttachedPatentDetails from './attached/patent/details.js';
+
+import LocarnoFastList from './locarno/fast/list.js';
+import LocarnoFastCreate from './locarno/fast/create.js';
+
 
 import 'antd/dist/antd.css';
 import './styles/base.less';
@@ -64,10 +68,17 @@ const routes = (
             {/*新建局部查询*/}
             <Route path="/attached/zone/create" component={AttachedZoneCreate}/>
             {/*局部检索结果*/}
-            <Route path="/attached/zone/details:/id" component={AttachedPartDetails}/>
+            <Route path="/attached/zone/details" component={AttachedZoneDetails}/>
             {/*专利信息详情*/}
             <Route path="/attached/patent/details/:id" component={AttachedPatentDetails}/>
 
+
+            {/*外观.快速检索.历史查询*/}
+            <Route path="/locarno/fast/list" component={LocarnoFastList}/>
+            {/*新建快速查询*/}
+            <Route path="/locarno/fast/create" component={LocarnoFastCreate}/>
+            {/*快速检索结果*/}
+            <Route path="/locarno/fast/details" component={AttachedFastDetails}/>
 
         </Route>
         {/*无此页面，转到登录*/}

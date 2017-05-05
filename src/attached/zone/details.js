@@ -5,15 +5,15 @@ import React from 'react';
 import {Layout, Breadcrumb, Table, Tabs} from 'antd';
 import ImageList from '../common/imagelist';
 import {AttachedActions, AttachedStore} from '../attachedapi';
-import ResultCards from './resultCard.js';
-import DetailModal from './detailModal.js';
+import ResultCards from '../fast/resultCard.js';
+import DetailModal from '../fast/detailModal.js';
 
-import './fast.css';
+import '../fast/fast.css';
 
 const {Content} = Layout;
 const TabPane = Tabs.TabPane;
 
-class AttachedFastDetails extends React.Component {
+class AttachedZoneDetails extends React.Component {
     constructor(props) {
         super(props);
         this.unsubscribe = AttachedStore.listen(this.onStatusChange.bind(this));
@@ -141,7 +141,7 @@ class AttachedFastDetails extends React.Component {
                 }
                 <div className="breadcrumb">
                     <Breadcrumb style={{margin: '11px 0'}}>
-                        <Breadcrumb.Item>快速查询</Breadcrumb.Item>
+                        <Breadcrumb.Item>局部查询</Breadcrumb.Item>
                         <Breadcrumb.Item style={{cursor: "pointer"}}
                                          onClick={self.goToHistorySearch.bind(self)}>历史查询</Breadcrumb.Item>
                         <Breadcrumb.Item>查询结果</Breadcrumb.Item>
@@ -172,4 +172,4 @@ class AttachedFastDetails extends React.Component {
     }
 }
 
-export default AttachedFastDetails;
+export default AttachedZoneDetails;

@@ -3,20 +3,20 @@
  */
 import React from 'react';
 import {Layout, Breadcrumb, Table, Tabs} from 'antd';
-import ImageList from '../common/imagelist';
-import {AttachedActions, AttachedStore} from '../attachedapi';
-import ResultCards from '../fast/resultCard.js';
-import DetailModal from '../fast/detailModal.js';
+import ImageList from '../../attached/common/imagelist';
+import {LocarnoActions, LocarnoStore} from '../locarnoapi';
+import ResultCards from '../../attached/fast/resultCard.js';
+import DetailModal from '../../attached/fast/detailModal.js';
 
-import '../fast/fast.css';
+import './fast.css';
 
 const {Content} = Layout;
 const TabPane = Tabs.TabPane;
 
-class AttachedFastDetails extends React.Component {
+class LocarnoFastDetails extends React.Component {
     constructor(props) {
         super(props);
-        this.unsubscribe = AttachedStore.listen(this.onStatusChange.bind(this));
+        this.unsubscribe = LocarnoStore.listen(this.onStatusChange.bind(this));
         this.state = {
             searchData: this.props.location.state.searchData,
             showDetailDialog: false,
@@ -25,7 +25,7 @@ class AttachedFastDetails extends React.Component {
     }
 
     componentDidMount() {
-        AttachedActions.getResult(this.state.searchData.jobid, this.state.searchData.typeids[0], this.getCookie("token"));
+        LocarnoActions.getResult(this.state.searchData.jobid, this.state.searchData.typeids[0], this.getCookie("token"));
     }
 
     componentWillUnmount() {
@@ -43,7 +43,7 @@ class AttachedFastDetails extends React.Component {
     }
 
     toGetDetail(code,main_class) {
-        AttachedActions.getDetail(code,main_class, this.getCookie("token"));
+        LocarnoActions.getDetail(code,main_class, this.getCookie("token"));
     }
 
     static contextTypes = {
@@ -51,7 +51,7 @@ class AttachedFastDetails extends React.Component {
     };
 
     goToHistorySearch() {
-        this.context.router.push("/attached/fast/list");
+        this.context.router.push("/ocarno/fast/list");
     }
 
     getCookie(name) {
@@ -172,4 +172,4 @@ class AttachedFastDetails extends React.Component {
     }
 }
 
-export default AttachedFastDetails;
+export default LocarnoFastDetails;
