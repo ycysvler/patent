@@ -12,6 +12,7 @@ class AttachedCreate extends React.Component {
     constructor(props) {
         super(props);
         this.unsubscribe = AttachedStore.listen(this.onStatusChange.bind(this));
+
         this.state = {
             uploadImageList: [],
             description: "",
@@ -22,7 +23,7 @@ class AttachedCreate extends React.Component {
             imageState: false,
             typeList: [],
             jobType:this.props.jobType,
-            jobListPath:this.props.jobListPath
+            jobListPath:"/attached/"+this.props.jobTypeText+"/list"
         };
     }
 

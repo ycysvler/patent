@@ -19,8 +19,8 @@ import AttachedSeniorList from './attached/senior/list.js';
 import AttachedSeniorCreate from './attached/senior/create.js';
 import AttachedSeniorDetails from './attached/senior/details.js';
 
-import AttachedPartList from './attached/part/list.js';
-import AttachedPartCreate from './attached/part/create.js';
+import AttachedZoneList from './attached/zone/list.js';
+import AttachedZoneCreate from './attached/zone/create.js';
 import AttachedPartDetails from './attached/part/details.js';
 
 import AttachedPatentDetails from './attached/patent/details.js';
@@ -60,11 +60,11 @@ const routes = (
             <Route path="/attached/senior/details" component={AttachedSeniorDetails}/>
 
             {/*附图.局部检索.历史查询*/}
-            <Route path="/attached/part/fast" component={AttachedPartList}/>
+            <Route path="/attached/zone/list" component={AttachedZoneList}/>
             {/*新建局部查询*/}
-            <Route path="/attached/part/create" component={AttachedPartCreate}/>
+            <Route path="/attached/zone/create" component={AttachedZoneCreate}/>
             {/*局部检索结果*/}
-            <Route path="/attached/part/details:/id" component={AttachedPartDetails}/>
+            <Route path="/attached/zone/details:/id" component={AttachedPartDetails}/>
             {/*专利信息详情*/}
             <Route path="/attached/patent/details/:id" component={AttachedPatentDetails}/>
 

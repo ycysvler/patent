@@ -6,7 +6,6 @@ import {Layout, Breadcrumb} from 'antd';
 import JobList from '../common/joblist';
 import '../common/css.css';
 
-const {Content} = Layout;
 
 class AttachedFastList extends React.Component {
     constructor(props) {
@@ -30,7 +29,7 @@ class AttachedFastList extends React.Component {
                         <Breadcrumb.Item>历史查询</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
-                <JobList jobtype="0" />
+                <JobList jobType="0" jobTypeText="fast" />
             </Layout>
         );
     }

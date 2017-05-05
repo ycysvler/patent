@@ -16,10 +16,11 @@ class JobList extends React.Component {
             selectNum: 0,
             jobsData: [],
             keyword:'',
-            jobtype:this.props.jobtype
+            jobType:this.props.jobType,
+            jobTypeText:this.props.jobTypeText
         }
 
-        AttachedActions.getJobs(this.getCookie("user_id"),this.state.jobtype, this.state.keyword, this.getCookie("token"));
+        AttachedActions.getJobs(this.getCookie("user_id"),this.state.jobType, this.state.keyword, this.getCookie("token"));
     }
 
     componentWillUnmount() {
@@ -30,11 +31,11 @@ class JobList extends React.Component {
      * store 触发的事件
      * */
     onStatusChange(action,jobtype, data) {
-        if (action === "getJobs" && jobtype === this.state.jobtype) {
+        if (action === "getJobs" && jobtype === this.state.jobType) {
             this.setState({jobsData: data});
         }
         if (action === "remove") {
-            AttachedActions.getJobs(this.getCookie("user_id"), this.state.jobtype, this.state.keyword,this.getCookie("token"));
+            AttachedActions.getJobs(this.getCookie("user_id"), this.state.jobType, this.state.keyword,this.getCookie("token"));
             this.setState({selectNum: 0});
         }
     }
@@ -57,7 +58,6 @@ class JobList extends React.Component {
     }
 
     getCookie(name) {
-        console.log(window.document.cookie);
         if (window.document.cookie === "") {
             this.context.router.push("/");
             return;
@@ -95,7 +95,7 @@ class JobList extends React.Component {
     };
 
     goToCreateNewSearch() {
-        this.context.router.push("/attached/fast/create");
+        this.context.router.push("/attached/"+this.state.jobTypeText+"/create");
     }
 
     columns = [
@@ -137,10 +137,16 @@ class JobList extends React.Component {
         }
     }
 
+    /*
+    * 行点击，跳转查询结果
+    * */
     rowClick(record, index) {
         console.log(record, index);
         record.key = record.jobid;
-        this.context.router.push({pathname: '/attached/fast/details', state: {searchData: record}});
+        var _pathname =  '/attached/'+this.state.jobTypeText+'/details';
+
+        console.log(_pathname);
+        this.context.router.push({pathname:_pathname, state: {searchData: record}});
     }
 
     keywordChange(event) {
@@ -179,7 +185,7 @@ class JobList extends React.Component {
                             <span className="fast-check-num"><Icon style={{"marginRight": "6px", "color": "blue"}}
                                                                    type="info-circle"/>已选择{this.state.selectNum}项数据</span>
                             <Button className="fast-search-btn"
-                            onClick={()=>{AttachedActions.getJobs(this.getCookie("user_id"),this.state.jobtype, this.state.keyword,this.getCookie("token"))}}
+                            onClick={()=>{AttachedActions.getJobs(this.getCookie("user_id"),this.state.jobType, this.state.keyword,this.getCookie("token"))}}
                             >搜索</Button>
                             <Input
                                 onChange={this.keywordChange.bind(this)}

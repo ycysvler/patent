@@ -45,8 +45,8 @@ class ResultCards extends React.Component {
         </div>
     }
 
-    getDetail() {
-        this.props.getDetail("00100247");
+    getDetail(code, main_class) {
+        this.props.getDetail(code, main_class);
     }
 
     getTitle(title){
@@ -92,7 +92,7 @@ class ResultCards extends React.Component {
                                     <div>分类号：</div>
                                 </Col>
                                 <Col span="8">
-                                    <a onClick={self.getDetail.bind(self)}>{item.code}</a>
+                                    <a onClick={self.getDetail.bind(self, item.code, item.patent.main_class)}>{item.code}</a>
                                     <div title={item.patent.pa_name} style={{width:140,
                                         whiteSpace:'nowrap',
                                         wordBreak:'keep-all',

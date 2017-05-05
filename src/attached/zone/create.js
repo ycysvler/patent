@@ -6,7 +6,7 @@ import {Layout, Breadcrumb, TreeSelect} from 'antd';
 
 import AttachedCreate from '../common/create';
 
-class AttachedFastCreate extends React.Component {
+class AttachedZoneCreate extends React.Component {
     constructor(props) {
         super(props);
 
@@ -27,7 +27,7 @@ class AttachedFastCreate extends React.Component {
     };
 
     goToHistorySearch() {
-        this.context.router.push("/attached/fast/list");
+        this.context.router.push("/attached/zone/list");
     }
 
     getCookie(name) {
@@ -70,16 +70,16 @@ class AttachedFastCreate extends React.Component {
             <Layout >
                 <div className="breadcrumb">
                     <Breadcrumb style={{margin: '11px 0'}}>
-                        <Breadcrumb.Item>快速检索</Breadcrumb.Item>
+                        <Breadcrumb.Item>局部检索</Breadcrumb.Item>
                         <Breadcrumb.Item style={{cursor: "pointer"}}
                                          onClick={this.goToHistorySearch.bind(this)}>历史查询</Breadcrumb.Item>
                         <Breadcrumb.Item>新建查询</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
-                <AttachedCreate jobType="0" jobTypeText="fast" />
+                <AttachedCreate jobType="2" jobTypeText="zone"  />
             </Layout>
         );
     }
 }
 
-export default AttachedFastCreate;
+export default AttachedZoneCreate;

@@ -6,13 +6,14 @@ import {Layout, Breadcrumb} from 'antd';
 import JobList from '../common/joblist';
 import '../common/css.css';
 
-class AttachedSeniorList extends React.Component {
+class AttachedZoneList extends React.Component {
+
     static contextTypes = {
         router: React.PropTypes.object.isRequired,
     };
 
     goToCreateNewSearch() {
-        this.context.router.push("/attached/senior/create");
+        this.context.router.push("/attached/zone/create");
     }
 
     render() {
@@ -20,11 +21,11 @@ class AttachedSeniorList extends React.Component {
             <Layout >
                 <div className="breadcrumb">
                     <Breadcrumb style={{margin: '11px 0'}}>
-                        <Breadcrumb.Item>高级检索</Breadcrumb.Item>
+                        <Breadcrumb.Item>局部检索</Breadcrumb.Item>
                         <Breadcrumb.Item>历史查询</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
-                <JobList jobType="1" jobTypeText="senior" />
+                <JobList jobType="2" jobTypeText="zone" />
             </Layout>
         );
     }
@@ -32,4 +33,4 @@ class AttachedSeniorList extends React.Component {
 
 
 
-export default AttachedSeniorList;
+export default AttachedZoneList;

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Layout, Menu, Button} from 'antd';
 import Reflux from 'reflux';
+import {Link} from 'react-router';
 import {IndexActions, IndexStore} from './api.js';
 
 const {SubMenu} = Menu;
@@ -91,7 +92,7 @@ const App = React.createClass({
                                 </Menu></Content>
                             <Sider width={160} className="box"
                                    style={{background: '#3f3f3f', height: '64px', justifyContent: 'flex-end'}}>
-                                <Button style={{"background": "#3f3f3f", "border": "none"}} icon="question-circle-o"
+                                <Button style={{"background": "#3f3f3f","color":"#fff", "border": "none"}} icon="question-circle-o"
                                         size="small" className="header-help">帮助</Button>
                                 <div className="icon"></div>
                             </Sider>
@@ -109,12 +110,12 @@ const App = React.createClass({
                                         return <SubMenu key={lIndex.rid} title={<span>{lIndex.rname}</span>}>
                                             {
                                                 lIndex.children.map(function (i) {
-                                                    return <Menu.Item key={i.rid}>{i.rname}</Menu.Item>
+                                                    return <Menu.Item key={i.rid}><Link to={i.url}>{i.rname }</Link></Menu.Item>
                                                 })
                                             }
                                         </SubMenu>
                                     } else {
-                                        return <Menu.Item key={lIndex.rid}>{lIndex.rname}</Menu.Item>
+                                        return <Menu.Item key={lIndex.rid}><Link to={lIndex.url}>{lIndex.rname }</Link></Menu.Item>
                                     }
                                 })
                             }

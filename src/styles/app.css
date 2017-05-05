@@ -47,10 +47,7 @@
 .content{
     padding: 24px; margin: 0; minHeight: 280;
 }
-.content :first-child{
-    background: white;
-    border-radius: 2px;
-}
+
 .ant-menu-horizontal > .ant-menu-item-selected{
     /*height:64px;*/
 }

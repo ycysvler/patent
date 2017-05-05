@@ -105,7 +105,7 @@ const AttachedStore = Reflux.createStore({
         });
     },
     onCreate: function(user_id,job_name,type_ids,type_names,images,jobtype,token) {
-        let url = window.server_address + "/attached/fast/create.ashx?jobtype=" + jobtype;
+        let url = window.server_address + "/attached/fast/create.ashx?type=" + jobtype;
         let self = this;
         let param = {
             userid:user_id,
@@ -159,11 +159,12 @@ const AttachedStore = Reflux.createStore({
             }
         });
     },
-    onGetDetail: function(code,token) {
-        let url = window.server_address + "/attached/patent.ashx?";
+    onGetDetail: function(code,main_class, token) {
+        let url = window.server_address + "/attached/patent.ashx";
         let self = this;
         let param = {
-            code:code
+            'main_class':main_class,
+            'code':code
         };
         $.ajax({
             url: url,
