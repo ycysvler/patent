@@ -15,6 +15,8 @@ class LocarnoFastList extends React.Component {
         router: React.PropTypes.object.isRequired,
     };
 
+
+
     goToCreateNewSearch() {
         this.context.router.push("/locarno/fast/create");
     }
