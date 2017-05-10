@@ -15,7 +15,7 @@ class LocarnoResultCards extends React.Component {
         this.state = {
             jobid: this.props.jobid,
             typeid: this.props.typeid,
-            data: {shape:[],color:[],lbp:[],deep:[]}
+            data: {}
         }
     }
 
@@ -64,13 +64,10 @@ class LocarnoResultCards extends React.Component {
             >{title}</div>
         );
     }
-
     getTabs(){
         var self = this;
-        if(this.state.data.color != null){
+        if(this.state.data.hasOwnProperty("color")){
             return (<Tabs defaultActiveKey="shape" type="line" style={{marginTop:12}}>
-
-
                 <TabPane tab="形状" key="shape">
                     {this.state.data.shape.map(function (item) {
                         return (<Card key={item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
@@ -256,7 +253,7 @@ class LocarnoResultCards extends React.Component {
                     })}
                 </TabPane>
             </Tabs>);
-        }else{
+        }else if(this.state.data.hasOwnProperty("shape")){
          return (
              this.state.data.shape.map(function (item) {
                  return (<Card key={item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
@@ -305,7 +302,6 @@ class LocarnoResultCards extends React.Component {
          );
         }
     }
-
     render() {
         var self = this;
 
