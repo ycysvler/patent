@@ -136,6 +136,7 @@ const FastStore = Reflux.createStore({
         });
     },
     onGetResult: function(jobid,typeid,token) {
+        console.log('fastApi:getresult');
         let url = window.server_address + "/attached/fast/result.ashx?";
         let self = this;
         let param = {

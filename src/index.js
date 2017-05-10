@@ -27,7 +27,7 @@ import AttachedPatentDetails from './attached/patent/details.js';
 
 import LocarnoFastList from './locarno/fast/list.js';
 import LocarnoFastCreate from './locarno/fast/create.js';
-
+import LocarnoFastDetails from './locarno/fast/details.js';
 
 import 'antd/dist/antd.css';
 import './styles/base.less';
@@ -78,7 +78,7 @@ const routes = (
             {/*新建快速查询*/}
             <Route path="/locarno/fast/create" component={LocarnoFastCreate}/>
             {/*快速检索结果*/}
-            <Route path="/locarno/fast/details" component={AttachedFastDetails}/>
+            <Route path="/locarno/fast/details" component={LocarnoFastDetails}/>
 
         </Route>
         {/*无此页面，转到登录*/}

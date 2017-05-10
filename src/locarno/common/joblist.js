@@ -141,11 +141,9 @@ class LocarnoJobList extends React.Component {
     * 行点击，跳转查询结果
     * */
     rowClick(record, index) {
-        console.log(record, index);
         record.key = record.jobid;
         var _pathname =  '/locarno/'+this.state.jobTypeText+'/details';
 
-        console.log(_pathname);
         this.context.router.push({pathname:_pathname, state: {searchData: record}});
     }
 

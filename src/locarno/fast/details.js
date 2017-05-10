@@ -5,10 +5,10 @@ import React from 'react';
 import {Layout, Breadcrumb, Table, Tabs} from 'antd';
 import ImageList from '../../attached/common/imagelist';
 import {LocarnoActions, LocarnoStore} from '../locarnoapi';
-import ResultCards from '../../attached/fast/resultCard.js';
+import LocarnoResultCards from '../common/resultCard.js';
 import DetailModal from '../../attached/fast/detailModal.js';
 
-import './fast.css';
+import '../../attached/common/css.css';
 
 const {Content} = Layout;
 const TabPane = Tabs.TabPane;
@@ -22,10 +22,7 @@ class LocarnoFastDetails extends React.Component {
             showDetailDialog: false,
             detailData: {}
         }
-    }
 
-    componentDidMount() {
-        LocarnoActions.getResult(this.state.searchData.jobid, this.state.searchData.typeids[0], this.getCookie("token"));
     }
 
     componentWillUnmount() {
@@ -51,7 +48,7 @@ class LocarnoFastDetails extends React.Component {
     };
 
     goToHistorySearch() {
-        this.context.router.push("/ocarno/fast/list");
+        this.context.router.push("/locarno/fast/list");
     }
 
     getCookie(name) {
@@ -155,9 +152,9 @@ class LocarnoFastDetails extends React.Component {
                         {
                             this.state.searchData.typeids.map(function(typeid){
                                 return <TabPane tab={typeid} key={typeid}>
-                                    <ResultCards  jobid={self.state.searchData.jobid} typeid={typeid}
+                                    <LocarnoResultCards  jobid={self.state.searchData.jobid} typeid={typeid}
                                                  getDetail={self.toGetDetail.bind(self)}
-                                    ></ResultCards>
+                                    ></LocarnoResultCards>
 
                                 </TabPane>
 

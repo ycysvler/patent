@@ -39,7 +39,7 @@ const LocarnoStore = Reflux.createStore({
     },
 
     onRemove:function(data,token) {
-        let url = window.server_address + "/attached/fast/remove.ashx?";
+        let url = window.server_address + "/locarno/remove.ashx?";
 
         let self = this;
         $.ajax({
@@ -135,7 +135,8 @@ const LocarnoStore = Reflux.createStore({
         });
     },
     onGetResult: function(jobid,typeid,token) {
-        let url = window.server_address + "/attached/fast/result.ashx?";
+        console.log('locarno:getresult');
+        let url = window.server_address + "/locarno/result.ashx?";
         let self = this;
         let param = {
             jobid:jobid,
