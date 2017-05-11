@@ -182,6 +182,7 @@ class LocarnoJobList extends React.Component {
                                     onClick={this.goToCreateNewSearch.bind(this)}>新建查询</Button>
                             <span className="fast-check-num"><Icon style={{"marginRight": "6px", "color": "blue"}}
                                                                    type="info-circle"/>已选择{this.state.selectNum}项数据</span>
+
                             <Button className="fast-search-btn"
                             onClick={()=>{LocarnoActions.getJobs(this.getCookie("user_id"),this.state.jobType, this.state.keyword,this.getCookie("token"))}}
                             >搜索</Button>

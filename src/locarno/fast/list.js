@@ -2,7 +2,7 @@
  * Created by VLER on 2017/3/10.
  */
 import React from 'react';
-import {Layout, Breadcrumb} from 'antd';
+import {Layout, Breadcrumb, Icon} from 'antd';
 import LocarnoJobList from '../common/joblist';
 import '../../attached/common/css.css';
 
@@ -35,5 +35,6 @@ class LocarnoFastList extends React.Component {
         );
     }
 }
+
 
 export default LocarnoFastList;
