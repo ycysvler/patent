@@ -43,7 +43,7 @@ class DetailModal extends React.Component {
                         <span>国际申请：</span><br/>
                         <span>进入国家日期：</span><br/>
                     </Col>
-                    <Col span="8">
+                    <Col span="8" style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                         <span>{data["基本信息"]["申请号"]}</span><br/>
                         <span>{data["基本信息"]["申请日"]}</span><br/>
                         <span>{data["基本信息"]["公告日"]}</span><br/>
@@ -66,7 +66,7 @@ class DetailModal extends React.Component {
                         <span>代理人：</span><br/>
                         <span>国际公布：</span><br/>
                     </Col>
-                    <Col span="8">
+                    <Col span="8" style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                         <span>{data["基本信息"]["优先权"]}</span><br/>
                         <span>{data["基本信息"]["公告号"]}</span><br/>
                         <span>{data["基本信息"]["专利权人"]}</span><br/>
