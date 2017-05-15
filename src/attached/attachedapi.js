@@ -135,6 +135,7 @@ const AttachedStore = Reflux.createStore({
         });
     },
     onGetResult: function(jobid,typeid,token) {
+        console.log('attached:getresult');
         let url = window.server_address + "/attached/fast/result.ashx?";
         let self = this;
         let param = {

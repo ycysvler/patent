@@ -27,7 +27,15 @@ import AttachedPatentDetails from './attached/patent/details.js';
 
 import LocarnoFastList from './locarno/fast/list.js';
 import LocarnoFastCreate from './locarno/fast/create.js';
+import LocarnoFastDetails from './locarno/fast/details.js';
 
+import LocarnoSeniorList from './locarno/senior/list.js';
+import LocarnoSeniorCreate from './locarno/senior/create.js';
+import LocarnoSeniorDetails from './locarno/senior/details.js';
+
+import LocarnoZoneList from './locarno/zone/list.js';
+import LocarnoZoneCreate from './locarno/zone/create.js';
+import LocarnoZoneDetails from './locarno/zone/details.js';
 
 import 'antd/dist/antd.css';
 import './styles/base.less';
@@ -78,7 +86,21 @@ const routes = (
             {/*新建快速查询*/}
             <Route path="/locarno/fast/create" component={LocarnoFastCreate}/>
             {/*快速检索结果*/}
-            <Route path="/locarno/fast/details" component={AttachedFastDetails}/>
+            <Route path="/locarno/fast/details" component={LocarnoFastDetails}/>
+
+            {/*外观.高级检索.历史查询*/}
+            <Route path="/locarno/senior/list" component={LocarnoSeniorList}/>
+            {/*新建高级查询*/}
+            <Route path="/locarno/senior/create" component={LocarnoSeniorCreate}/>
+            {/*快速高级结果*/}
+            <Route path="/locarno/senior/details" component={LocarnoSeniorDetails}/>
+
+            {/*外观.局部检索.历史查询*/}
+            <Route path="/locarno/zone/list" component={LocarnoZoneList}/>
+            {/*新建局部查询*/}
+            <Route path="/locarno/zone/create" component={LocarnoZoneCreate}/>
+            {/*快速局部结果*/}
+            <Route path="/locarno/zone/details" component={LocarnoZoneDetails}/>
 
         </Route>
         {/*无此页面，转到登录*/}

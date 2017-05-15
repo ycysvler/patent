@@ -13,7 +13,7 @@ import '../../attached/common/css.css';
 const {Content} = Layout;
 const TabPane = Tabs.TabPane;
 
-class LocarnoFastDetails extends React.Component {
+class LocarnoSeniorDetails extends React.Component {
     constructor(props) {
         super(props);
         this.unsubscribe = LocarnoStore.listen(this.onStatusChange.bind(this));
@@ -48,7 +48,7 @@ class LocarnoFastDetails extends React.Component {
     };
 
     goToHistorySearch() {
-        this.context.router.push("/locarno/fast/list");
+        this.context.router.push("/locarno/senior/list");
     }
 
     getCookie(name) {
@@ -138,7 +138,7 @@ class LocarnoFastDetails extends React.Component {
                 }
                 <div className="breadcrumb">
                     <Breadcrumb style={{margin: '11px 0'}}>
-                        <Breadcrumb.Item>快速查询</Breadcrumb.Item>
+                        <Breadcrumb.Item>高级查询</Breadcrumb.Item>
                         <Breadcrumb.Item style={{cursor: "pointer"}}
                                          onClick={self.goToHistorySearch.bind(self)}>历史查询</Breadcrumb.Item>
                         <Breadcrumb.Item>查询结果</Breadcrumb.Item>
@@ -169,4 +169,4 @@ class LocarnoFastDetails extends React.Component {
     }
 }
 
-export default LocarnoFastDetails;
+export default LocarnoSeniorDetails;
