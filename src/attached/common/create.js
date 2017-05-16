@@ -106,7 +106,7 @@ class AttachedCreate extends React.Component {
         this.refs.inputfile.click();
     }
 
-    show_parent = TreeSelect.SHOW_PARENT;
+    show_parent = TreeSelect.SHOW_ALL;
 
     getRandomKeys() {
         let k = Math.random() * 1000000;
@@ -132,6 +132,7 @@ class AttachedCreate extends React.Component {
     createNewJob() {
         AttachedActions.create(this.getCookie("user_id"), this.state.description, this.state.typeIds, this.state.typeNames, this.state.uploadImageList,this.state.jobType, this.getCookie("token"));
     }
+
 
     renderOneImage(url) {
         return <div>
@@ -161,7 +162,6 @@ class AttachedCreate extends React.Component {
                             </Col>
                             <Col span="8">
                                 <TreeSelect multiple
-                                            treeCheckable
                                             treeData={this.treeData}
                                             showCheckedStrategy={this.show_parent}
                                             onChange={this.setTypeState.bind(this)}
