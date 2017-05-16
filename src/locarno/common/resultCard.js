@@ -2,7 +2,7 @@
  * Created by xiao on 2017/4/4.
  */
 import React from 'react';
-import {Card, Row, Col, Popover,Tabs} from 'antd';
+import {Card, Row, Col, Popover,Tabs, Icon} from 'antd';
 import {LocarnoActions, LocarnoStore}  from '../locarnoapi';
 
 const TabPane = Tabs.TabPane;
@@ -27,7 +27,6 @@ class LocarnoResultCards extends React.Component {
     componentWillUnmount() {
         this.unsubscribe();
     }
-
     componentDidMount() {
         LocarnoActions.getResult(this.state.jobid, this.state.typeid, this.getCookie("token"));
     }
@@ -300,6 +299,9 @@ class LocarnoResultCards extends React.Component {
                  </Card>)
              })
          );
+        }else{
+            return <Icon type="loading"  />;
+
         }
     }
     render() {

@@ -160,7 +160,7 @@ const LocarnoStore = Reflux.createStore({
         });
     },
     onGetDetail: function(code,main_class, token) {
-        let url = window.server_address + "/attached/patent.ashx";
+        let url = window.server_address + "/locarno/patent.ashx";
         let self = this;
         let param = {
             'main_class':main_class,

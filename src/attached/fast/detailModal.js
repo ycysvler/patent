@@ -92,7 +92,7 @@ class DetailModal extends React.Component {
                         <span>{data["摘要"]}</span>
                     </Col>
                     <Col span="12">
-                        <img alt="" src={window.server_address+data["附图"]} />
+                        <img alt="" style={{width:'94%'}} src={window.server_address+'/'+data["附图"][0]} />
                     </Col>
                 </div><br/>
                 <div style={{width:"94%",height:"1px",background:"#cccccc",marginTop:"170px",marginLeft:"3%"}}></div><br/>
