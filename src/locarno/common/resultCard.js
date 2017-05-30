@@ -40,12 +40,11 @@ class LocarnoResultCards extends React.Component {
     }
 
     renderOneImage(url) {
-        url = window.server_address + '/' + url;
+        url = window.server_address + '/image.ashx?name=' + url;
         return <div>
             <img alt="" style={{maxWidth:300, maxHeight:300}} src={url}/>
         </div>
     }
-
     getDetail(code, main_class) {
         this.props.getDetail(code, main_class);
     }
@@ -69,7 +68,7 @@ class LocarnoResultCards extends React.Component {
             return (<Tabs defaultActiveKey="shape" type="line" style={{marginTop:12}}>
                 <TabPane tab="形状" key="shape">
                     {this.state.data.shape.map(function (item) {
-                        return (<Card key={item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
+                        return (<Card key={'shape_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
                                       style={{
                                           width: 420,
                                           marginBottom: 20,
@@ -83,7 +82,7 @@ class LocarnoResultCards extends React.Component {
                                         <Popover
                                             content={self.renderOneImage(item.image)}>
                                             <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
-                                                 src={ window.server_address + '/' + item.image}/>
+                                                 src={ window.server_address + '/image.ashx?name=' + item.image}/>
                                         </Popover>
                                     </Col>
                                     <Col span="5" style={{textAlign: "right"}}>
@@ -115,7 +114,7 @@ class LocarnoResultCards extends React.Component {
                 </TabPane>
                 <TabPane tab="颜色" key="color">
                     {this.state.data.color.map(function (item) {
-                        return (<Card key={item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
+                        return (<Card key={'color_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
                                       style={{
                                           width: 420,
                                           marginBottom: 20,
@@ -129,7 +128,7 @@ class LocarnoResultCards extends React.Component {
                                         <Popover
                                             content={self.renderOneImage(item.image)}>
                                             <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
-                                                 src={ window.server_address + '/' + item.image}/>
+                                                 src={ window.server_address + '/image.ashx?name=' + item.image}/>
                                         </Popover>
                                     </Col>
                                     <Col span="5" style={{textAlign: "right"}}>
@@ -161,7 +160,7 @@ class LocarnoResultCards extends React.Component {
                 </TabPane>
                 <TabPane tab="纹理" key="lbp">
                     {this.state.data.lbp.map(function (item) {
-                        return (<Card key={item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
+                        return (<Card key={'lbp_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
                                       style={{
                                           width: 420,
                                           marginBottom: 20,
@@ -175,7 +174,7 @@ class LocarnoResultCards extends React.Component {
                                         <Popover
                                             content={self.renderOneImage(item.image)}>
                                             <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
-                                                 src={ window.server_address + '/' + item.image}/>
+                                                 src={ window.server_address + '/image.ashx?name=' + item.image}/>
                                         </Popover>
                                     </Col>
                                     <Col span="5" style={{textAlign: "right"}}>
@@ -207,7 +206,7 @@ class LocarnoResultCards extends React.Component {
                 </TabPane>
                 <TabPane tab="深度" key="deep">
                     {this.state.data.deep.map(function (item) {
-                        return (<Card key={item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
+                        return (<Card key={'deep_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
                                       style={{
                                           width: 420,
                                           marginBottom: 20,
@@ -221,7 +220,7 @@ class LocarnoResultCards extends React.Component {
                                         <Popover
                                             content={self.renderOneImage(item.image)}>
                                             <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
-                                                 src={ window.server_address + '/' + item.image}/>
+                                                 src={ window.server_address + '/image.ashx?name=' + item.image}/>
                                         </Popover>
                                     </Col>
                                     <Col span="5" style={{textAlign: "right"}}>
