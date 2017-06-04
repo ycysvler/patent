@@ -20,7 +20,7 @@ class DetailModal extends React.Component {
         return (
             <Modal title="通信电缆用聚乙烯护套料及制备工艺"
                    visible={this.props.visible}
-                   width="1000"
+                   width="1000px"
                    onCancel={this.hideSelf.bind(this)}
                    footer={null}
             >
@@ -92,7 +92,7 @@ class DetailModal extends React.Component {
                         <span>{data["摘要"]}</span>
                     </Col>
                     <Col span="12">
-                        <img alt="" style={{width:'94%'}} src={window.server_address+'/'+data["附图"][0]} />
+                        <img alt="" style={{maxWidth:'94%', maxHeight:'180px'}} src={window.server_address+'/image.ashx?name='+data["附图"][0]} />
                     </Col>
                 </div><br/>
                 <div style={{width:"94%",height:"1px",background:"#cccccc",marginTop:"170px",marginLeft:"3%"}}></div><br/>

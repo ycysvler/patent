@@ -73,15 +73,13 @@ const App = React.createClass({
         let index_list = this.state.indexList;
         return (
             <Layout className="app-root">
-                <Header style={{background: '#3f3f3f'}}>
+                <Header style={{background: '#fff'}}>
                     <div className="logo"/>
                     <div style={{float: 'right'}}>
-                        <Layout style={{"background": "#3f3f3f"}}>
+                        <Layout style={{"background": "white"}}>
                             <Content>
-                                <Menu
-                                    theme="dark"
-                                    mode="horizontal"
-                                    style={{lineHeight: '64px'}}
+                                <Menu mode="horizontal"
+                                    style={{lineHeight: '63px'}}
                                     onClick={this.onClickHandler}
                                 >
                                     {
@@ -89,19 +87,23 @@ const App = React.createClass({
                                             return <Menu.Item key={index.rid}>{index.rname}</Menu.Item>
                                         })
                                     }
-                                </Menu></Content>
+                                </Menu>
+                            </Content>
+
                             <Sider width={160} className="box"
-                                   style={{background: '#3f3f3f', height: '64px', justifyContent: 'flex-end'}}>
-                                <Button style={{"background": "#3f3f3f","color":"#fff", "border": "none"}} icon="question-circle-o"
+                                   style={{background: '#fff', height: '64px', justifyContent: 'flex-end'}}>
+                                <Button style={{"background": "#fff", "border": "none"}} icon="question-circle-o"
                                         size="small" className="header-help">帮助</Button>
                                 <div className="icon"></div>
                             </Sider>
+
                         </Layout>
                     </div>
                 </Header>
+
                 <Layout>
-                    <Sider width={250} style={{background: '#cccccc'}}>
-                        <Menu
+                    <Sider width={250} >
+                        <Menu theme="dark"
                             mode="inline"
                         >
                             {
@@ -121,10 +123,8 @@ const App = React.createClass({
                             }
                         </Menu>
                     </Sider>
-                    <Layout >
-
+                    <Layout>
                         {this.props.children}
-
                     </Layout>
                 </Layout>
             </Layout>

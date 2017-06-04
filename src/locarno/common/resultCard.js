@@ -15,13 +15,18 @@ class LocarnoResultCards extends React.Component {
         this.state = {
             jobid: this.props.jobid,
             typeid: this.props.typeid,
-            data: {}
+            data: {shape:[]}
         }
     }
 
     componentWillReceiveProps(n, o){
         this.setState({jobid:n.jobid, typeid:n.typeid});
-        LocarnoActions.getResult(n.jobid, n.typeid, this.getCookie("token"));
+
+
+        if(this.state.data.shape.length === 0){
+            // 有数据了，就不再取了
+            LocarnoActions.getResult(n.jobid, n.typeid, this.getCookie("token"));
+        }
     }
 
     componentWillUnmount() {
