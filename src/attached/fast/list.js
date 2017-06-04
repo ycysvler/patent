@@ -8,9 +8,6 @@ import '../common/css.css';
 
 
 class AttachedFastList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     static contextTypes = {
         router: React.PropTypes.object.isRequired,

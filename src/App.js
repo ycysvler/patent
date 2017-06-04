@@ -1,19 +1,42 @@
 import React from 'react';
 import {Layout, Menu, Button} from 'antd';
 import Reflux from 'reflux';
-import {Link} from 'react-router';
+import {Link,browserHistory} from 'react-router';
 import {IndexActions, IndexStore} from './api.js';
 
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
+
 
 import './styles/app.css';
 
 const App = React.createClass({
     mixins: [Reflux.listenTo(IndexStore, 'onStatusChange')],
     getInitialState: function () {
-        return {"indexList": [], "leftIndex": []};
+        var path = browserHistory.getCurrentLocation().hash;
+        console.log(path.substring(1, path.length));
+
+        return {"indexList": [], "leftIndex": [],topMenuKey:this.getTopMenuKey(path),"leftMenuKey":this.getUrl()};
     },
+
+    getTopMenuKey(url){
+        if(url.indexOf("attached")>-1){return "01";}
+        if(url.indexOf("locarno")>-1){return "02";}
+    },
+    getTopMenuChildren(data, url){
+        var self = this;
+        for(var i=0;i<data.length;i++){
+            var item = data[i];
+            if(item.rid === self.getTopMenuKey(url)){
+                return item.children;
+            }
+        }
+    },
+    getUrl(){
+        var path = browserHistory.getCurrentLocation().hash;
+        return path.substring(1, path.length);
+    },
+
     componentDidMount: function () {
         IndexActions.getIndexes(this.getCookie("user_id"),this.getCookie("token"));
     },
@@ -21,7 +44,17 @@ const App = React.createClass({
         // 判断一下action,当同一个Store多个不同的方法发出trigger时好区分是谁发的
         if (action === 'getIndexes') {
             this.setState({indexList: result.data});
-            this.setState({leftIndex: result.data[0].children});
+            this.setState({leftIndex: this.getTopMenuChildren(result.data, this.getUrl())});
+
+            // for(var i=0;i<result.data.length;i++){
+            //     var item = result.data[i];
+            //     console.log(item);
+            // }
+            //
+            // for(var i=0;i<result.data[0].children.length;i++){
+            //     var item = result.data[0].children[i];
+            //     console.log(item);
+            // }
         }
     },
     getCookie(name) {
@@ -79,6 +112,7 @@ const App = React.createClass({
                         <Layout style={{"background": "white"}}>
                             <Content>
                                 <Menu mode="horizontal"
+                                      defaultSelectedKeys={[this.state.topMenuKey]}
                                     style={{lineHeight: '63px'}}
                                     onClick={this.onClickHandler}
                                 >
@@ -105,6 +139,7 @@ const App = React.createClass({
                     <Sider width={250} >
                         <Menu theme="dark"
                             mode="inline"
+                              defaultSelectedKeys={[this.state.leftMenuKey]}
                         >
                             {
                                 lIndexs.map(function (lIndex) {
@@ -112,12 +147,12 @@ const App = React.createClass({
                                         return <SubMenu key={lIndex.rid} title={<span>{lIndex.rname}</span>}>
                                             {
                                                 lIndex.children.map(function (i) {
-                                                    return <Menu.Item key={i.rid}><Link to={i.url}>{i.rname }</Link></Menu.Item>
+                                                    return <Menu.Item key={i.url}><Link to={i.url}>{i.rname }</Link></Menu.Item>
                                                 })
                                             }
                                         </SubMenu>
                                     } else {
-                                        return <Menu.Item key={lIndex.rid}><Link to={lIndex.url}>{lIndex.rname }</Link></Menu.Item>
+                                        return <Menu.Item key={lIndex.url}><Link to={lIndex.url}>{lIndex.rname }</Link></Menu.Item>
                                     }
                                 })
                             }

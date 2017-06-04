@@ -8,9 +8,7 @@ import '../../attached/common/css.css';
 
 
 class LocarnoSeniorList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+
     static contextTypes = {
         router: React.PropTypes.object.isRequired,
     };

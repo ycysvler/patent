@@ -6,16 +6,11 @@ import {Layout, Breadcrumb} from 'antd';
 import LocarnoJobList from '../common/joblist';
 import '../../attached/common/css.css';
 
-
 class LocarnoSeniorList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+
     static contextTypes = {
         router: React.PropTypes.object.isRequired,
     };
-
-
 
     goToCreateNewSearch() {
         this.context.router.push("/locarno/senior/create");
