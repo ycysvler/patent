@@ -9,6 +9,7 @@ import LocarnoResultCards from '../common/resultCard.js';
 import DetailModal from '../../attached/fast/detailModal.js';
 
 import '../../attached/common/css.css';
+import '../common/css.css';
 
 const {Content} = Layout;
 const TabPane = Tabs.TabPane;
@@ -144,8 +145,8 @@ class LocarnoFastDetails extends React.Component {
                         <Breadcrumb.Item>查询结果</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
-                <Layout className="content">
-                    <Content>
+                <Layout className="content" style={{padding:0}}>
+                    <Content style={{padding:20}}>
                     <Table columns={self.columns} dataSource={self.data} bordered pagination={false}/>
 
                     <Tabs defaultActiveKey={this.state.searchData.typeids[0]} type="line" style={{marginTop:12}}>

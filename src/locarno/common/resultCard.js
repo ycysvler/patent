@@ -273,7 +273,7 @@ class LocarnoResultCards extends React.Component {
                                  <Popover
                                      content={self.renderOneImage(item.image)}>
                                      <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
-                                          src={ window.server_address + '/' + item.image}/>
+                                          src={ window.server_address + '/image.ashx?name=' + item.image}/>
                                  </Popover>
                              </Col>
                              <Col span="5" style={{textAlign: "right"}}>

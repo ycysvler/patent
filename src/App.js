@@ -13,15 +13,13 @@ import './styles/app.css';
 const App = React.createClass({
     mixins: [Reflux.listenTo(IndexStore, 'onStatusChange')],
     getInitialState: function () {
-        var path = browserHistory.getCurrentLocation().hash;
-        console.log(path.substring(1, path.length));
-
-        return {"indexList": [], "leftIndex": [],topMenuKey:this.getTopMenuKey(path),"leftMenuKey":this.getUrl()};
+        return {"indexList": [], "leftIndex": [],topMenuKey:this.getTopMenuKey(this.getUrl()),"leftMenuKey":this.getUrl()};
     },
 
     getTopMenuKey(url){
         if(url.indexOf("attached")>-1){return "01";}
         if(url.indexOf("locarno")>-1){return "02";}
+        if(url.indexOf("system")>-1){return "07";}
     },
     getTopMenuChildren(data, url){
         var self = this;
@@ -107,7 +105,7 @@ const App = React.createClass({
         return (
             <Layout className="app-root">
                 <Header style={{background: '#fff'}}>
-                    <div className="logo"/>
+                    <div className="logo" >专利检索系统</div>
                     <div style={{float: 'right'}}>
                         <Layout style={{"background": "white"}}>
                             <Content>
@@ -128,7 +126,7 @@ const App = React.createClass({
                                    style={{background: '#fff', height: '64px', justifyContent: 'flex-end'}}>
                                 <Button style={{"background": "#fff", "border": "none"}} icon="question-circle-o"
                                         size="small" className="header-help">帮助</Button>
-                                <div className="icon"></div>
+
                             </Sider>
 
                         </Layout>

@@ -47,3 +47,10 @@
     color: #666666 !important;
     border-color: #f3f3f3 !important;
 }
+
+.detailTable{
+    width:98%;
+    margin-left:1%;
+}
+.detailTable th{text-align: left;width:140px;}
+.detailTable td{text-align: left;}

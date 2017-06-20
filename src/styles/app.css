@@ -30,6 +30,12 @@
     display: inline-flex;
 }
 
+.app-root .logo{
+    float:left;
+    font-weight: bolder;
+    font-size: 18px;
+}
+
 .app-root .box {
     display: -webkit-flex; /* Safari */
     display: flex;
@@ -47,9 +53,7 @@
     padding: 0 24px;
 }
 .body{}
-.content{
-    padding: 24px; margin: 0; minHeight: 280;
-}
+
 
 .ant-menu-horizontal > .ant-menu-item-selected{
     /*height:64px;*/
@@ -59,5 +63,6 @@
 }
 .content {
     padding: 20px;
+    overflow-y: auto;
     background: #ffffff !important;
 }

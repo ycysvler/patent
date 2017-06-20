@@ -22,10 +22,6 @@ class AttachedZoneCreate extends React.Component {
         };
     }
 
-    static contextTypes = {
-        router: React.PropTypes.object.isRequired,
-    };
-
     goToHistorySearch() {
         this.context.router.push("/attached/zone/list");
     }
