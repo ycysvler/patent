@@ -123,7 +123,7 @@ class LocarnoCreate extends React.Component {
 
     setTypeState(value, label) {
         if (label.length > 0) {
-            this.setState({typeState: true, typeIds: label, typeNames: label});
+            this.setState({typeState: true, typeIds: value, typeNames: value});
         } else {
             this.setState({typeState: false});
         }

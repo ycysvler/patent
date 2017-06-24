@@ -48,7 +48,7 @@ class LocarnoZoneDetails extends React.Component {
     };
 
     goToHistorySearch() {
-        this.context.router.push("/locarno/senior/list");
+        this.context.router.push("/locarno/zone/list");
     }
 
     getCookie(name) {

@@ -37,6 +37,8 @@ import LocarnoZoneList from './locarno/zone/list.js';
 import LocarnoZoneCreate from './locarno/zone/create.js';
 import LocarnoZoneDetails from './locarno/zone/details.js';
 
+import ImageInfo from './tools/imageinfo/index.js';
+
 import 'antd/dist/antd.css';
 import './styles/base.less';
 import './styles/index.css';
@@ -102,6 +104,8 @@ const routes = (
             {/*快速局部结果*/}
             <Route path="/locarno/zone/details" component={LocarnoZoneDetails}/>
 
+            {/*快速局部结果*/}
+            <Route path="/tools/imageinfo" component={ImageInfo}/>
         </Route>
         {/*无此页面，转到登录*/}
         <Route path="*" component={Login}/>

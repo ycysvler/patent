@@ -20,6 +20,7 @@ const App = React.createClass({
         if(url.indexOf("attached")>-1){return "01";}
         if(url.indexOf("locarno")>-1){return "02";}
         if(url.indexOf("system")>-1){return "07";}
+        if(url.indexOf("tools")>-1){return "03";}
     },
     getTopMenuChildren(data, url){
         var self = this;
