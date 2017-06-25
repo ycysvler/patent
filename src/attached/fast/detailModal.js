@@ -2,7 +2,7 @@
  * Created by xiao on 2017/4/5.
  */
 import React from 'react';
-import {Col,Modal,Popover} from 'antd';
+import {Modal,Popover} from 'antd';
 import './fast.css';
 
 class DetailModal extends React.Component {
@@ -19,10 +19,10 @@ class DetailModal extends React.Component {
             <img alt="" style={{maxWidth:500, maxHeight:500}} src={url}/>
         </div>
     }
-
     hideSelf() {
         this.props.hide();
     }
+
     render() {
         let self = this;
         let data = this.props.detailData["专利公开详情"];

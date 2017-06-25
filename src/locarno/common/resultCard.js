@@ -2,7 +2,7 @@
  * Created by xiao on 2017/4/4.
  */
 import React from 'react';
-import {Card, Row, Col, Popover,Tabs, Icon} from 'antd';
+import {Card, Row, Col, Popover,Tabs, Button,Spin } from 'antd';
 import {LocarnoActions, LocarnoStore}  from '../locarnoapi';
 
 const TabPane = Tabs.TabPane;
@@ -15,6 +15,7 @@ class LocarnoResultCards extends React.Component {
         this.state = {
             jobid: this.props.jobid,
             typeid: this.props.typeid,
+            page:0,
             data: {shape:[]}
         }
     }
@@ -70,8 +71,9 @@ class LocarnoResultCards extends React.Component {
     getTabs(){
         var self = this;
         if(this.state.data.hasOwnProperty("color") && this.state.data.color.length>0){
-            return (<Tabs defaultActiveKey="deep" type="line" style={{marginTop:12}}>
-                <TabPane tab="综合" key="deep">
+            return (<Tabs  type="line" style={{marginTop:12}}>
+                <TabPane tab={"综合 （" + this.state.data.deep.length +"）"} key="deep">
+                    <div>
                     {this.state.data.deep.map(function (item) {
                         return (<Card key={'deep_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
                                       style={{
@@ -120,8 +122,11 @@ class LocarnoResultCards extends React.Component {
                             </div>
                         </Card>)
                     })}
+                        <div style={{'clear':'both','textAlign':'center'}}><Button  style={{width:'100%'}}>更多</Button></div>
+
+                    </div>
                 </TabPane>
-                <TabPane tab="形状" key="shape">
+                <TabPane tab={"形状 （" + this.state.data.shape.length +"）"} key="shape">
                     {this.state.data.shape.map(function (item) {
                         return (<Card key={'shape_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
                                       style={{
@@ -171,7 +176,7 @@ class LocarnoResultCards extends React.Component {
                         </Card>)
                     })}
                 </TabPane>
-                <TabPane tab="颜色" key="color">
+                <TabPane tab={"颜色 （" + this.state.data.color.length +"）"}  key="color">
                     {this.state.data.color.map(function (item) {
                         return (<Card key={'color_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
                                       style={{
@@ -221,7 +226,7 @@ class LocarnoResultCards extends React.Component {
                         </Card>)
                     })}
                 </TabPane>
-                <TabPane tab="纹理" key="lbp">
+                <TabPane tab={"纹理 （" + this.state.data.lbp.length +"）"}  key="lbp">
                     {this.state.data.lbp.map(function (item) {
                         return (<Card key={'lbp_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
                                       style={{
@@ -273,59 +278,63 @@ class LocarnoResultCards extends React.Component {
                 </TabPane>
 
             </Tabs>);
-        }else if(this.state.data.hasOwnProperty("shape")){
+        }else if(this.state.data.hasOwnProperty("shape") && this.state.data.shape.length>0){
          return (
-             this.state.data.shape.map(function (item) {
-                 return (<Card key={item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
-                               style={{
-                                   width: 390,
-                                   marginBottom: 20,
-                                   marginLeft: 6,
-                                   overflow: "left",
-                                   float: 'left'
-                               }}>
-                     <div>
-                         <Row>
-                             <Col span="10" style={{marginTop: -10}}>
-                                 <Popover
-                                     content={self.renderOneImage(item.image)}>
-                                     <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
-                                          src={ window.server_address + '/image.ashx?name=' + item.image}/>
-                                 </Popover>
-                             </Col>
-                             <Col span="5" style={{textAlign: "right"}}>
-                                 <div>专利号：</div>
-                                 <div>申请人：</div>
-                                 <div>申请日：</div>
-                                 <div>主分类号：</div>
-                                 <div>分类号：</div>
-                             </Col>
-                             <Col span="8">
-                                 <a style={{width:140,
-                                     whiteSpace:'nowrap',
-                                     wordBreak:'keep-all',
-                                     overflow:'hidden',
-                                     textOverflow:'ellipsis'}} onClick={self.getDetail.bind(self, item.code, item.patent.main_class)}>{item.code}</a>
-                                 <div title={item.patent.pa_name} style={{width:140,
-                                     whiteSpace:'nowrap',
-                                     wordBreak:'keep-all',
-                                     overflow:'hidden',
-                                     textOverflow:'ellipsis'}}>{item.patent.pa_name}　 </div>
-                                 <div>{item.patent.ap_date}</div>
-                                 <div>{item.patent.main_class}</div>
-                                 <div title={item.patent.sub_class} style={{width:140,
-                                     whiteSpace:'nowrap',
-                                     wordBreak:'keep-all',
-                                     overflow:'hidden',
-                                     textOverflow:'ellipsis'}}>{item.patent.sub_class}</div>
-                             </Col>
-                         </Row>
-                     </div>
-                 </Card>)
-             })
+             <Tabs   type="line" style={{marginTop:12}}>
+                 <TabPane tab={"结果 （" + this.state.data.shape.length +"）"} key="shape">
+                     { this.state.data.shape.map(function (item) {
+                         return (<Card key={item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
+                                       style={{
+                                           width: 390,
+                                           marginBottom: 20,
+                                           marginLeft: 6,
+                                           overflow: "left",
+                                           float: 'left'
+                                       }}>
+                             <div>
+                                 <Row>
+                                     <Col span="10" style={{marginTop: -10}}>
+                                         <Popover
+                                             content={self.renderOneImage(item.image)}>
+                                             <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
+                                                  src={ window.server_address + '/image.ashx?name=' + item.image}/>
+                                         </Popover>
+                                     </Col>
+                                     <Col span="5" style={{textAlign: "right"}}>
+                                         <div>专利号：</div>
+                                         <div>申请人：</div>
+                                         <div>申请日：</div>
+                                         <div>主分类号：</div>
+                                         <div>分类号：</div>
+                                     </Col>
+                                     <Col span="8">
+                                         <a style={{width:140,
+                                             whiteSpace:'nowrap',
+                                             wordBreak:'keep-all',
+                                             overflow:'hidden',
+                                             textOverflow:'ellipsis'}} onClick={self.getDetail.bind(self, item.code, item.patent.main_class)}>{item.code}</a>
+                                         <div title={item.patent.pa_name} style={{width:140,
+                                             whiteSpace:'nowrap',
+                                             wordBreak:'keep-all',
+                                             overflow:'hidden',
+                                             textOverflow:'ellipsis'}}>{item.patent.pa_name}　 </div>
+                                         <div>{item.patent.ap_date}</div>
+                                         <div>{item.patent.main_class}</div>
+                                         <div title={item.patent.sub_class} style={{width:140,
+                                             whiteSpace:'nowrap',
+                                             wordBreak:'keep-all',
+                                             overflow:'hidden',
+                                             textOverflow:'ellipsis'}}>{item.patent.sub_class}</div>
+                                     </Col>
+                                 </Row>
+                             </div>
+                         </Card>)
+                     })}
+                 </TabPane>
+             </Tabs>
          );
         }else{
-            return <Icon type="loading"  />;
+            return <div style={{'textAlign':'center','padding':'1rem'}}><Spin /></div>;
         }
     }
     render() {

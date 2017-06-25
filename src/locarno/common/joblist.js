@@ -2,7 +2,7 @@
  * Created by VLER on 2017/3/10.
  */
 import React from 'react';
-import {Layout, Icon, Button, Input, Table} from 'antd';
+import {Layout, Icon, Button, Input, Table,Progress} from 'antd';
 import {LocarnoActions, LocarnoStore} from '../locarnoapi.js';
 import ImageList from '../../attached/common/imagelist.js';
 
@@ -33,10 +33,25 @@ class LocarnoJobList extends React.Component {
     onStatusChange(action,jobtype, data) {
         if (action === "getJobs" && jobtype === this.state.jobType) {
             this.setState({jobsData: data});
+            this.refush(data);
         }
         if (action === "remove") {
             LocarnoActions.getJobs(this.getCookie("user_id"), this.state.jobType, this.state.keyword,this.getCookie("token"));
             this.setState({selectNum: 0});
+        }
+    }
+
+    refush(data){
+        console.log(data);
+        var self = this;
+        for(var i=0;i<data.length;i++){
+            var item  = data[i];
+            if(item.progress < 100){
+                setTimeout(function () {
+                    LocarnoActions.getJobs(self.getCookie("user_id"),self.state.jobType, self.state.keyword, self.getCookie("token"));
+                },3000);
+                return;
+            }
         }
     }
 
@@ -121,9 +136,9 @@ class LocarnoJobList extends React.Component {
             }
         },
         {
-            title: '进度', width: 100, dataIndex: 'progress',
+            title: '进度', width: 200, dataIndex: 'progress',
             render(text, record) {
-                return <span>{text + '%'}</span>
+                return <div><Progress percent={text} strokeWidth={8} /></div>
             }
         },
         {title: '创建日期', width: 180, dataIndex: 'create_time'},
@@ -164,13 +179,14 @@ class LocarnoJobList extends React.Component {
         var state = {
             rowKey: "jobid",
             bordered: true,
-            loading: false,
+            loading: true,
             pagination: false,
             rowSelection: this.rowSelection,
             columns: this.columns,
             dataSource: this.state.jobsData,
             onRowClick: this.rowClick.bind(this)
         };
+        if(this.state.jobsData.length > 0){ state.loading=false;}
 
         return (
             <Layout>
@@ -191,8 +207,8 @@ class LocarnoJobList extends React.Component {
                                 style={{"width": "20%", "position": "relative", "float": "right", "marginRight": "5px"}}
                                 placeholder="请输入描述关键词"/>
                         </div>
-
                         <Table {...state} style={{marginTop: "20px"}}/>
+
                     </Content>
                 </Layout>
             </Layout>

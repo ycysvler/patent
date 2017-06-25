@@ -58,7 +58,7 @@ class ImageInfo extends React.Component {
                         </Form>
                         <br />
                         {
-                            this.state.name == '' ? null: <Form layout="inline" >
+                            this.state.name === '' ? null: <Form layout="inline" >
                             <FormItem>
                                 <h3>原图</h3>
                                 <img alt="" style={{maxWidth:"100%", maxHeight: 180}}

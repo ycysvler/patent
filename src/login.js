@@ -46,7 +46,7 @@ const Login = React.createClass({
                         <div className="ant-col-xs-24 ant-col-sm-24 ant-col-md-12 ant-col-lg-8">
                             <a href="#/">
                                 <div className='logo'/>
-                                <span className="title">专利检索系统</span></a>
+                                <span className="title">专利图形搜索系统</span></a>
                         </div>
                     </div>
                 </header>
@@ -60,7 +60,7 @@ const Login = React.createClass({
                                             <div className="logo-con">
                                                 <span className="logo-img"/>
                                             </div>
-                                            <span>欢迎使用专利检索系统</span>
+                                            <span>欢迎使用专利图形搜索系统</span>
                                         </div>
                                         <div className="form-item">
                                             <div style={loginput}>

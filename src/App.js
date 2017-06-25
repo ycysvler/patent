@@ -106,7 +106,7 @@ const App = React.createClass({
         return (
             <Layout className="app-root">
                 <Header style={{background: '#fff'}}>
-                    <div className="logo" >专利检索系统</div>
+                    <div className="logo" >专利图形搜索系统</div>
                     <div style={{float: 'right'}}>
                         <Layout style={{"background": "white"}}>
                             <Content>
