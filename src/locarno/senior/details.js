@@ -144,8 +144,8 @@ class LocarnoSeniorDetails extends React.Component {
                         <Breadcrumb.Item>查询结果</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
-                <Layout className="content">
-                    <Content>
+                <Layout >
+                    <Content className="content">
                     <Table columns={self.columns} dataSource={self.data} bordered pagination={false}/>
 
                     <Tabs defaultActiveKey={this.state.searchData.typeids[0]} type="line" style={{marginTop:12}}>

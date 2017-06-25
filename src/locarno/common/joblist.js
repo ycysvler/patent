@@ -174,8 +174,8 @@ class LocarnoJobList extends React.Component {
 
         return (
             <Layout>
-                <Layout className="content">
-                    <Content >
+                <Layout >
+                    <Content className="content">
                         <div>
                             <Button className="fast-delete-btn" onClick={this.remove.bind(this)}>删除</Button>
                             <Button className="fast-new-search-btn"
