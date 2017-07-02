@@ -134,12 +134,13 @@ const LocarnoStore = Reflux.createStore({
             }
         });
     },
-    onGetResult: function(jobid,typeid,token) {
+    onGetResult: function(jobid,typeid,token,page) {
         let url = window.server_address + "/locarno/result.ashx?";
         let self = this;
         let param = {
             jobid:jobid,
-            typeid:typeid
+            typeid:typeid,
+            page:page
         };
         $.ajax({
             url: url,

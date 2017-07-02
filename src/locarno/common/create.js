@@ -201,9 +201,11 @@ class LocarnoCreate extends React.Component {
                             <span></span>
                         </Col>
                         <Col span="8">
+
+
                             <Button type="primary" onClick={self.createNewJob.bind(self)}
                                     disabled={!canSearch}>查询</Button>
-                            <Button style={{marginLeft: 8}}>取消</Button>
+                            <Button style={{marginLeft: 8}} onClick={self.props.back}>取消</Button>
                         </Col>
                     </div>
                     <br/>

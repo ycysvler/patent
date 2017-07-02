@@ -16,17 +16,18 @@ class LocarnoResultCards extends React.Component {
             jobid: this.props.jobid,
             typeid: this.props.typeid,
             page:0,
-            data: {shape:[]}
+            data: {shape:[],lbp:[],color:[],deep:[]}
         }
     }
 
     componentWillReceiveProps(n, o){
         this.setState({jobid:n.jobid, typeid:n.typeid});
 
+        LocarnoActions.getResult(n.jobid, n.typeid, this.getCookie("token"),0);
 
         if(this.state.data.shape.length === 0){
             // 有数据了，就不再取了
-            LocarnoActions.getResult(n.jobid, n.typeid, this.getCookie("token"));
+
         }
     }
 
@@ -34,12 +35,45 @@ class LocarnoResultCards extends React.Component {
         this.unsubscribe();
     }
     componentDidMount() {
-        LocarnoActions.getResult(this.state.jobid, this.state.typeid, this.getCookie("token"));
+        LocarnoActions.getResult(this.state.jobid, this.state.typeid, this.getCookie("token"),0);
     }
+
+    indexOf = function (array, item) {
+        for (var i = 0, j = array.length; i < j; i++) {
+            if (array[i].image === item.image) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    unique= function(array){
+    var res = [];
+    var self = this;
+
+    for(var i = 0; i < array.length; i++){
+        if(self.indexOf(res, array[i])===-1){
+            res.push(array[i])
+        }
+    }
+    return res;
+}
 
     onStatusChange(action,typeid, data) {
         if (action === "getResult" && typeid === this.state.typeid) {
-            this.setState({"data": data});
+            var temp = this.state.data;
+            if(temp.hasOwnProperty("color")){
+                temp.color = this.unique(temp.color.concat(data.color));
+            }
+            if(temp.hasOwnProperty("deep")){
+                temp.deep = this.unique(temp.deep.concat(data.deep));
+            }
+            if(temp.hasOwnProperty("shape")){
+                temp.shape = this.unique(temp.shape.concat(data.shape));
+            }
+            if(temp.hasOwnProperty("lbp")){
+                temp.lbp = this.unique(temp.lbp.concat(data.lbp));
+            }
+            this.setState({"data": temp});
         } else if (action === "getDetail") {
             this.setState({showDetailDialog: true, detailData: data});
         }
@@ -68,14 +102,18 @@ class LocarnoResultCards extends React.Component {
             >{title}</div>
         );
     }
+    more=()=>{
+        var page = this.state.page + 1;
+        this.setState({'page':page});
+        LocarnoActions.getResult(this.state.jobid, this.state.typeid, this.getCookie("token"),page);
+    }
     getTabs(){
         var self = this;
-        if(this.state.data.hasOwnProperty("color") && this.state.data.color.length>0){
+        if(this.state.data.hasOwnProperty("deep") && this.state.data.deep.length>1){
             return (<Tabs  type="line" style={{marginTop:12}}>
-                <TabPane tab={"综合 （" + this.state.data.deep.length +"）"} key="deep">
-                    <div>
-                    {this.state.data.deep.map(function (item) {
-                        return (<Card key={'deep_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
+                <TabPane tab={"综合 （" + self.state.data.deep.length +"）"} key="deep">
+                    {self.state.data.deep.map(function (item) {
+                        return (<Card key={'deep_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{((100-item.score.toFixed(2))*100)/100 + '%'}</span>}
                                       style={{
                                           width: 390,
                                           marginBottom: 20,
@@ -85,7 +123,7 @@ class LocarnoResultCards extends React.Component {
                                       }}>
                             <div>
                                 <Row>
-                                    <Col span="10" style={{marginTop: -10}}>
+                                    <Col span="10" style={{display:'flex', justifyContent:'center', height:'130px', alignItems:"center"}}>
                                         <Popover
                                             content={self.renderOneImage(item.image)}>
                                             <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
@@ -93,9 +131,11 @@ class LocarnoResultCards extends React.Component {
                                         </Popover>
                                     </Col>
                                     <Col span="5" style={{textAlign: "right"}}>
-                                        <div>专利号：</div>
-                                        <div>申请人：</div>
+                                        <div>申请号：</div>
                                         <div>申请日：</div>
+                                        <div>公告号：</div>
+                                        <div>公告日：</div>
+                                        <div>申请人：</div>
                                         <div>主分类号：</div>
                                         <div>分类号：</div>
                                     </Col>
@@ -105,12 +145,19 @@ class LocarnoResultCards extends React.Component {
                                             wordBreak:'keep-all',
                                             overflow:'hidden',
                                             textOverflow:'ellipsis'}} onClick={self.getDetail.bind(self, item.code, item.patent.main_class)}>{item.code}</a>
+                                        <div>{item.patent.ap_date}</div>
+                                        <div title={item.patent.code} style={{width:140,
+                                            whiteSpace:'nowrap',
+                                            wordBreak:'keep-all',
+                                            overflow:'hidden',
+                                            textOverflow:'ellipsis'}}>{item.patent.pub_num}　</div>
+                                        <div>{item.patent.pub_date}</div>
                                         <div title={item.patent.pa_name} style={{width:140,
                                             whiteSpace:'nowrap',
                                             wordBreak:'keep-all',
                                             overflow:'hidden',
                                             textOverflow:'ellipsis'}}>{item.patent.pa_name}　</div>
-                                        <div>{item.patent.ap_date}</div>
+
                                         <div>{item.patent.main_class}</div>
                                         <div title={item.patent.sub_class} style={{width:140,
                                             whiteSpace:'nowrap',
@@ -122,13 +169,10 @@ class LocarnoResultCards extends React.Component {
                             </div>
                         </Card>)
                     })}
-                        <div style={{'clear':'both','textAlign':'center'}}><Button  style={{width:'100%'}}>更多</Button></div>
-
-                    </div>
                 </TabPane>
                 <TabPane tab={"形状 （" + this.state.data.shape.length +"）"} key="shape">
                     {this.state.data.shape.map(function (item) {
-                        return (<Card key={'shape_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
+                        return (<Card key={'shape_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{((100-item.score.toFixed(2))*100)/100 + '%'}</span>}
                                       style={{
                                           width: 390,
                                           marginBottom: 20,
@@ -138,7 +182,7 @@ class LocarnoResultCards extends React.Component {
                                       }}>
                             <div>
                                 <Row>
-                                    <Col span="10" style={{marginTop: -10}}>
+                                    <Col span="10" style={{display:'flex', justifyContent:'center', height:'130px', alignItems:"center"}}>
                                         <Popover
                                             content={self.renderOneImage(item.image)}>
                                             <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
@@ -146,9 +190,11 @@ class LocarnoResultCards extends React.Component {
                                         </Popover>
                                     </Col>
                                     <Col span="5" style={{textAlign: "right"}}>
-                                        <div>专利号：</div>
-                                        <div>申请人：</div>
+                                        <div>申请号：</div>
                                         <div>申请日：</div>
+                                        <div>公告号：</div>
+                                        <div>公告日：</div>
+                                        <div>申请人：</div>
                                         <div>主分类号：</div>
                                         <div>分类号：</div>
                                     </Col>
@@ -157,13 +203,19 @@ class LocarnoResultCards extends React.Component {
                                             whiteSpace:'nowrap',
                                             wordBreak:'keep-all',
                                             overflow:'hidden',
-                                            textOverflow:'ellipsis'}} onClick={self.getDetail.bind(self, item.code, item.patent.main_class)}>{item.code}</a>
+                                            textOverflow:'ellipsis'}} onClick={self.getDetail.bind(self, item.code, item.patent.main_class)}>{item.code}</a> <div>{item.patent.ap_date}</div>
+                                        <div title={item.patent.code} style={{width:140,
+                                            whiteSpace:'nowrap',
+                                            wordBreak:'keep-all',
+                                            overflow:'hidden',
+                                            textOverflow:'ellipsis'}}>{item.patent.pub_num}　</div>
+                                        <div>{item.patent.pub_date}</div>
                                         <div title={item.patent.pa_name} style={{width:140,
                                             whiteSpace:'nowrap',
                                             wordBreak:'keep-all',
                                             overflow:'hidden',
                                             textOverflow:'ellipsis'}}>{item.patent.pa_name}　</div>
-                                        <div>{item.patent.ap_date}</div>
+
                                         <div>{item.patent.main_class}</div>
                                         <div title={item.patent.sub_class} style={{width:140,
                                             whiteSpace:'nowrap',
@@ -178,7 +230,7 @@ class LocarnoResultCards extends React.Component {
                 </TabPane>
                 <TabPane tab={"颜色 （" + this.state.data.color.length +"）"}  key="color">
                     {this.state.data.color.map(function (item) {
-                        return (<Card key={'color_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
+                        return (<Card key={'color_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{((100-item.score.toFixed(2))*100)/100 + '%'}</span>}
                                       style={{
                                           width: 390,
                                           marginBottom: 20,
@@ -188,7 +240,7 @@ class LocarnoResultCards extends React.Component {
                                       }}>
                             <div>
                                 <Row>
-                                    <Col span="10" style={{marginTop: -10}}>
+                                    <Col span="10" style={{display:'flex', justifyContent:'center', height:'130px', alignItems:"center"}}>
                                         <Popover
                                             content={self.renderOneImage(item.image)}>
                                             <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
@@ -196,9 +248,11 @@ class LocarnoResultCards extends React.Component {
                                         </Popover>
                                     </Col>
                                     <Col span="5" style={{textAlign: "right"}}>
-                                        <div>专利号：</div>
-                                        <div>申请人：</div>
+                                        <div>申请号：</div>
                                         <div>申请日：</div>
+                                        <div>公告号：</div>
+                                        <div>公告日：</div>
+                                        <div>申请人：</div>
                                         <div>主分类号：</div>
                                         <div>分类号：</div>
                                     </Col>
@@ -207,13 +261,19 @@ class LocarnoResultCards extends React.Component {
                                             whiteSpace:'nowrap',
                                             wordBreak:'keep-all',
                                             overflow:'hidden',
-                                            textOverflow:'ellipsis'}}　onClick={self.getDetail.bind(self, item.code, item.patent.main_class)}>{item.code}</a>
+                                            textOverflow:'ellipsis'}}　onClick={self.getDetail.bind(self, item.code, item.patent.main_class)}>{item.code}</a> <div>{item.patent.ap_date}</div>
+                                        <div title={item.patent.code} style={{width:140,
+                                            whiteSpace:'nowrap',
+                                            wordBreak:'keep-all',
+                                            overflow:'hidden',
+                                            textOverflow:'ellipsis'}}>{item.patent.pub_num}　</div>
+                                        <div>{item.patent.pub_date}</div>
                                         <div title={item.patent.pa_name} style={{width:140,
                                             whiteSpace:'nowrap',
                                             wordBreak:'keep-all',
                                             overflow:'hidden',
                                             textOverflow:'ellipsis'}}>{item.patent.pa_name}　</div>
-                                        <div>{item.patent.ap_date}</div>
+
                                         <div>{item.patent.main_class}</div>
                                         <div title={item.patent.sub_class} style={{width:140,
                                             whiteSpace:'nowrap',
@@ -228,7 +288,7 @@ class LocarnoResultCards extends React.Component {
                 </TabPane>
                 <TabPane tab={"纹理 （" + this.state.data.lbp.length +"）"}  key="lbp">
                     {this.state.data.lbp.map(function (item) {
-                        return (<Card key={'lbp_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
+                        return (<Card key={'lbp_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{((100-item.score.toFixed(2))*100)/100 + '%'}</span>}
                                       style={{
                                           width: 390,
                                           marginBottom: 20,
@@ -238,17 +298,20 @@ class LocarnoResultCards extends React.Component {
                                       }}>
                             <div>
                                 <Row>
-                                    <Col span="10" style={{marginTop: -10}}>
+                                    <Col span="10" style={{display:'flex', justifyContent:'center', height:'130px', alignItems:"center"}}>
                                         <Popover
+
                                             content={self.renderOneImage(item.image)}>
                                             <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
                                                  src={ window.server_address + '/image.ashx?name=' + item.image}/>
                                         </Popover>
                                     </Col>
                                     <Col span="5" style={{textAlign: "right"}}>
-                                        <div>专利号：</div>
-                                        <div>申请人：</div>
+                                        <div>申请号：</div>
                                         <div>申请日：</div>
+                                        <div>公告号：</div>
+                                        <div>公告日：</div>
+                                        <div>申请人：</div>
                                         <div>主分类号：</div>
                                         <div>分类号：</div>
                                     </Col>
@@ -257,13 +320,19 @@ class LocarnoResultCards extends React.Component {
                                             whiteSpace:'nowrap',
                                             wordBreak:'keep-all',
                                             overflow:'hidden',
-                                            textOverflow:'ellipsis'}} onClick={self.getDetail.bind(self, item.code, item.patent.main_class)}>{item.code}</a>
+                                            textOverflow:'ellipsis'}} onClick={self.getDetail.bind(self, item.code, item.patent.main_class)}>{item.code}</a> <div>{item.patent.ap_date}</div>
+                                        <div title={item.patent.code} style={{width:140,
+                                            whiteSpace:'nowrap',
+                                            wordBreak:'keep-all',
+                                            overflow:'hidden',
+                                            textOverflow:'ellipsis'}}>{item.patent.pub_num}　</div>
+                                        <div>{item.patent.pub_date}</div>
                                         <div title={item.patent.pa_name} style={{width:140,
                                             whiteSpace:'nowrap',
                                             wordBreak:'keep-all',
                                             overflow:'hidden',
                                             textOverflow:'ellipsis'}}>{item.patent.pa_name}　</div>
-                                        <div>{item.patent.ap_date}</div>
+
                                         <div>{item.patent.main_class}</div>
                                         <div title={item.patent.sub_class} style={{width:140,
                                             whiteSpace:'nowrap',
@@ -281,9 +350,10 @@ class LocarnoResultCards extends React.Component {
         }else if(this.state.data.hasOwnProperty("shape") && this.state.data.shape.length>0){
          return (
              <Tabs   type="line" style={{marginTop:12}}>
-                 <TabPane tab={"结果 （" + this.state.data.shape.length +"）"} key="shape">
-                     { this.state.data.shape.map(function (item) {
-                         return (<Card key={item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{item.score}</span>}
+                 <TabPane tab={"结果 （" + self.state.data.shape.length +"）"} key="shape">
+                     { self.state.data.shape.map(function (item) {
+
+                         return (<Card key={'shape_' + item.image} title={self.getTitle(item.patent.ap_name)} extra={<span>{((100-item.score.toFixed(2))*100)/100 + '%'}</span>}
                                        style={{
                                            width: 390,
                                            marginBottom: 20,
@@ -293,7 +363,7 @@ class LocarnoResultCards extends React.Component {
                                        }}>
                              <div>
                                  <Row>
-                                     <Col span="10" style={{marginTop: -10}}>
+                                     <Col span="10" style={{display:'flex', justifyContent:'center', height:'130px', alignItems:"center"}}>
                                          <Popover
                                              content={self.renderOneImage(item.image)}>
                                              <img alt="" style={{maxWidth:"100%", maxHeight: 90}}
@@ -301,9 +371,11 @@ class LocarnoResultCards extends React.Component {
                                          </Popover>
                                      </Col>
                                      <Col span="5" style={{textAlign: "right"}}>
-                                         <div>专利号：</div>
-                                         <div>申请人：</div>
+                                         <div>申请号：</div>
                                          <div>申请日：</div>
+                                         <div>公告号：</div>
+                                         <div>公告日：</div>
+                                         <div>申请人：</div>
                                          <div>主分类号：</div>
                                          <div>分类号：</div>
                                      </Col>
@@ -313,12 +385,19 @@ class LocarnoResultCards extends React.Component {
                                              wordBreak:'keep-all',
                                              overflow:'hidden',
                                              textOverflow:'ellipsis'}} onClick={self.getDetail.bind(self, item.code, item.patent.main_class)}>{item.code}</a>
+                                         <div>{item.patent.ap_date}</div>
+                                         <div title={item.patent.code} style={{width:140,
+                                             whiteSpace:'nowrap',
+                                             wordBreak:'keep-all',
+                                             overflow:'hidden',
+                                             textOverflow:'ellipsis'}}>{item.patent.pub_num}　</div>
+                                         <div>{item.patent.pub_date}</div>
                                          <div title={item.patent.pa_name} style={{width:140,
                                              whiteSpace:'nowrap',
                                              wordBreak:'keep-all',
                                              overflow:'hidden',
                                              textOverflow:'ellipsis'}}>{item.patent.pa_name}　 </div>
-                                         <div>{item.patent.ap_date}</div>
+
                                          <div>{item.patent.main_class}</div>
                                          <div title={item.patent.sub_class} style={{width:140,
                                              whiteSpace:'nowrap',
@@ -342,6 +421,7 @@ class LocarnoResultCards extends React.Component {
 
         return (<div>
                 {self.getTabs()}
+                <div style={{'clear':'both','textAlign':'center'}}><Button  style={{width:'100%'}} onClick={this.more}>更多</Button></div>
             </div>
         )
     }

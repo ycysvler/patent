@@ -76,7 +76,7 @@ class LocarnoZoneCreate extends React.Component {
                         <Breadcrumb.Item>新建查询</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
-                <LocarnoCreate jobType="2" jobTypeText="zone"  />
+                <LocarnoCreate jobType="2" jobTypeText="zone" back={this.goToHistorySearch.bind(this)} />
             </Layout>
         );
     }

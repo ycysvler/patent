@@ -76,7 +76,7 @@ class LocarnoFastCreate extends React.Component {
                         <Breadcrumb.Item>新建查询</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
-                <AttachedCreate jobType="0" jobTypeText="fast" />
+                <AttachedCreate jobType="0" jobTypeText="fast" back={this.goToHistorySearch.bind(this)} />
             </Layout>
         );
     }
