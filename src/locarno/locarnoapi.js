@@ -134,12 +134,13 @@ const LocarnoStore = Reflux.createStore({
             }
         });
     },
-    onGetResult: function(jobid,typeid,token,page) {
+    onGetResult: function(jobid,patent_type,feature_type,page) {
         let url = window.server_address + "/locarno/result.ashx?";
         let self = this;
         let param = {
             jobid:jobid,
-            typeid:typeid,
+            patent_type:patent_type,
+            feature_type:feature_type,
             page:page
         };
         $.ajax({
@@ -152,7 +153,7 @@ const LocarnoStore = Reflux.createStore({
             },
             success: function (data, status) {
                 if(data.code === 200) {
-                    self.trigger('getResult', typeid, data.data);
+                    self.trigger('getResult', data.data, patent_type,feature_type);
                 }
             },
             error: function (reason) {

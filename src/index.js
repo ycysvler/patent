@@ -43,7 +43,6 @@ import 'antd/dist/antd.css';
 import './styles/base.less';
 import './styles/index.css';
 
-
 const routes = (
     <Router history={hashHistory}>
         {/*登陆页*/}

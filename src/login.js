@@ -23,6 +23,7 @@ const Login = React.createClass({
     login() {
         let account = this.refs.account.refs.input.value;
         let password = this.refs.password.refs.input.value;
+
         if(account && account === "") {
             alert("账号不能为空");
             return;
@@ -31,7 +32,7 @@ const Login = React.createClass({
             alert("密码不能为空");
             return;
         }
-        IndexActions.login(account,password);
+       IndexActions.login(account,password);
     },
 
     render() {

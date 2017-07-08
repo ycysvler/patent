@@ -1,3 +1,27 @@
 .content{
     overflow-y: auto !important;;
 }
+.props{
+    /*color:#383838;*/
+color:rgba(255, 255, 255, 0.67);
+}
+
+.props .item{
+    padding:0 16px;
+    font-size: 12px;
+    line-height: 42px;
+}
+.props .dark{
+    background: #333;
+}
+
+.bg_white{
+    background:white !important;;
+}
+.bottom_line{
+    border-bottom: 1px solid #ddd;
+}
+
+.patent_type_radio{
+    padding:0 28px !important;
+}

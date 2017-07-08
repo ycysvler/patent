@@ -2,7 +2,7 @@
  * Created by VLER on 2017/3/10.
  */
 import React from 'react';
-import {Layout, Popover, Button, Row, Col, Input, TreeSelect} from 'antd';
+import {Layout, Popover, Button, Row, Col, Input, TreeSelect,Icon} from 'antd';
 import $ from 'jquery';
 import {LocarnoActions, LocarnoStore} from '../locarnoapi';
 
@@ -11,6 +11,7 @@ const {Content} = Layout;
 class LocarnoCreate extends React.Component {
     constructor(props) {
         super(props);
+
         this.unsubscribe = LocarnoStore.listen(this.onStatusChange.bind(this));
 
         this.state = {
@@ -139,6 +140,15 @@ class LocarnoCreate extends React.Component {
         </div>
     }
 
+    remove(image){
+        console.log(image);
+        var imageList = this.state.uploadImageList;
+        console.log(imageList);
+        imageList.remove(image);
+        console.log(imageList);
+        this.setState({'uploadImageList': imageList});
+    }
+
     render() {
         let self = this;
         let canSearch = self.state.describeState && self.state.typeState && self.state.imageState;
@@ -176,14 +186,18 @@ class LocarnoCreate extends React.Component {
                                 <span>选择图像：</span>
                             </Col>
                             <Col span="18">
-
                                 {
                                     self.state.uploadImageList.map(function (image) {
                                         return <div key={image}
                                                     style={{height: 50, width: 50, marginRight: 8, float: 'left'}}>
                                             <Popover content={self.renderOneImage(image)}>
-                                                <img alt="" style={{width: "90%", height: "90%"}}
-                                                     src={window.server_address + "/" + image}/></Popover></div>
+                                                <div style={{position:'relative'}}>
+
+                                                <img alt="" onClick={self.remove.bind(self, image)} style={{maxWidth: "50px", maxHeight: "50px",cursor:"pointer"}}
+                                                     src={window.server_address + "/" + image}/>
+                                                    <Icon type="close-circle" style={{position:'absolute',right:'0px',top:'0px'}} />
+
+                                                </div></Popover></div>
                                     })
                                 }
                                 <Button icon="plus" onClick={this.checkImage.bind(this)} style={{
