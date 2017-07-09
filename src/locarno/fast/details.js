@@ -34,11 +34,12 @@ class LocarnoFastDetails extends React.Component {
 
         this.getResult(this.props.location.state.searchData.typeids[0], 'group');
     }
+
     componentWillUnmount() {
         this.unsubscribe();
     }
 
-    onStatusChange(type, data,patent_type, feature_type) {
+    onStatusChange(type, data, patent_type, feature_type) {
         if (type === "getDetail") {
             this.setState({showDetailDialog: true, detailData: data});
         }
@@ -48,25 +49,27 @@ class LocarnoFastDetails extends React.Component {
 
             let page = this.state.page;
 
-            if(this.state.feature_type === feature_type){
+            if (this.state.feature_type === feature_type) {
                 temp = temp.concat(data);
-            }else{
+            } else {
                 temp = data;
                 page = 0;
             }
 
-            this.setState({data: temp,feature_type:feature_type,page:page});
+            this.setState({data: temp, feature_type: feature_type, page: page});
         }
     }
+
     hideDetailDialog() {
         this.setState({showDetailDialog: false});
     }
+
     getDetail(code, main_class) {
         LocarnoActions.getDetail(code, main_class);
     }
 
     goToHistorySearch() {
-        this.props.router.push( '/locarno/fast/list');
+        this.props.router.push('/locarno/fast/list');
     }
 
     renderDetailModal() {
@@ -79,18 +82,20 @@ class LocarnoFastDetails extends React.Component {
     }
 
     onPatentChange(e) {
-        this.getResult(e.target.value, this.state.feature_type,this.state.page);
+        this.getResult(e.target.value, this.state.feature_type, this.state.page);
     }
 
     onFeatureChange(e) {
-        this.getResult(this.state.patent_type, e.target.value,this.state.page);
+        this.getResult(this.state.patent_type, e.target.value, this.state.page);
     }
-    onMore(){
+
+    onMore() {
         let page = this.state.page + 1;
-        this.getResult(this.state.patent_type, this.state.feature_type,page);
-        this.setState({'page':page});
+        this.getResult(this.state.patent_type, this.state.feature_type, page);
+        this.setState({'page': page});
     }
-    getResult(patent_type, feature_type,page) {
+
+    getResult(patent_type, feature_type, page) {
         LocarnoActions.getResult(
             this.props.location.state.searchData.jobid,
             patent_type,
@@ -98,10 +103,12 @@ class LocarnoFastDetails extends React.Component {
             page
         );
     }
-    scrolla(e){
+
+    scrolla(e) {
         console.log(e);
 
     }
+
     render() {
         let self = this;
 
@@ -152,19 +159,20 @@ class LocarnoFastDetails extends React.Component {
                                     )
                                 })}
                                 <Card
-                                      title="more"
-                                      style={{
-                                          cursor:'pointer',
-                                          width: 390,
-                                          height:228,
-                                          marginBottom: 20,
-                                          marginLeft: 6,
-                                          overflow: "left",
-                                          float: 'left'
-                                      }}>
+                                    title="more"
+                                    style={{
+                                        cursor: 'pointer',
+                                        width: 390,
+                                        height: 228,
+                                        marginBottom: 20,
+                                        marginLeft: 6,
+                                        overflow: "left",
+                                        float: 'left'
+                                    }}>
                                     <div className="more_card" onClick={this.onMore.bind(this)}>
-                                    <h1>加载更多......</h1>
+                                        <h1 style={{marginTop: '40px'}}>加载更多......</h1>
                                     </div>
+
                                 </Card>
                             </Content>
                         </Layout>

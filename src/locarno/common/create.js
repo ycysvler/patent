@@ -11,13 +11,12 @@ const {Content} = Layout;
 class LocarnoCreate extends React.Component {
     constructor(props) {
         super(props);
-
         this.unsubscribe = LocarnoStore.listen(this.onStatusChange.bind(this));
 
         this.state = {
             uploadImageList: [],
             description: "",
-            typeIds: [],
+            typeIds: window.localStorage["typeIds"].split(','),
             typeNames: [],
             describeState: false,
             typeState: false,
@@ -27,20 +26,13 @@ class LocarnoCreate extends React.Component {
             jobListPath:"/locarno/"+this.props.jobTypeText+"/list"
         };
     }
-
-    static contextTypes = {
-        router: React.PropTypes.object.isRequired,
-    };
-
     componentDidMount() {
         LocarnoActions.getAllType(this.getCookie("token"));
         this.refs.inputfile.onchange = this.inputChange.bind(this);
     }
-
     componentWillUnmount() {
         this.unsubscribe();
     }
-
     onStatusChange(type, data) {
         if (type === "uploadImage") {
             var uploadImageList = this.state.uploadImageList;
@@ -49,12 +41,12 @@ class LocarnoCreate extends React.Component {
             this.treeData = data;
             this.setState({typeList: data});
         } else if (type === "create") {
-            this.context.router.push(this.state.jobListPath);
+            this.props.router.push(this.state.jobListPath);
         }
     }
 
     goToHistorySearch() {
-        this.context.router.push(this.state.jobListPath);
+        this.props.router.push(this.state.jobListPath);
     }
 
     getCookie(name) {
@@ -123,6 +115,9 @@ class LocarnoCreate extends React.Component {
     }
 
     setTypeState(value, label) {
+
+
+        window.localStorage["typeIds"] = value;
         if (label.length > 0) {
             this.setState({typeState: true, typeIds: value, typeNames: value});
         } else {
@@ -172,11 +167,13 @@ class LocarnoCreate extends React.Component {
                             <Col span="8">
                                 <TreeSelect multiple
                                             treeCheckable
-                                            treeData={this.treeData}
+                                            value={this.state.typeIds}
+                                            treeData={this.state.typeList}
                                             showCheckedStrategy={this.show_parent}
                                             onChange={this.setTypeState.bind(this)}
                                             style={{width: "100%"}}
                                 ></TreeSelect>
+
                             </Col>
                         </Row>
                     </div>

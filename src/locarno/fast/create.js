@@ -4,7 +4,7 @@
 import React from 'react';
 import {Layout, Breadcrumb, TreeSelect} from 'antd';
 
-import AttachedCreate from '../common/create';
+import Create from '../common/create';
 
 class LocarnoFastCreate extends React.Component {
     constructor(props) {
@@ -76,7 +76,7 @@ class LocarnoFastCreate extends React.Component {
                         <Breadcrumb.Item>新建查询</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
-                <AttachedCreate jobType="0" jobTypeText="fast" back={this.goToHistorySearch.bind(this)} />
+                <Create jobType="0" jobTypeText="fast" back={this.goToHistorySearch.bind(this)} />
             </Layout>
         );
     }
