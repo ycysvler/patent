@@ -4,7 +4,8 @@
 import React from 'react';
 import {Layout, Breadcrumb, Table, Tabs, Radio, Card, Row, Col, Popover,} from 'antd';
 import {LocarnoActions, LocarnoStore} from '../locarnoapi';
-import LocarnoResultCards from '../common/resultCard.js';
+import PatentCards from '../common/patentcard.js';
+import GroupCards from '../common/groupcard.js';
 import DetailModal from '../../attached/fast/detailModal.js';
 import JobBar from '../common/jobbar'
 
@@ -29,21 +30,22 @@ class LocarnoFastDetails extends React.Component {
             patent_type: this.props.location.state.searchData.typeids[0],
             feature_type: 'deep',
             page: 0
-        }
+        };
 
         this.getResult(this.props.location.state.searchData.typeids[0], 'deep');
     }
+
     componentWillUnmount() {
         this.unsubscribe();
     }
 
-    onStatusChange(type, data) {
+    onStatusChange(type, data,patent_type, feature_type) {
         if (type === "getDetail") {
             this.setState({showDetailDialog: true, detailData: data});
         }
 
         if (type === "getResult") {
-            this.setState({data: data});
+            this.setState({data: data,feature_type:feature_type});
         }
     }
 
@@ -63,7 +65,6 @@ class LocarnoFastDetails extends React.Component {
         this.context.router.push("/locarno/fast/list");
     }
 
-
     renderDetailModal() {
         if (this.state.showDetailDialog) {
             return <DetailModal visible={this.state.showDetailDialog}
@@ -74,7 +75,6 @@ class LocarnoFastDetails extends React.Component {
     }
 
     onPatentChange(e) {
-        this.setState({patent_type: e.target.value});
         this.getResult(e.target.value, this.state.feature_type);
     }
 
@@ -88,29 +88,6 @@ class LocarnoFastDetails extends React.Component {
             patent_type,
             feature_type,
             this.state.page
-        );
-    }
-
-    renderOneImage(url) {
-        url = window.server_address + '/image.ashx?name=' + url;
-        return <div>
-            <img alt="" style={{maxWidth: 300, maxHeight: 300}} src={url}/>
-        </div>
-    }
-
-    getTitle(title, index) {
-        return (
-            <div
-                title={title}
-                style={{
-                    width: 280,
-                    fontWeight: 'bold',
-                    whiteSpace: 'nowrap',
-                    wordBreak: 'keep-all',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
-                }}
-            >{"[" + (index + 1) + "] " + title}</div>
         );
     }
 
@@ -147,7 +124,7 @@ class LocarnoFastDetails extends React.Component {
                                 </RadioGroup>
                                 特征：
 
-                                <RadioGroup onChange={self.onFeatureChange.bind(this)} defaultValue="group">
+                                <RadioGroup onChange={self.onFeatureChange.bind(this)} defaultValue="deep">
                                     <RadioButton className="patent_type_radio" value="group">权重</RadioButton>
                                     <RadioButton className="patent_type_radio" value="deep">综合</RadioButton>
                                     <RadioButton className="patent_type_radio" value="shape">形状</RadioButton>
@@ -156,85 +133,14 @@ class LocarnoFastDetails extends React.Component {
                                 </RadioGroup>
                             </Header>
                             <Content className="bg_white" style={{paddingTop: 80}}>
-
                                 {self.state.data.map(function (item, index) {
-                                    return (<Card key={'deep_' + item.image}
-                                                  title={self.getTitle(item.patent.ap_name, index)}
-                                                  extra={
-                                                      <span>{((100 - item.score.toFixed(2)) * 100) / 100 + '%'}</span>}
-                                                  style={{
-                                                      width: 390,
-                                                      marginBottom: 20,
-                                                      marginLeft: 6,
-                                                      overflow: "left",
-                                                      float: 'left'
-                                                  }}>
-                                        <div>
-                                            <Row>
-                                                <Col span="10" style={{
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    height: '130px',
-                                                    alignItems: "center"
-                                                }}>
-                                                    <Popover
-                                                        content={self.renderOneImage(item.image)}>
-                                                        <img alt=""
-                                                             style={{maxWidth: "100%", maxHeight: 90}}
-                                                             src={ window.server_address + '/image.ashx?name=' + item.image}/>
-                                                    </Popover>
-                                                </Col>
-                                                <Col span="5" style={{textAlign: "right"}}>
-                                                    <div>申请号：</div>
-                                                    <div>申请日：</div>
-                                                    <div>公告号：</div>
-                                                    <div>公告日：</div>
-                                                    <div>申请人：</div>
-                                                    <div>主分类号：</div>
-                                                    <div>分类号：</div>
-                                                </Col>
-                                                <Col span="8">
-                                                    <a style={{
-                                                        width: 140,
-                                                        whiteSpace: 'nowrap',
-                                                        wordBreak: 'keep-all',
-                                                        overflow: 'hidden',
-                                                        textOverflow: 'ellipsis'
-                                                    }}
-                                                       onClick={self.getDetail.bind(self,item.code, item.patent.main_class)}
-                                                    >{item.code}</a>
-                                                    <div>{item.patent.ap_date}</div>
-                                                    <div title={item.patent.code} style={{
-                                                        width: 140,
-                                                        whiteSpace: 'nowrap',
-                                                        wordBreak: 'keep-all',
-                                                        overflow: 'hidden',
-                                                        textOverflow: 'ellipsis'
-                                                    }}>{item.patent.pub_num} </div>
-                                                    <div>{item.patent.pub_date}</div>
-                                                    <div title={item.patent.pa_name} style={{
-                                                        width: 140,
-                                                        whiteSpace: 'nowrap',
-                                                        wordBreak: 'keep-all',
-                                                        overflow: 'hidden',
-                                                        textOverflow: 'ellipsis'
-                                                    }}>{item.patent.pa_name} </div>
-
-
-                                                    <div>{item.patent.main_class}</div>
-                                                    <div title={item.patent.sub_class} style={{
-                                                        width: 140,
-                                                        whiteSpace: 'nowrap',
-                                                        wordBreak: 'keep-all',
-                                                        overflow: 'hidden',
-                                                        textOverflow: 'ellipsis'
-                                                    }}>{item.patent.sub_class}</div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    </Card>)
+                                    return (self.state.feature_type === 'group' ?
+                                            <GroupCards getdetail={self.getDetail.bind(self)} key={index} index={index}
+                                                        item={item}/> :
+                                            <PatentCards getdetail={self.getDetail.bind(self)} key={index} index={index}
+                                                         item={item}/>
+                                    )
                                 })}
-
                             </Content>
                         </Layout>
                     </Content>

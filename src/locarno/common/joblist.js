@@ -42,7 +42,6 @@ class LocarnoJobList extends React.Component {
     }
 
     refush(data){
-        console.log(data);
         var self = this;
         for(var i=0;i<data.length;i++){
             var item  = data[i];
