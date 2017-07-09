@@ -2,12 +2,12 @@
  * Created by VLER on 2017/3/10.
  */
 import React from 'react';
-import {Layout, Breadcrumb, Table, Tabs, Radio, Card, Row, Col, Popover,} from 'antd';
+import {Layout, Breadcrumb, Radio, Card} from 'antd';
 import {LocarnoActions, LocarnoStore} from '../locarnoapi';
 import PatentCards from '../common/patentcard.js';
 import GroupCards from '../common/groupcard.js';
 import DetailModal from '../../attached/fast/detailModal.js';
-import JobBar from '../common/jobbar'
+import JobBar from '../common/jobbar';
 
 import '../../attached/common/css.css';
 import '../common/css.css';
@@ -16,7 +16,7 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 const {Content, Sider, Header} = Layout;
-const TabPane = Tabs.TabPane;
+
 
 class LocarnoFastDetails extends React.Component {
     constructor(props) {
@@ -28,13 +28,12 @@ class LocarnoFastDetails extends React.Component {
             showDetailDialog: false,
             detailData: {},
             patent_type: this.props.location.state.searchData.typeids[0],
-            feature_type: 'deep',
+            feature_type: 'group',
             page: 0
         };
 
-        this.getResult(this.props.location.state.searchData.typeids[0], 'deep');
+        this.getResult(this.props.location.state.searchData.typeids[0], 'group');
     }
-
     componentWillUnmount() {
         this.unsubscribe();
     }
@@ -45,24 +44,29 @@ class LocarnoFastDetails extends React.Component {
         }
 
         if (type === "getResult") {
-            this.setState({data: data,feature_type:feature_type});
+            let temp = this.state.data;
+
+            let page = this.state.page;
+
+            if(this.state.feature_type === feature_type){
+                temp = temp.concat(data);
+            }else{
+                temp = data;
+                page = 0;
+            }
+
+            this.setState({data: temp,feature_type:feature_type,page:page});
         }
     }
-
     hideDetailDialog() {
         this.setState({showDetailDialog: false});
     }
-
     getDetail(code, main_class) {
         LocarnoActions.getDetail(code, main_class);
     }
 
-    static contextTypes = {
-        router: React.PropTypes.object.isRequired,
-    };
-
     goToHistorySearch() {
-        this.context.router.push("/locarno/fast/list");
+        this.props.router.push( '/locarno/fast/list');
     }
 
     renderDetailModal() {
@@ -75,22 +79,29 @@ class LocarnoFastDetails extends React.Component {
     }
 
     onPatentChange(e) {
-        this.getResult(e.target.value, this.state.feature_type);
+        this.getResult(e.target.value, this.state.feature_type,this.state.page);
     }
 
     onFeatureChange(e) {
-        this.getResult(this.state.patent_type, e.target.value);
+        this.getResult(this.state.patent_type, e.target.value,this.state.page);
     }
-
-    getResult(patent_type, feature_type) {
+    onMore(){
+        let page = this.state.page + 1;
+        this.getResult(this.state.patent_type, this.state.feature_type,page);
+        this.setState({'page':page});
+    }
+    getResult(patent_type, feature_type,page) {
         LocarnoActions.getResult(
             this.props.location.state.searchData.jobid,
             patent_type,
             feature_type,
-            this.state.page
+            page
         );
     }
+    scrolla(e){
+        console.log(e);
 
+    }
     render() {
         let self = this;
 
@@ -123,8 +134,7 @@ class LocarnoFastDetails extends React.Component {
                                     }
                                 </RadioGroup>
                                 特征：
-
-                                <RadioGroup onChange={self.onFeatureChange.bind(this)} defaultValue="deep">
+                                <RadioGroup onChange={self.onFeatureChange.bind(this)} defaultValue="group">
                                     <RadioButton className="patent_type_radio" value="group">权重</RadioButton>
                                     <RadioButton className="patent_type_radio" value="deep">综合</RadioButton>
                                     <RadioButton className="patent_type_radio" value="shape">形状</RadioButton>
@@ -132,7 +142,7 @@ class LocarnoFastDetails extends React.Component {
                                     <RadioButton className="patent_type_radio" value="lbp">纹理</RadioButton>
                                 </RadioGroup>
                             </Header>
-                            <Content className="bg_white" style={{paddingTop: 80}}>
+                            <Content className="bg_white" style={{paddingTop: 80}} onScroll={self.scrolla.bind(this)}>
                                 {self.state.data.map(function (item, index) {
                                     return (self.state.feature_type === 'group' ?
                                             <GroupCards getdetail={self.getDetail.bind(self)} key={index} index={index}
@@ -141,6 +151,21 @@ class LocarnoFastDetails extends React.Component {
                                                          item={item}/>
                                     )
                                 })}
+                                <Card
+                                      title="more"
+                                      style={{
+                                          cursor:'pointer',
+                                          width: 390,
+                                          height:228,
+                                          marginBottom: 20,
+                                          marginLeft: 6,
+                                          overflow: "left",
+                                          float: 'left'
+                                      }}>
+                                    <div className="more_card" onClick={this.onMore.bind(this)}>
+                                    <h1>加载更多......</h1>
+                                    </div>
+                                </Card>
                             </Content>
                         </Layout>
                     </Content>

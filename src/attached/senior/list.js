@@ -7,12 +7,9 @@ import JobList from '../common/joblist';
 import '../common/css.css';
 
 class AttachedSeniorList extends React.Component {
-    static contextTypes = {
-        router: React.PropTypes.object.isRequired,
-    };
 
     goToCreateNewSearch() {
-        this.context.router.push("/attached/senior/create");
+        this.props.router.push("/attached/senior/create");
     }
 
     render() {

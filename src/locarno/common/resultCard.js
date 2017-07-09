@@ -2,13 +2,12 @@
  * Created by xiao on 2017/4/4.
  */
 import React from 'react';
-import {Card, Row, Col, Popover,Tabs, Button,Spin,Layout } from 'antd';
+import {Card, Row, Col, Popover,Tabs, Button,Spin } from 'antd';
 import {LocarnoActions, LocarnoStore}  from '../locarnoapi';
 
 import './css.css';
 
 const TabPane = Tabs.TabPane;
-const {Content,Sider} = Layout;
 
 class LocarnoResultCards extends React.Component {
 

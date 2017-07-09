@@ -3,8 +3,7 @@
  */
 
 import React from 'react';
-import {Card, Row, Col, Popover} from 'antd';
-
+import {Card,Popover} from 'antd';
 import './css.css';
 
 class GroupCards extends React.Component {

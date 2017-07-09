@@ -43,12 +43,8 @@ class LocarnoZoneDetails extends React.Component {
         LocarnoActions.getDetail(code,main_class, this.getCookie("token"));
     }
 
-    static contextTypes = {
-        router: React.PropTypes.object.isRequired,
-    };
-
     goToHistorySearch() {
-        this.context.router.push("/locarno/zone/list");
+        this.props.router.push("/locarno/zone/list");
     }
 
     getCookie(name) {

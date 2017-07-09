@@ -1,26 +1,29 @@
 import React from 'react';
 import {Input, Row, Col,  Button} from 'antd';
 import {IndexActions, IndexStore} from './api.js';
-import Reflux from 'reflux';
 
 import './styles/login.css';
 
-const Login = React.createClass({
-    mixins:[Reflux.listenTo(IndexStore,'onStatusChange')],
-    getInitialState: function () {
-        return {"logined": false};
-    },
-    onStatusChange: function(data) {
+class Login extends React.Component {
+    constructor(props) {
+        super(props);
+        this.unsubscribe = IndexStore.listen(this.onStatusChange.bind(this));
+        this.state ={"logined": false};
+
+    }
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
+    onStatusChange=(data)=> {
         window.document.cookie = "token="+data.token+";path=/";
         window.document.cookie = "user_id="+data.userid+";path=/";
         window.document.cookie = "user_name="+data.username+";path=/";
-        this.context.router.push("/attached/fast/list");
-    },
-    contextTypes: {
-        // 这个是为了使用js代码跳转页面使用的
-        router: React.PropTypes.object
-    },
-    login() {
+        //this.context.router.push("/attached/fast/list");
+        this.props.router.push( '/locarno/fast/list');
+    }
+
+    login=()=> {
         let account = this.refs.account.refs.input.value;
         let password = this.refs.password.refs.input.value;
 
@@ -33,9 +36,9 @@ const Login = React.createClass({
             return;
         }
        IndexActions.login(account,password);
-    },
+    }
 
-    render() {
+    render=()=> {
         let selectshowstyle = this.state.logined ? {display: 'block'} : {display: 'none'};
         let loginput = !this.state.logined ? {display: 'block'} : {display: 'none'};
 
@@ -95,6 +98,6 @@ const Login = React.createClass({
             </div>
         );
     }
-})
+}
 
 export default Login;

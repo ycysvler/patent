@@ -1,6 +1,5 @@
 import React from 'react';
 import {Layout, Menu, Button} from 'antd';
-import Reflux from 'reflux';
 import {Link,browserHistory} from 'react-router';
 import {IndexActions, IndexStore} from './api.js';
 
@@ -9,20 +8,26 @@ const {Header, Content, Sider} = Layout;
 
 
 import './styles/app.css';
+class App extends React.Component {
 
-const App = React.createClass({
-    mixins: [Reflux.listenTo(IndexStore, 'onStatusChange')],
-    getInitialState: function () {
-        return {"indexList": [], "leftIndex": [],topMenuKey:this.getTopMenuKey(this.getUrl()),"leftMenuKey":this.getUrl()};
-    },
+    constructor(props) {
+        super(props);
+        this.unsubscribe = IndexStore.listen(this.onStatusChange.bind(this));
+        this.state ={"indexList": [], "leftIndex": [],topMenuKey:this.getTopMenuKey(this.getUrl()),"leftMenuKey":this.getUrl()};
 
-    getTopMenuKey(url){
+        IndexActions.getIndexes(this.getCookie("user_id"),this.getCookie("token"));
+    }
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
+    getTopMenuKey=(url)=>{
         if(url.indexOf("attached")>-1){return "01";}
         if(url.indexOf("locarno")>-1){return "02";}
         if(url.indexOf("system")>-1){return "07";}
         if(url.indexOf("tools")>-1){return "03";}
-    },
-    getTopMenuChildren(data, url){
+    }
+    getTopMenuChildren=(data, url)=>{
         var self = this;
         for(var i=0;i<data.length;i++){
             var item = data[i];
@@ -30,33 +35,20 @@ const App = React.createClass({
                 return item.children;
             }
         }
-    },
-    getUrl(){
+    }
+    getUrl=()=>{
         var path = browserHistory.getCurrentLocation().hash;
         return path.substring(1, path.length);
-    },
+    }
 
-    componentDidMount: function () {
-        IndexActions.getIndexes(this.getCookie("user_id"),this.getCookie("token"));
-    },
-    onStatusChange: function (action, result) {
+    onStatusChange=(action, result)=> {
         // 判断一下action,当同一个Store多个不同的方法发出trigger时好区分是谁发的
         if (action === 'getIndexes') {
             this.setState({indexList: result.data});
             this.setState({leftIndex: this.getTopMenuChildren(result.data, this.getUrl())});
-
-            // for(var i=0;i<result.data.length;i++){
-            //     var item = result.data[i];
-            //     console.log(item);
-            // }
-            //
-            // for(var i=0;i<result.data[0].children.length;i++){
-            //     var item = result.data[0].children[i];
-            //     console.log(item);
-            // }
         }
-    },
-    getCookie(name) {
+    }
+    getCookie=(name)=> {
         if(window.document.cookie === "") {
             this.context.router.push("/");
             return;
@@ -87,20 +79,20 @@ const App = React.createClass({
                 return user_name;
             }
         }
-    },
-    contextTypes: {
-        // 这个是为了使用js代码跳转页面使用的
-        router: React.PropTypes.object
-    },
-    onClickHandler: function (e) {
+    }
+    static contextTypes = {
+        router: React.PropTypes.object.isRequired,
+    };
+
+    onClickHandler= (e)=> {
         for (let i = 0; i < this.state.indexList.length; i++) {
             if (this.state.indexList[i].rid === e.key) {
                 this.setState({leftIndex: this.state.indexList[i].children});
                 return;
             }
         }
-    },
-    render() {
+    }
+    render=()=> {
         let lIndexs = this.state.leftIndex;
         let index_list = this.state.indexList;
         return (
@@ -164,6 +156,6 @@ const App = React.createClass({
             </Layout>
         );
     }
-});
+}
 
 export default App;
