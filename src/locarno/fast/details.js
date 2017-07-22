@@ -46,17 +46,24 @@ class LocarnoFastDetails extends React.Component {
 
         if (type === "getResult") {
             let temp = this.state.data;
-
             let page = this.state.page;
 
-            if (this.state.feature_type === feature_type) {
-                temp = temp.concat(data);
-            } else {
+
+            // 判断专利分类变化
+            if(this.state.patent_type === patent_type){
+                // 判断特征分类变化
+                if (this.state.feature_type === feature_type) {
+                    temp = temp.concat(data);
+                } else {
+                    temp = data;
+                    page = 0;
+                }
+            }else{
                 temp = data;
                 page = 0;
             }
 
-            this.setState({data: temp, feature_type: feature_type, page: page});
+            this.setState({data: temp,patent_type:patent_type, feature_type: feature_type, page: page});
         }
     }
 
@@ -82,6 +89,7 @@ class LocarnoFastDetails extends React.Component {
     }
 
     onPatentChange(e) {
+        console.log(e.target.value);
         this.getResult(e.target.value, this.state.feature_type, this.state.page);
     }
 
@@ -104,10 +112,6 @@ class LocarnoFastDetails extends React.Component {
         );
     }
 
-    scrolla(e) {
-        console.log(e);
-
-    }
 
     render() {
         let self = this;
@@ -149,7 +153,7 @@ class LocarnoFastDetails extends React.Component {
                                     <RadioButton className="patent_type_radio" value="lbp">纹理</RadioButton>
                                 </RadioGroup>
                             </Header>
-                            <Content className="bg_white" style={{paddingTop: 80}} onScroll={self.scrolla.bind(this)}>
+                            <Content className="bg_white" style={{paddingTop: 80}} >
                                 {self.state.data.map(function (item, index) {
                                     return (self.state.feature_type === 'group' ?
                                             <GroupCards getdetail={self.getDetail.bind(self)} key={index} index={index}

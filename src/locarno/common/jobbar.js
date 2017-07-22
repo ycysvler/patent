@@ -14,7 +14,7 @@ class JobBar extends React.Component {
 
     renderOneImage(url) {
         return <div>
-            <img alt="" style={{maxWidth:400, maxHeight:400}} src={window.server_address + "/" + url}/>
+            <img alt="" style={{maxWidth:400, maxHeight:400}} src={window.server_address + "/image.ashx?name=" + url}/>
         </div>
     }
     render() {
@@ -40,7 +40,7 @@ class JobBar extends React.Component {
                         return <Popover key={url} content={self.renderOneImage(url)}>
                                 <img alt=""
                                      style={{width:'40%',margin:'5%',maxHeight:'200px'}}
-                                     src={window.server_address + "/" + url}/>
+                                     src={window.server_address + "/image.ashx?name=" + url}/>
 
                         </Popover>
                     })

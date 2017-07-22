@@ -14,7 +14,7 @@ class ImageList extends React.Component {
 
     renderOneImage(url) {
         return <div>
-            <img alt="" style={{maxWidth:400, maxHeight:400}} src={window.server_address + "/" + url}/>
+            <img alt="" style={{maxWidth:400, maxHeight:400}} src={window.server_address + "/image.ashx?name=" + url}/>
         </div>
     }
 
@@ -28,7 +28,7 @@ class ImageList extends React.Component {
                             <div style={{width: "50px", height: "50px", float:'left', marginRight:8, border:'1px solid #dddddd', padding:3}}>
                                 <img alt=""
                                      style={{width:'95%',height:'95%'}}
-                                     src={window.server_address + "/" + url}/>
+                                     src={window.server_address + "/image.ashx?name=" + url}/>
                             </div>
                         </Popover>
                     })

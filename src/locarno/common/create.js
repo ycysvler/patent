@@ -13,13 +13,15 @@ class LocarnoCreate extends React.Component {
         super(props);
         this.unsubscribe = LocarnoStore.listen(this.onStatusChange.bind(this));
 
+        let typeids = window.localStorage["typeIds"]?window.localStorage["typeIds"].split(','):[];
+        let typeState = window.localStorage["typeIds"]?true:false;
         this.state = {
             uploadImageList: [],
             description: "",
-            typeIds: window.localStorage["typeIds"].split(','),
-            typeNames: [],
+            typeIds: typeids,
+            typeNames: typeids,
             describeState: false,
-            typeState: false,
+            typeState: typeState,
             imageState: false,
             typeList: [],
             jobType:this.props.jobType,
@@ -33,7 +35,7 @@ class LocarnoCreate extends React.Component {
     componentWillUnmount() {
         this.unsubscribe();
     }
-    onStatusChange(type, data) {
+    onStatusChange=(type, data)=> {
         if (type === "uploadImage") {
             var uploadImageList = this.state.uploadImageList;
             this.setState({uploadImageList: uploadImageList.concat(data.data), imageState: true});
@@ -41,12 +43,18 @@ class LocarnoCreate extends React.Component {
             this.treeData = data;
             this.setState({typeList: data});
         } else if (type === "create") {
-            this.props.router.push(this.state.jobListPath);
+            console.log(this.props);
+            this.goToHistorySearch();
         }
     }
 
+    static contextTypes = {
+        router: React.PropTypes.object.isRequired,
+    };
+
+
     goToHistorySearch() {
-        this.props.router.push(this.state.jobListPath);
+        this.context.router.push(this.state.jobListPath);
     }
 
     getCookie(name) {
@@ -131,7 +139,7 @@ class LocarnoCreate extends React.Component {
 
     renderOneImage(url) {
         return <div>
-            <img alt="" style={{maxWidth: 500, maxHeight: 500}} src={window.server_address + "/" + url}/>
+            <img alt="" style={{maxWidth: 500, maxHeight: 500}} src={window.server_address + "/image.ashx?name=" + url}/>
         </div>
     }
 
@@ -191,7 +199,7 @@ class LocarnoCreate extends React.Component {
                                                 <div style={{position:'relative'}}>
 
                                                 <img alt="" onClick={self.remove.bind(self, image)} style={{maxWidth: "50px", maxHeight: "50px",cursor:"pointer"}}
-                                                     src={window.server_address + "/" + image}/>
+                                                     src={window.server_address + "/image.ashx?name=" + image}/>
                                                     <Icon type="close-circle" style={{position:'absolute',right:'0px',top:'0px'}} />
 
                                                 </div></Popover></div>

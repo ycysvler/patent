@@ -44,7 +44,8 @@ class PatentCards extends React.Component {
         return (<Card key={item.image}
                       title={self.getTitle(item.patent.ap_name, index)}
                       extra={
-                          <span>{((100 - item.score.toFixed(2)) * 100) / 100 + '%'}</span>}
+
+                          <span>{((1 - item.score) * 100).toFixed(2)  + '%'}</span>}
                       style={{
                           width: 390,
                           marginBottom: 20,
