@@ -10,6 +10,7 @@ const LocarnoActions = Reflux.createActions([
     'getAllType',
     'create',
     'getResult',
+    'getZoneResult',
     'getDetail',
     'remove'
 ]);
@@ -154,6 +155,33 @@ const LocarnoStore = Reflux.createStore({
             success: function (data, status) {
                 if(data.code === 200) {
                     self.trigger('getResult', data.data, patent_type,feature_type);
+                }
+            },
+            error: function (reason) {
+                console.log(reason);
+            }
+        });
+    },
+    onGetZoneResult: function(jobid,patent_type,feature_type,page) {
+        let url = window.server_address + "/locarno/zoneresult.ashx?";
+        let self = this;
+        let param = {
+            jobid:jobid,
+            patent_type:patent_type,
+            feature_type:feature_type,
+            page:page
+        };
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: "json",
+            data: param,
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader("Authorization",token);
+            },
+            success: function (data, status) {
+                if(data.code === 200) {
+                    self.trigger('getZoneResult', data.data, patent_type,feature_type);
                 }
             },
             error: function (reason) {

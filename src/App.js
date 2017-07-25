@@ -138,12 +138,12 @@ class App extends React.Component {
                                         return <SubMenu key={lIndex.rid} title={<span>{lIndex.rname}</span>}>
                                             {
                                                 lIndex.children.map(function (i) {
-                                                    return <Menu.Item key={i.url}><Link to={i.url}>{i.rname }</Link></Menu.Item>
+                                                    return <Menu.Item key={i.rid}><Link to={i.url}>{i.rname }</Link></Menu.Item>
                                                 })
                                             }
                                         </SubMenu>
                                     } else {
-                                        return <Menu.Item key={lIndex.url}><Link to={lIndex.url}>{lIndex.rname }</Link></Menu.Item>
+                                        return <Menu.Item key={lIndex.rid}><Link to={lIndex.url}>{lIndex.rname }</Link></Menu.Item>
                                     }
                                 })
                             }

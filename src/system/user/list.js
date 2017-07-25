@@ -3,10 +3,31 @@
  */
 import React from 'react';
 import {Layout,  Breadcrumb} from 'antd';
+import {UserActions,UserStore} from './userapi';
 
 const { Content} = Layout;
 
 class UserList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.unsubscribe = UserStore.listen(this.onStatusChange.bind(this));
+        this.state = {users:[]}
+
+        UserActions.list();
+    }
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+    /*
+     * store 触发的事件
+     * */
+    onStatusChange(action, data) {
+        console.log(data);
+        if (action === "list") {
+            this.setState({users: data});
+        }
+    }
+
     render() {
         return (
             <Layout >

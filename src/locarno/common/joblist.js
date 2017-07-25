@@ -206,7 +206,7 @@ class LocarnoJobList extends React.Component {
                                 style={{"width": "20%", "position": "relative", "float": "right", "marginRight": "5px"}}
                                 placeholder="请输入描述关键词"/>
                         </div>
-                        <Table {...state} style={{marginTop: "20px"}}/>
+                        <Table  {...state} style={{marginTop: "20px"}}/>
 
                     </Content>
                 </Layout>

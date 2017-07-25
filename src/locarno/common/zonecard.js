@@ -46,7 +46,7 @@ export default class ZoneCards extends React.Component {
             <Card key={item.image}
                   title={self.getTitle(item.patent.ap_name, index)}
                   extra={
-                      <span>{((1 - item.score) * 100).toFixed(2)  + '%'}</span>}
+                      <span>{((1 - item.result.score) * 100).toFixed(2)  + '%'}</span>}
                   style={{
                       width: 390,
                       marginBottom: 20,
@@ -106,19 +106,19 @@ export default class ZoneCards extends React.Component {
 
                     <div style={{height: '160px', marginTop: '8px'}}>
                         <Popover
-                                 content={self.renderOneImage(item.image)}>
+                                 content={self.renderOneImage(item.result.image)}>
                             <div className="image_border">
                                 <img alt=""
                                      style={{height: '150px', maxWidth: '150px'}}
-                                     src={ window.server_address + '/image.ashx?name=' + item.image}/>
+                                     src={ window.server_address + '/image.ashx?name=' + item.result.image}/>
                             </div>
                         </Popover>
                         <Popover
-                                 content={self.renderOneImage(item.image)}>
+                                 content={self.renderOneImage(item.result.image)}>
                             <div className="image_border">
                                 <img alt=""
                                      style={{height: '150px', maxWidth: '150px'}}
-                                     src={ window.server_address + '/image.ashx?name=' + item.image}/>
+                                     src={ window.server_address + '/image.ashx?name=' + item.result.image + '&colour=' + item.result.colour + '&rect=' + item.result.rect}/>
                             </div>
                         </Popover>
                     </div>

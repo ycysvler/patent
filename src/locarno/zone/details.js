@@ -39,7 +39,7 @@ class LocarnoZoneDetails extends React.Component {
         if (type === "getDetail") {
             this.setState({showDetailDialog: true, detailData: data});
         }
-        if (type === "getResult") {
+        if (type === "getZoneResult") {
             let temp = this.state.data;
             let page = this.state.page;
 
@@ -64,7 +64,7 @@ class LocarnoZoneDetails extends React.Component {
 
 
     goToHistorySearch() {
-        this.props.router.push("/locarno/senior/list");
+        this.props.router.push("/locarno/zone/list");
     }
 
 
@@ -88,7 +88,7 @@ class LocarnoZoneDetails extends React.Component {
     }
 
     getResult(patent_type, feature_type, page) {
-        LocarnoActions.getResult(
+        LocarnoActions.getZoneResult(
             this.props.location.state.searchData.jobid,
             patent_type,
             feature_type,
