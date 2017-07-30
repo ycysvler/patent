@@ -41,10 +41,7 @@ class LocarnoZoneCreate extends React.Component {
     }
 
     onStatusChange = (type, data) => {
-        if (type === "uploadImage") {
-            var uploadImageList = this.state.uploadImageList;
-            this.setState({uploadImageList: uploadImageList.concat(data.data), imageState: true});
-        } else if (type === "getAllType") {
+        if (type === "getAllType") {
             this.treeData = data;
             this.setState({typeList: data});
         } else if (type === "create") {
@@ -94,13 +91,14 @@ class LocarnoZoneCreate extends React.Component {
         let self = this;
         let data = new FormData();
 
+
         var filenames = [];
         $.each(self.refs.inputfile.files, function (i, file) {
             data.append('upload_file' + i, file);
             filenames.push(file.name);
         });
 
-        LocarnoActions.uploadImage(window.server_address + "/uploadimages.ashx?username=" + this.getCookie("user_name"), data, filenames, this.getCookie("token"));
+        LocarnoActions.uploadImage( data);
     }
 
     checkImage() {
@@ -130,23 +128,34 @@ class LocarnoZoneCreate extends React.Component {
     }
 
     createNewJob() {
-        LocarnoActions.create(this.getCookie("user_id"), this.state.description, this.state.typeIds, this.state.typeNames, this.state.uploadImageList, 2, this.getCookie("token"));
+        let images = [];
+        for(let i =0;i<this.state.uploadImageList.length;i++){
+            let item = this.state.uploadImageList[i];
+            images.push(item.image);
+        }
+        LocarnoActions.create(this.state.description, this.state.typeIds, this.state.typeNames, images, 2);
     }
 
     renderOneImage(url) {
         return <div>
             <img alt="" style={{maxWidth: 500, maxHeight: 500}}
-                 src={window.server_address + "/image.ashx?name=" + url}/>
+                 src={window.server_address + "/image.ashx?name=" + url + "&radom=" + Math.random()}/>
         </div>
     }
 
-    remove(image) {
-        console.log(image);
+    remove=(image)=> {
         var imageList = this.state.uploadImageList;
-        console.log(imageList);
+
         imageList.remove(image);
-        console.log(imageList);
+
         this.setState({'uploadImageList': imageList});
+    }
+
+    addImage=(item)=>{
+        console.log(item);
+        let images = [];
+        images.push(item);
+        this.setState({uploadImageList:images, imageState:true});
     }
 
     show_parent = TreeSelect.SHOW_PARENT;
@@ -156,6 +165,7 @@ class LocarnoZoneCreate extends React.Component {
         let canSearch = self.state.describeState && self.state.typeState && self.state.imageState;
 
         return (
+
             <Layout >
                 <div className="breadcrumb">
                     <Breadcrumb style={{margin: '11px 0'}}>
@@ -168,21 +178,6 @@ class LocarnoZoneCreate extends React.Component {
                 <Layout >
                     <Content style={{background: "#fff"}}>
 
-                        <div style={{marginTop: "24px"}}>
-                            <Row>
-                                <Col span="4"/>
-                                <Col span="18">
-
-                                    <Steps current={1}>
-                                        <Step title="添加基本信息" description={<div>添加查询描述、选择专利所属分类；</div>}/>
-                                        <Step title="上传图片" description="选择上传图片."/>
-                                        <Step title="图片预处理" description="服务器预处理图片信息."/>
-                                        <Step title="拾取区域" description="圈选出局部信息，提交查询."/>
-                                    </Steps>
-                                </Col>
-                            </Row>
-                        </div>
-                        <br/>
                         <div style={{marginTop: "24px"}}>
                             <Col span="4" style={{"textAlign": "right", "paddingTop": "5px"}}>
                                 <span>描述：</span>
@@ -218,18 +213,20 @@ class LocarnoZoneCreate extends React.Component {
                                 </Col>
                                 <Col span="18">
                                     {
-                                        self.state.uploadImageList.map(function (image) {
+
+                                        self.state.uploadImageList.map(function (item) {
+                                            let image = item.image;
                                             return <div key={image}
                                                         style={{height: 50, width: 50, marginRight: 8, float: 'left'}}>
                                                 <Popover content={self.renderOneImage(image)}>
                                                     <div style={{position: 'relative'}}>
 
-                                                        <img alt="" onClick={self.remove.bind(self, image)} style={{
+                                                        <img alt="" onClick={self.remove.bind(self, item)} style={{
                                                             maxWidth: "50px",
                                                             maxHeight: "50px",
                                                             cursor: "pointer"
                                                         }}
-                                                             src={window.server_address + "/image.ashx?name=" + image}/>
+                                                             src={window.server_address + "/image.ashx?name=" + image + "&radom=" + Math.random()}/>
                                                         <Icon type="close-circle"
                                                               style={{position: 'absolute', right: '0px', top: '0px'}}/>
 
@@ -237,21 +234,10 @@ class LocarnoZoneCreate extends React.Component {
                                                 </Popover></div>
                                         })
                                     }
-                                    <Button icon="plus" onClick={this.checkImage.bind(this)} style={{
-                                        height: 50, width: 50, fontSize: 18,
-                                        cursor: "pointer"
-                                    }}>
-                                    </Button>
+                                    <CutImage addImage={this.addImage} />
                                 </Col>
                             </Row>
-                            <Row>
-                                <Col span="4" style={{"textAlign": "right", "paddingTop": "5px"}}>
-                                <span>拾取区域：</span>
-                                </Col>
-                                <Col span="20">
-                                    <CutImage />
-                                </Col>
-                            </Row>
+
                             <input multiple="multiple" ref="inputfile" type="file" accept=""
                                    style={{display: "none"}}/>
                         </div>

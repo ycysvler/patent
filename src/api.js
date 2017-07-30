@@ -12,6 +12,8 @@ const IndexActions = Reflux.createActions([
 const IndexStore = Reflux.createStore({
     listenables:[IndexActions],
 
+    cuttentUser:{userid: "4dd3562851d641b09f78e074d672a221", username: "admin",  cname: "管理员", icon: "/upload/admin/4dd3562851d641b09f78e074d672a221.png"},
+
     onGetIndexes: function(userid,token) {
         let url = window.server_address + "/systems/menus.ashx?";
         let param = {};
@@ -48,6 +50,7 @@ const IndexStore = Reflux.createStore({
             data: param,
             success: function (data, status) {
                 if(JSON.parse(data).code === 200) {
+                    self.cuttentUser = JSON.parse(data).data;
                     self.trigger(JSON.parse(data).data);
                 }
             },

@@ -46,7 +46,7 @@ export default class ZoneCards extends React.Component {
             <Card key={item.image}
                   title={self.getTitle(item.patent.ap_name, index)}
                   extra={
-                      <span>{((1 - item.result.score) * 100).toFixed(2)  + '%'}</span>}
+                      <span>{item.result.score  + '%'}</span>}
                   style={{
                       width: 390,
                       marginBottom: 20,

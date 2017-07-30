@@ -3,9 +3,10 @@
  */
 import Reflux from 'reflux';
 import $ from 'jquery'
-
+import {IndexStore} from '../api';
 const LocarnoActions = Reflux.createActions([
     'uploadImage',
+    'cutImage',
     'getJobs',
     'getAllType',
     'create',
@@ -18,8 +19,10 @@ const LocarnoActions = Reflux.createActions([
 const LocarnoStore = Reflux.createStore({
     listenables:[LocarnoActions],
 
-    onUploadImage:function(url,data,file,token) {
+    onUploadImage:function(data) {
         let self = this;
+        let url = window.server_address + "/uploadimages.ashx?username=" + IndexStore.cuttentUser.username;
+
         $.ajax({
             url: url,
             type: 'POST',
@@ -31,7 +34,28 @@ const LocarnoStore = Reflux.createStore({
                 //xhr.setRequestHeader("Authorization",token);
             },
             success: function (result) {
-                self.trigger("uploadImage", result);
+                self.trigger("uploadImage", result.data);
+            },
+            error: function (msg) {
+                console.log("上传失败！");
+            }
+        });
+    },
+    onCutImage:function(name, colour, rect){
+        let self = this;
+        let url = window.server_address + "/cutimage.ashx?";
+        let param = {'name':name,'colour':colour,'rect':JSON.stringify(rect)};
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: "json",
+            data: param,
+
+            beforeSend: function (xhr) {
+            },
+            success: function (result) {
+                self.trigger("cutImage", result.data);
             },
             error: function (msg) {
                 console.log("上传失败！");
@@ -105,11 +129,12 @@ const LocarnoStore = Reflux.createStore({
             }
         });
     },
-    onCreate: function(user_id,job_name,type_ids,type_names,images,jobtype,token) {
+    onCreate: function(job_name,type_ids,type_names,images,jobtype) {
+        console.log('imgs',IndexStore.cuttentUser.userid);
         let url = window.server_address + "/locarno/create.ashx?jobtype=" + jobtype;
         let self = this;
         let param = {
-            userid:user_id,
+            userid:IndexStore.cuttentUser.userid,
             jobname:job_name,
             typeids:type_ids,
             typenames:type_names,

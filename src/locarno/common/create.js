@@ -38,7 +38,7 @@ class LocarnoCreate extends React.Component {
     onStatusChange=(type, data)=> {
         if (type === "uploadImage") {
             var uploadImageList = this.state.uploadImageList;
-            this.setState({uploadImageList: uploadImageList.concat(data.data), imageState: true});
+            this.setState({uploadImageList: uploadImageList.concat(data), imageState: true});
         } else if (type === "getAllType") {
             this.treeData = data;
             this.setState({typeList: data});
@@ -100,7 +100,7 @@ class LocarnoCreate extends React.Component {
             filenames.push(file.name);
         });
 
-        LocarnoActions.uploadImage(window.server_address + "/uploadimages.ashx?username=" + this.getCookie("user_name"), data, filenames, this.getCookie("token"));
+        LocarnoActions.uploadImage(data);
     }
 
     checkImage() {
@@ -134,7 +134,12 @@ class LocarnoCreate extends React.Component {
     }
 
     createNewJob() {
-        LocarnoActions.create(this.getCookie("user_id"), this.state.description, this.state.typeIds, this.state.typeNames, this.state.uploadImageList,this.state.jobType, this.getCookie("token"));
+        let images = [];
+        for(let i =0;i<this.state.uploadImageList.length;i++){
+            let item = this.state.uploadImageList[i];
+            images.push(item.image);
+        }
+        LocarnoActions.create(this.state.description, this.state.typeIds, this.state.typeNames, images,this.state.jobType);
     }
 
     renderOneImage(url) {
@@ -144,11 +149,11 @@ class LocarnoCreate extends React.Component {
     }
 
     remove(image){
-        console.log(image);
+
         var imageList = this.state.uploadImageList;
-        console.log(imageList);
+
         imageList.remove(image);
-        console.log(imageList);
+
         this.setState({'uploadImageList': imageList});
     }
 
@@ -192,13 +197,14 @@ class LocarnoCreate extends React.Component {
                             </Col>
                             <Col span="18">
                                 {
-                                    self.state.uploadImageList.map(function (image) {
+                                    self.state.uploadImageList.map(function (item) {
+                                        let image = item.image;
                                         return <div key={image}
                                                     style={{height: 50, width: 50, marginRight: 8, float: 'left'}}>
                                             <Popover content={self.renderOneImage(image)}>
                                                 <div style={{position:'relative'}}>
 
-                                                <img alt="" onClick={self.remove.bind(self, image)} style={{maxWidth: "50px", maxHeight: "50px",cursor:"pointer"}}
+                                                <img alt="" onClick={self.remove.bind(self, item)} style={{maxWidth: "50px", maxHeight: "50px",cursor:"pointer"}}
                                                      src={window.server_address + "/image.ashx?name=" + image}/>
                                                     <Icon type="close-circle" style={{position:'absolute',right:'0px',top:'0px'}} />
 
