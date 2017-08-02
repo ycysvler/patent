@@ -39,9 +39,18 @@ import LocarnoZoneDetails from './locarno/zone/details.js';
 
 import ImageInfo from './tools/imageinfo/index.js';
 
+import {IndexActions, IndexStore} from './api.js';
+
 import 'antd/dist/antd.css';
 import './styles/base.less';
 import './styles/index.css';
+
+const requireAuth = (nextState, replace) => {
+    // 未登录，重新登录
+    if (IndexStore.cuttentUser === null) {
+        replace({ pathname: '/' })
+    }
+}
 
 const routes = (
     <Router history={hashHistory}>
@@ -49,63 +58,63 @@ const routes = (
         <Route path="/" component={Login}></Route>
         <Route path="/main" component={App}>
             {/*欢迎页*/}
-            <Route path="/welcome" component={Welcome}/>
+            <Route path="/welcome" component={Welcome} onEnter={requireAuth}/>
             {/*用户管理*/}
-            <Route path="/system/users" component={UserList}/>
+            <Route path="/system/users" component={UserList} onEnter={requireAuth}/>
             {/*角色管理*/}
-            <Route path="/system/roles" component={RoleList}/>
+            <Route path="/system/roles" component={RoleList} onEnter={requireAuth}/>
             {/*资源管理*/}
-            <Route path="/system/resources" component={ResourceList}/>
+            <Route path="/system/resources" component={ResourceList} onEnter={requireAuth}/>
             {/*日志查询*/}
-            <Route path="/system/logs" component={LogList}/>
+            <Route path="/system/logs" component={LogList} onEnter={requireAuth}/>
 
             {/*附图.快速检索.历史查询*/}
-            <Route path="/attached/fast/list" component={AttachedFastList}/>
+            <Route path="/attached/fast/list" component={AttachedFastList} onEnter={requireAuth}/>
             {/*新建快速查询*/}
-            <Route path="/attached/fast/create" component={AttachedFastCreate}/>
+            <Route path="/attached/fast/create" component={AttachedFastCreate} onEnter={requireAuth}/>
             {/*快速检索结果*/}
-            <Route path="/attached/fast/details" component={AttachedFastDetails}/>
+            <Route path="/attached/fast/details" component={AttachedFastDetails} onEnter={requireAuth}/>
 
             {/*附图.高级检索.历史查询*/}
-            <Route path="/attached/senior/list" component={AttachedSeniorList}/>
+            <Route path="/attached/senior/list" component={AttachedSeniorList} onEnter={requireAuth}/>
             {/*新建高级查询*/}
-            <Route path="/attached/senior/create" component={AttachedSeniorCreate}/>
+            <Route path="/attached/senior/create" component={AttachedSeniorCreate} onEnter={requireAuth}/>
             {/*高级检索结果*/}
-            <Route path="/attached/senior/details" component={AttachedSeniorDetails}/>
+            <Route path="/attached/senior/details" component={AttachedSeniorDetails} onEnter={requireAuth}/>
 
             {/*附图.局部检索.历史查询*/}
-            <Route path="/attached/zone/list" component={AttachedZoneList}/>
+            <Route path="/attached/zone/list" component={AttachedZoneList} onEnter={requireAuth}/>
             {/*新建局部查询*/}
-            <Route path="/attached/zone/create" component={AttachedZoneCreate}/>
+            <Route path="/attached/zone/create" component={AttachedZoneCreate} onEnter={requireAuth}/>
             {/*局部检索结果*/}
-            <Route path="/attached/zone/details" component={AttachedZoneDetails}/>
+            <Route path="/attached/zone/details" component={AttachedZoneDetails} onEnter={requireAuth}/>
             {/*专利信息详情*/}
-            <Route path="/attached/patent/details/:id" component={AttachedPatentDetails}/>
+            <Route path="/attached/patent/details/:id" component={AttachedPatentDetails} onEnter={requireAuth}/>
 
 
             {/*外观.快速检索.历史查询*/}
-            <Route path="/locarno/fast/list" component={LocarnoFastList}/>
+            <Route path="/locarno/fast/list" component={LocarnoFastList} onEnter={requireAuth}/>
             {/*新建快速查询*/}
-            <Route path="/locarno/fast/create" component={LocarnoFastCreate}/>
+            <Route path="/locarno/fast/create" component={LocarnoFastCreate} onEnter={requireAuth}/>
             {/*快速检索结果*/}
-            <Route path="/locarno/fast/details" component={LocarnoFastDetails}/>
+            <Route path="/locarno/fast/details" component={LocarnoFastDetails} onEnter={requireAuth}/>
 
             {/*外观.高级检索.历史查询*/}
-            <Route path="/locarno/senior/list" component={LocarnoSeniorList}/>
+            <Route path="/locarno/senior/list" component={LocarnoSeniorList} onEnter={requireAuth}/>
             {/*新建高级查询*/}
-            <Route path="/locarno/senior/create" component={LocarnoSeniorCreate}/>
+            <Route path="/locarno/senior/create" component={LocarnoSeniorCreate} onEnter={requireAuth}/>
             {/*快速高级结果*/}
-            <Route path="/locarno/senior/details" component={LocarnoSeniorDetails}/>
+            <Route path="/locarno/senior/details" component={LocarnoSeniorDetails} onEnter={requireAuth}/>
 
             {/*外观.局部检索.历史查询*/}
-            <Route path="/locarno/zone/list" component={LocarnoZoneList}/>
+            <Route path="/locarno/zone/list" component={LocarnoZoneList} onEnter={requireAuth}/>
             {/*新建局部查询*/}
-            <Route path="/locarno/zone/create" component={LocarnoZoneCreate}/>
+            <Route path="/locarno/zone/create" component={LocarnoZoneCreate} onEnter={requireAuth}/>
             {/*快速局部结果*/}
-            <Route path="/locarno/zone/details" component={LocarnoZoneDetails}/>
+            <Route path="/locarno/zone/details" component={LocarnoZoneDetails} onEnter={requireAuth}/>
 
             {/*快速局部结果*/}
-            <Route path="/tools/imageinfo" component={ImageInfo}/>
+            <Route path="/tools/imageinfo" component={ImageInfo} onEnter={requireAuth}/>
         </Route>
         {/*无此页面，转到登录*/}
         <Route path="*" component={Login}/>

@@ -114,7 +114,7 @@ export default class ZoneCards extends React.Component {
                             </div>
                         </Popover>
                         <Popover
-                                 content={self.renderOneImage(item.result.image)}>
+                                 content={self.renderOneImage(item.result.image + '&colour=' + item.result.colour + '&rect=' + item.result.rect)}>
                             <div className="image_border">
                                 <img alt=""
                                      style={{height: '150px', maxWidth: '150px'}}

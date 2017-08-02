@@ -137,7 +137,6 @@ class LocarnoZoneDetails extends React.Component {
                                 </RadioGroup>
                                 特征：
                                 <RadioGroup onChange={self.onFeatureChange.bind(this)} defaultValue="shape">
-                                    <RadioButton className="patent_type_radio" value="group">权重</RadioButton>
                                     <RadioButton className="patent_type_radio" value="shape">形状</RadioButton>
                                 </RadioGroup>
                             </Header>

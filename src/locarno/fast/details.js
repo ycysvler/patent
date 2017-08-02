@@ -28,11 +28,11 @@ class LocarnoFastDetails extends React.Component {
             showDetailDialog: false,
             detailData: {},
             patent_type: this.props.location.state.searchData.typeids[0],
-            feature_type: 'group',
+            feature_type: 'deep',
             page: 0
         };
 
-        this.getResult(this.props.location.state.searchData.typeids[0], 'group');
+        this.getResult(this.props.location.state.searchData.typeids[0], 'deep');
     }
 
     componentWillUnmount() {
@@ -145,8 +145,9 @@ class LocarnoFastDetails extends React.Component {
                                     }
                                 </RadioGroup>
                                 特征：
-                                <RadioGroup onChange={self.onFeatureChange.bind(this)} defaultValue="group">
-                                    <RadioButton className="patent_type_radio" value="group">权重</RadioButton>
+                                <RadioGroup onChange={self.onFeatureChange.bind(this)} defaultValue="deep">
+
+                                    {this.state.searchData.images.length>1?<RadioButton className="patent_type_radio" value="group">权重</RadioButton>:null}
                                     <RadioButton className="patent_type_radio" value="deep">综合</RadioButton>
                                     <RadioButton className="patent_type_radio" value="shape">形状</RadioButton>
                                     <RadioButton className="patent_type_radio" value="color">颜色</RadioButton>
