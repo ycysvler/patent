@@ -3,4 +3,4 @@
  * http://1596y81h66.iok.la
  * http://localhost:1655"
  */
-server_address="http://localhost:1655"
+server_address="http://localhost"
