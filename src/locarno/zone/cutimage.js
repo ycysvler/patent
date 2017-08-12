@@ -1,10 +1,8 @@
 import React from 'react';
 import {Modal, Button, Spin} from 'antd';
-import {IndexStore} from '../../api';
 import {LocarnoActions, LocarnoStore} from '../locarnoapi';
 import '../../attached/common/css.css';
-import './zone.css'
-
+import './zone.css';
 
 export default class CutImage extends React.Component {
     constructor(props) {
@@ -43,8 +41,8 @@ export default class CutImage extends React.Component {
         window.document.body.style['user-select'] = 'none';
 
         this.dragdiv.mouseDown = true;
-        this.dragdiv.begin = {x: parseInt(event.screenX), y: parseInt(event.screenY)};
-        this.dragdiv.position = {x: parseInt(event.target.style.left), y: parseInt(event.target.style.top)};
+        this.dragdiv.begin = {x: parseInt(event.screenX,10), y: parseInt(event.screenY,10)};
+        this.dragdiv.position = {x: parseInt(event.target.style.left,10), y: parseInt(event.target.style.top,10)};
     }
 
     onDragBarMouseDown = (event) => {
@@ -52,10 +50,10 @@ export default class CutImage extends React.Component {
         window.document.body.style['user-select'] = 'none';
 
         this.dragbar.mouseDown = true;
-        this.dragbar.begin = {x: parseInt(event.screenX), y: parseInt(event.screenY)};
+        this.dragbar.begin = {x: parseInt(event.screenX,10), y: parseInt(event.screenY,10)};
         this.dragbar.size = {
-            width: parseInt(this.refs.drag.style.width),
-            height: parseInt(this.refs.drag.style.height)
+            width: parseInt(this.refs.drag.style.width,10),
+            height: parseInt(this.refs.drag.style.height,10)
         };
     }
 
@@ -72,8 +70,8 @@ export default class CutImage extends React.Component {
     onDragBarMove = (event) => {
         if (this.dragbar.mouseDown) {
             let point = {x: event.screenX - this.dragbar.begin.x, y: event.screenY - this.dragbar.begin.y};
-            let div_x = parseInt(this.refs.drag.style.left);
-            let div_y = parseInt(this.refs.drag.style.top);
+            let div_x = parseInt(this.refs.drag.style.left,10);
+            let div_y = parseInt(this.refs.drag.style.top,10);
 
             let width = this.dragbar.size.width + point.x;
             let height = this.dragbar.size.height + point.y;
@@ -92,8 +90,8 @@ export default class CutImage extends React.Component {
     onDragDivMove = (event) => {
         if (this.dragdiv.mouseDown) {
             let point = {x: event.screenX - this.dragdiv.begin.x, y: event.screenY - this.dragdiv.begin.y};
-            let width = parseInt(this.refs.drag.style.width);
-            let height = parseInt(this.refs.drag.style.height);
+            let width = parseInt(this.refs.drag.style.width,10);
+            let height = parseInt(this.refs.drag.style.height,10);
 
             let x = (this.dragdiv.position.x + point.x);
             let y = (this.dragdiv.position.y + point.y);
@@ -115,10 +113,10 @@ export default class CutImage extends React.Component {
         let name = this.state.uploadImageList[0].image;
         let colour = this.state.uploadImageList[0].colour;
         let rect = [
-            parseInt(this.refs.drag.style.left),
-            parseInt(this.refs.drag.style.top),
-            parseInt(this.refs.drag.style.width),
-            parseInt(this.refs.drag.style.height)
+            parseInt(this.refs.drag.style.left,10),
+            parseInt(this.refs.drag.style.top,10),
+            parseInt(this.refs.drag.style.width,10),
+            parseInt(this.refs.drag.style.height,10)
         ];
         console.log('rect', rect);
         LocarnoActions.cutImage(name, colour, rect);
@@ -150,7 +148,7 @@ export default class CutImage extends React.Component {
         let result = "";
         if (this.state.imageState) {
             let imageInfo = this.state.uploadImageList[0];
-            if (imageInfo.colour == 0) {
+            if (imageInfo.colour === 0) {
                 result = window.server_address + "/image.ashx?type=color&name=" + imageInfo.image;
             } else {
                 result = window.server_address + "/image.ashx?type=shape&name=" + imageInfo.image;

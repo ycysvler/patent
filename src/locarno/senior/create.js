@@ -27,6 +27,7 @@ class LocarnoSeniorCreate extends React.Component {
     };
 
     goToHistorySearch() {
+
         this.context.router.push("/locarno/senior/list");
     }
 

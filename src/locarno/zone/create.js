@@ -3,12 +3,11 @@
  */
 
 import React from 'react';
-import {Layout, Breadcrumb, Popover, Button, Row, Col, Input, TreeSelect, Icon, Steps} from 'antd';
+import {Layout, Breadcrumb, Popover, Button, Row, Col, Input, TreeSelect, Icon} from 'antd';
 import {LocarnoActions, LocarnoStore} from '../locarnoapi';
 import CutImage from './cutimage';
 import $ from 'jquery';
 const {Content} = Layout;
-const Step = Steps.Step;
 
 class LocarnoZoneCreate extends React.Component {
     constructor(props) {
