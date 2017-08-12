@@ -7,6 +7,7 @@ import Login from './login.js';
 import Welcome from './welcome.js';
 
 import UserList from './system/user/list.js';
+import UserCreate from './system/user/create.js';
 import RoleList from './system/role/list.js';
 import ResourceList from './system/resource/list.js';
 import LogList from './system/log/list.js';
@@ -39,7 +40,7 @@ import LocarnoZoneDetails from './locarno/zone/details.js';
 
 import ImageInfo from './tools/imageinfo/index.js';
 
-import {IndexActions, IndexStore} from './api.js';
+import {IndexStore} from './api.js';
 
 import 'antd/dist/antd.css';
 import './styles/base.less';
@@ -48,7 +49,7 @@ import './styles/index.css';
 const requireAuth = (nextState, replace) => {
     // 未登录，重新登录
     if (IndexStore.cuttentUser === null) {
-        replace({ pathname: '/' })
+        //replace({ pathname: '/' })
     }
 }
 
@@ -61,6 +62,8 @@ const routes = (
             <Route path="/welcome" component={Welcome} onEnter={requireAuth}/>
             {/*用户管理*/}
             <Route path="/system/users" component={UserList} onEnter={requireAuth}/>
+
+            <Route path="/system/users/create" component={UserCreate} onEnter={requireAuth}/>
             {/*角色管理*/}
             <Route path="/system/roles" component={RoleList} onEnter={requireAuth}/>
             {/*资源管理*/}
