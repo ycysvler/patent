@@ -28,8 +28,6 @@ class UserCreate extends React.Component {
     /* 确定按钮提交页面 */
     handleSubmit = (e) => {
         e.preventDefault();
-
-
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 var item = {
@@ -154,7 +152,7 @@ class UserCreate extends React.Component {
                             hasFeedback
                         >
                             {getFieldDecorator('cname', {
-                                rules: [{required: true, message: 'Please input your cname!', whitespace: true}],
+                                rules: [{required: true, message: 'Please input your cname!',max:3, whitespace: true}],
                             })(
                                 <Input />
                             )}

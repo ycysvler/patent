@@ -11,7 +11,7 @@ class UserList extends React.Component {
     constructor(props) {
         super(props);
         this.unsubscribe = SystemStore.listen(this.onStatusChange.bind(this));
-        this.state = {items: [], selectNum: 0};
+        this.state = {items: [], selectNum: 0,selectedRowKeys:[]};
 
         SystemActions.users();
     }

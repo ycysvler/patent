@@ -7,8 +7,10 @@ import $ from 'jquery';
 const SystemActions = Reflux.createActions([
     'users',
     'userRemove',
-    'userCreate'
-
+    'userCreate',
+    'roles',
+    'roleRemove',
+    'roleCreate'
 ]);
 
 
@@ -71,7 +73,70 @@ const SystemStore = Reflux.createStore({
                 console.log(reason);
             }
         });
-    }
+    },
+
+
+    /* jiaose */
+    onRoles:function () {
+        let url = window.server_address + "/api/system/roles";
+
+        let self = this;
+        let param = { };
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType:"json",
+            success: function (data,status) {
+                self.trigger("roles",data)
+            },
+            error: function (reason) {
+                console.log(reason);
+            }
+        });
+    },
+
+    /* DELETE jiaose */
+    onRoleRemove:function (ids) {
+        let url = window.server_address + "/api/system/roles";
+
+        let self = this;
+        let param = ids;
+
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            contentType:'application/json',
+            data: JSON.stringify(param),
+            success: function (data,status) {
+                self.trigger("roleRemove",data)
+            },
+            error: function (reason) {
+                console.log(reason);
+            }
+        });
+    },
+
+
+    /* create jiaose */
+    onRoleCreate:function (item) {
+        console.log('item:',item);
+        let url = window.server_address + "/api/system/roles";
+        let self = this;
+        let param = item;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType:'application/json',
+            data: JSON.stringify(param),
+            success: function (data,status) {
+                self.trigger("roleCreate",data)
+            },
+            error: function (reason) {
+                console.log(reason);
+            }
+        });
+    },
 });
 
 exports.SystemActions =  SystemActions;
