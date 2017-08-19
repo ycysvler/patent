@@ -43,6 +43,8 @@ class UserList extends React.Component {
         },
         {title: '用户名', dataIndex: "username",width: 180},
         {title: '中文名',  dataIndex: 'cname'}
+
+
     ];
     /* 表格选择行的操作 */
     rowSelection = {

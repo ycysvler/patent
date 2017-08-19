@@ -45,9 +45,9 @@ class RoleList extends React.Component {
             }
         },
         {
-            title: '功能',width: 100,
+            title: '菜单管理',width: 100,
             render(text, record) {
-                return <Link to="/system/roles/create"><Button icon="menu-unfold"  /></Link>;
+                return <Link to={"/system/roles/"+record.roleid+"/menu"}><Button icon="menu-unfold"  /></Link>;
             }
         }
     ];

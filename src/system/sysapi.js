@@ -10,7 +10,11 @@ const SystemActions = Reflux.createActions([
     'userCreate',
     'roles',
     'roleRemove',
-    'roleCreate'
+    'roleCreate',
+    'mapRoleUserCreate',
+    'resource',
+    'mapRoleResourceCreate',
+    'maprolemenu'
 ]);
 
 
@@ -75,7 +79,6 @@ const SystemStore = Reflux.createStore({
         });
     },
 
-
     /* jiaose */
     onRoles:function () {
         let url = window.server_address + "/api/system/roles";
@@ -137,6 +140,79 @@ const SystemStore = Reflux.createStore({
             }
         });
     },
+
+    onMapRoleUserCreate:function (items) {
+        let url = window.server_address + "/api/system/maproleusers";
+        let self = this;
+        let param = items;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType:'application/json',
+            data: JSON.stringify(param),
+            success: function (data,status) {
+                self.trigger("mapRoleUserCreate",data)
+            },
+            error: function (reason) {
+                console.log(reason);
+            }
+        });
+    },
+
+    onResource:function () {
+        let url = window.server_address + "/api/system/resources";
+
+        let self = this;
+        let param = { };
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType:"json",
+            success: function (data,status) {
+                self.trigger("resources",data)
+            },
+            error: function (reason) {
+                console.log(reason);
+            }
+        });
+    },
+
+    onMapRoleResourceCreate:function (items) {
+        let url = window.server_address + "/api/system/maproleresoures";
+        let self = this;
+        let param = items;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType:'application/json',
+            data: JSON.stringify(param),
+            success: function (data,status) {
+                self.trigger("mapRoleResourceCreate",data)
+            },
+            error: function (reason) {
+                console.log(reason);
+            }
+        });
+    },
+    onMaprolemenu:function (id) {
+        let url = window.server_address + "/api/system/maproleresoures/" + id;
+
+        let self = this;
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType:"json",
+            success: function (data,status) {
+                self.trigger("maprolemenu",data)
+            },
+            error: function (reason) {
+                console.log(reason);
+            }
+        });
+    },
+
 });
 
 exports.SystemActions =  SystemActions;

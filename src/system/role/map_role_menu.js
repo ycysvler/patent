@@ -1,10 +1,13 @@
+/**
+ * Created by VLER on 2017/3/10.
+ */
 import React from 'react';
-import {Layout, Breadcrumb, Table, Icon, Button} from 'antd';
+import {Layout, Breadcrumb, Table, Icon,Button} from 'antd';
 import {SystemActions, SystemStore} from '../sysapi';
 
-const {Content} = Layout;
+const { Content} = Layout;
 
-class MapRoleUser extends React.Component {
+class MapRoleMenu extends React.Component {
     constructor(props) {
         super(props);
         this.unsubscribe = SystemStore.listen(this.onStatusChange.bind(this));
@@ -13,116 +16,107 @@ class MapRoleUser extends React.Component {
             items: [], selectNum: 0, selectedRowKeys: []
         };
 
-        SystemActions.users();
+        SystemActions.resource();
+        SystemActions.maprolemenu(this.props.params.id);
     }
 
     componentWillUnmount() {
         this.unsubscribe();
     }
 
-    /*
-     * store 触发的事件
-     * */
     onStatusChange(action, data) {
-        if (action === "users") {
+        if(action === "maprolemenu"){
             var selectkeys =[];
             for(var index in data){
                 let item = data[index];
                 if(item.roleid === this.state.roleid){
-                    selectkeys.push(item.userid);
+                    selectkeys.push(item.rid);
                 }
             }
-            this.setState({items: data,selectedRowKeys:selectkeys, selectNum:selectkeys.length});
+
+            console.log('rids:', selectkeys);
+            this.setState({selectedRowKeys:selectkeys, selectNum:selectkeys.length});
 
         }
-        if(action === 'mapRoleUserCreate'){
-            SystemActions.users();
+        if (action === "resources") {
+            this.setState({items: data});
+
+        }
+        if(action === 'mapRoleResourceCreate'){
+            SystemActions.resource();
         }
 
     }
 
     /* 定义表格有多少列 */
     columns = [
-        {
-            title: '头像', dataIndex: 'icon', width: 60,
-            render(text, record) {
-                return <img alt="" style={{width: 40}} src={window.server_address + record.icon}/>;
-            }
-        },
-        {title: '用户名', dataIndex: "username", width: 180},
-        {title: '中文名', dataIndex: 'cname'},
-        {title: '角色名', dataIndex: 'rolename'}
-
+        {title: '菜单名', dataIndex: 'rname'},
+        {title: 'URL', dataIndex: 'url'},
+        {title: 'ParentID', dataIndex: 'parentid'},
+        {title: 'Order', dataIndex: 'order'},
     ];
     /* 表格选择行的操作 */
     rowSelection = {
-
-        "selectedRowKeys":[],
         onChange: (selectedRowKeys, selectedRows) => {
-            this.setState({"selectedRowKeys": selectedRowKeys,selectNum: selectedRowKeys.length});
-        },
-        getCheckboxProps: record => ({
-            disabled: record.roleid != this.state.roleid && record.roleid != undefined
-        }),
+            this.setState({selectNum: selectedRowKeys.length});
+            this.setState({"selectedRowKeys": selectedRowKeys});
+        }
     };
-
     create = () => {
         var keys = this.state.selectedRowKeys;
         let array = [];
 
         for (var key in keys) {
-            let userid = keys[key];
+            let rid = keys[key];
             array.push( {
                 roleid: this.state.roleid,
-                userid: userid
+                rid: rid
             });
         }
 
-        SystemActions.mapRoleUserCreate(array );
+        SystemActions.mapRoleResourceCreate(array );
 
-    }
-
+    };
     render() {
         this.rowSelection.selectedRowKeys = this.state.selectedRowKeys;
-
         var state = {
-            rowKey: "userid",
             bordered: true,
             loading: true,
-            pagination: false,
-            rowSelection: this.rowSelection,
-            columns: this.columns,
-            dataSource: this.state.items
+            pagination: false
         };
         // 如果有数据了，就取消loading状态
         if (this.state.items.length > 0) {
             state.loading = false;
         }
-
         return (
-            <Layout>
+            <Layout >
                 <div className="breadcrumb">
                     <Breadcrumb style={{margin: '11px 0'}}>
                         <Breadcrumb.Item>系统管理</Breadcrumb.Item>
                         <Breadcrumb.Item href="#/system/roles">角色管理</Breadcrumb.Item>
-                        <Breadcrumb.Item>分配角色</Breadcrumb.Item>
+                        <Breadcrumb.Item>菜单管理</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
-                <Layout>
+                <Layout >
                     <Content className="content">
                         <div>
                             <Button onClick={this.create} className="fast-delete-btn">确认</Button>
                             <span className="fast-check-num"><Icon style={{"marginRight": "6px", "color": "blue"}}
-                                                                   type="info-circle"/>已选择{this.state.selectNum}用户</span>
+                                                                   type="info-circle"/>已选择{this.state.selectNum}项数据</span>
                         </div>
-
-                        <Table  {...state} style={{marginTop: "20px"}}/>
+                        <Table columns={this.columns}
+                               dataSource={this.state.items}
+                               rowKey="rid"
+                               rowSelection = {this.rowSelection}
+                               {...state}
+                               style={{marginTop: "20px"}}/>
                     </Content>
                 </Layout>
 
             </Layout>
+
         );
     }
 }
 
-export default MapRoleUser;
+export default MapRoleMenu;

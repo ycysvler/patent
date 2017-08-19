@@ -9,10 +9,13 @@ import Welcome from './welcome.js';
 import UserList from './system/user/list.js';
 import UserCreate from './system/user/create.js';
 import RoleCreate from './system/role/create.js';
+import MapRoleMenu from './system/role/map_role_menu.js';
 import RoleList from './system/role/list.js';
 import MapRoleUser from './system/role/map_role_user.js';
 
-import ResourceList from './system/resource/list.js';
+
+
+
 import LogList from './system/log/list.js';
 
 import AttachedFastList from './attached/fast/list.js';
@@ -70,10 +73,10 @@ const routes = (
             {/*角色管理*/}
             <Route path="/system/roles" component={RoleList} onEnter={requireAuth}/>
             <Route path="/system/roles/:id/user" component={MapRoleUser} onEnter={requireAuth}/>
-
+            <Route path="/system/roles/:id/menu" component={MapRoleMenu} onEnter={requireAuth}/>
             <Route path="/system/roles/create" component={RoleCreate} onEnter={requireAuth}/>
-            {/*资源管理*/}
-            <Route path="/system/resources" component={ResourceList} onEnter={requireAuth}/>
+
+
             {/*日志查询*/}
             <Route path="/system/logs" component={LogList} onEnter={requireAuth}/>
 
